@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using JwtAuthDemo.Configurations;
 using JwtAuthDemo.Infrastructure.Persistence.Contexts;
 using JwtAuthDemo.IoC;
+using Microsoft.Extensions.Options;
 
 
 namespace Authentication.Common.Ioc
@@ -28,9 +29,12 @@ namespace Authentication.Common.Ioc
             //Services Bussines
             InjectorServices.AddServices(services);
 
-            services.AddDbContext<LojaOrganizationContext>(options => 
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
-        }
+            services.AddDbContext<LojaOrganizationContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+                options.EnableSensitiveDataLogging(); // Isso permite que dados sensíveis também sejam logados
+            });
+    }
     }
 }

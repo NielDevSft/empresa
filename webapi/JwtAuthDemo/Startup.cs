@@ -1,6 +1,8 @@
 using Authentication.Common.Ioc;
 using JwtAuthDemo.Infrastructure.Persistence.Contexts;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace JwtAuthDemo;
 
@@ -40,10 +42,20 @@ public class Startup(IConfiguration configuration)
             endpoints.MapControllers();
         });
 
+        var cultureInfo = new CultureInfo("en-US"); // Substitua "en-US" pela cultura desejada
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         using (var serviceScope = app.ApplicationServices.CreateScope())
         {
-            var context = serviceScope.ServiceProvider.GetRequiredService<LojaOrganizationContext>();
-            context.Database.Migrate();
+            try { 
+                var context = serviceScope.ServiceProvider.GetRequiredService<LojaOrganizationContext>();
+                context.Database.Migrate();
+            } catch (SqlException ex) { 
+                if(ex.ErrorCode == -2146232060)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }
