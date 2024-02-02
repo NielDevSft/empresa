@@ -1,18 +1,19 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../core';
-import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { AuthService } from "../core";
+import { finalize } from "rxjs/operators";
+import { Subscription } from "rxjs";
+import { Utils } from "../core/utils/utils";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   busy = false;
-  username = '';
-  password = '';
+  username = "";
+  password = "";
   loginError = false;
   private subscription: Subscription | null = null;
 
@@ -24,11 +25,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.authService.user$.subscribe((x) => {
-      if (this.route.snapshot.url[0].path === 'login') {
-        const accessToken = localStorage.getItem('access_token');
-        const refreshToken = localStorage.getItem('refresh_token');
+      if (this.route.snapshot.url[0].path === "login") {
+        const accessToken = localStorage.getItem("access_token");
+        const refreshToken = localStorage.getItem("refresh_token");
         if (x && accessToken && refreshToken) {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+          const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
           this.router.navigate([returnUrl]);
         }
       } // optional touch-up: if a tab shows login page, then refresh the page to reduce duplicate login
@@ -40,9 +41,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     this.busy = true;
-    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+    const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
+
     this.authService
-      .login(this.username, this.password)
+      .login(this.username, Utils().encrypt(this.password))
       .pipe(finalize(() => (this.busy = false)))
       .subscribe({
         next: () => {
