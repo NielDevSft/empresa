@@ -23,8 +23,8 @@ namespace Authentication.Common.Ioc
                     builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
             });
 
-            //Repositories
-            //InjectorRepositories.AddRepositories(services);
+            // Repositories
+            InjectorRepositories.AddRepositories(services);
 
             //Services Bussines
             InjectorServices.AddServices(services);

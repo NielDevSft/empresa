@@ -4,10 +4,10 @@ using JwtAuthDemo.Contracts.Services;
 namespace JwtAuthDemo.Services;
 
 
-public class UserService(ILogger<UserService> logger) : IUserService
+public class UserService(ILogger<UserService> logger, 
+    IUserRepository _userRepository, 
+    IUserRoleRepository _userRoleRepository) : IUserService
 {
-    private readonly IUserRepository _userRepository;
-
     public bool IsValidUserCredentials(string userName, string password)
     {
         logger.LogInformation("Validating user [{userName}]", userName);
@@ -20,7 +20,7 @@ public class UserService(ILogger<UserService> logger) : IUserService
         {
             return false;
         }
-        
+
         return _userRepository.TryGetValue(userName, password);
     }
 
@@ -36,12 +36,10 @@ public class UserService(ILogger<UserService> logger) : IUserService
             return string.Empty;
         }
 
-        if (userName == "admin")
-        {
-            return UserRoles.Admin;
-        }
+        var user = _userRepository.FirstOrDefault(u => u.Username == userName);
+        var userRole = _userRoleRepository.FirstOrDefault(ur => ur.UserId == user.Id, "Role");
 
-        return UserRoles.BasicUser;
+        return userRole.Role.Name;
     }
 }
 

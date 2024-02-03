@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JwtAuthDemo.Migrations
 {
     [DbContext(typeof(LojaOrganizationContext))]
-    [Migration("20240202035544_InitalMigration")]
+    [Migration("20240203004056_InitalMigration")]
     partial class InitalMigration
     {
         /// <inheritdoc />
@@ -43,9 +43,6 @@ namespace JwtAuthDemo.Migrations
                     b.Property<bool?>("Removed")
                         .IsRequired()
                         .HasColumnType("bit");
-
-                    b.Property<int>("RuleLevelCascadeMode")
-                        .HasColumnType("int");
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -85,9 +82,6 @@ namespace JwtAuthDemo.Migrations
                         .IsRequired()
                         .HasColumnType("bit");
 
-                    b.Property<int>("RuleLevelCascadeMode")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -125,9 +119,6 @@ namespace JwtAuthDemo.Migrations
                         .IsRequired()
                         .HasColumnType("bit");
 
-                    b.Property<int>("RuleLevelCascadeMode")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
 
@@ -140,11 +131,67 @@ namespace JwtAuthDemo.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("JwtAuthDemo.Models.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("Active")
+                        .IsRequired()
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Removed")
+                        .IsRequired()
+                        .HasColumnType("bit");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRole");
+                });
+
             modelBuilder.Entity("JwtAuthDemo.Models.Role", b =>
                 {
                     b.HasOne("JwtAuthDemo.Models.JwtClaims", null)
                         .WithMany("Role")
                         .HasForeignKey("JwtClaimsId");
+                });
+
+            modelBuilder.Entity("JwtAuthDemo.Models.UserRole", b =>
+                {
+                    b.HasOne("JwtAuthDemo.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JwtAuthDemo.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("JwtAuthDemo.Models.JwtClaims", b =>

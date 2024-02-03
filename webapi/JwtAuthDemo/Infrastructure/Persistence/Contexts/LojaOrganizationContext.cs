@@ -28,10 +28,12 @@ namespace JwtAuthDemo.Infrastructure.Persistence.Contexts
             modelBuilder.AddConfiguration(new DefaultMap<User>());
             modelBuilder.AddConfiguration(new DefaultMap<JwtClaims>());
             modelBuilder.AddConfiguration(new DefaultMap<Role>());
+            modelBuilder.AddConfiguration(new DefaultMap<UserRole>());
 
             modelBuilder.Entity<User>();
             modelBuilder.Entity<JwtClaims>();
             modelBuilder.Entity<Role>();
+            modelBuilder.Entity<UserRole>();
 
             base.OnModelCreating(modelBuilder);
         }

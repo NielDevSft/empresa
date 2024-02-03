@@ -42,3 +42,19 @@ BEGIN
         Username NVARCHAR(MAX) NOT NULL
     );
 END;
+
+IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UserRole' AND TABLE_SCHEMA = '[app]')
+BEGIN
+    CREATE TABLE [app].[UserRole] (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Active BIT NOT NULL,
+        UserId INT,
+        RoleId INT,
+        Removed BIT NOT NULL,
+        UpdateAt DATETIME2,
+        CreateAt DATETIME2,
+        FOREIGN KEY (UserId) REFERENCES [app].[User](Id),
+        FOREIGN KEY (RoleId) REFERENCES [app].[Role](Id)
+    );
+END;
+

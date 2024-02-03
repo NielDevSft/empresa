@@ -1,12 +1,12 @@
 FROM node:alpine as builder
 
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 ENV CI=1
-RUN npm ci
+RUN yarn
 
 COPY . .
-RUN npm run build -- --output-path=/dist
+RUN yarn build -- --output-path=/dist
 
 # Deploy our Angular app to NGINX
 FROM nginx:alpine
