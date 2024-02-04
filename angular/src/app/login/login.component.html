@@ -1,59 +1,43 @@
-<div class="text-center mb-4">
-  <img
-    class="mb-4 rounded-circle"
-    src="assets/apple-icon-180x180.png"
-    alt="logo"
-    loading="lazy"
-    width="180"
-    height="180"
-  />
-  <h1 class="h3 mb-3">.NET Labs</h1>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Fazer login</mat-card-title>
+    <mat-card-subtitle>Informe seu login e senha.</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content text-center>
+    <form>
+      <div class="row">
+        <mat-form-field class="col-12">
+          <input
+            matInput
+            type="text"
+            id="userName"
+            name="username"
+            [(ngModel)]="username"
+            placeholder="Username"
+            required
+            autofocus
+          />
+          <mat-label for="userName">Nome usuario</mat-label>
+        </mat-form-field>
 
-<form class="form-signin" (ngSubmit)="login()">
-  <div class="form-label-group">
-    <input
-      type="text"
-      id="userName"
-      name="username"
-      [(ngModel)]="username"
-      class="form-control"
-      placeholder="Username"
-      required
-      autofocus
-    />
-    <label for="userName">Username</label>
-  </div>
-  <div class="form-label-group">
-    <input
-      type="password"
-      id="inputPassword"
-      name="password"
-      [(ngModel)]="password"
-      class="form-control"
-      placeholder="Password"
-      required
-    />
-    <label for="inputPassword">Password</label>
-  </div>
-
-  <div class="mb-3 text-danger" *ngIf="loginError">
-    Login failed. Please try again.
-  </div>
-  <button
-    type="submit"
-    class="btn btn-lg btn-primary"
-    [disabled]="busy"
-  >
-    Sign in
-  </button>
-
-  <div class="small text-secondary mt-3 d-none d-sm-flex">
-    <strong>Example logins:</strong>
-    <ul>
-      <li>admin: securePassword</li>
-      <li>test1: password1</li>
-      <li>test2: password2</li>
-    </ul>
-  </div>
-</form>
+        <mat-form-field class="col-12">
+          <input
+            matInput
+            type="password"
+            id="inputPassword"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Password"
+            required
+          />
+          <mat-label for="inputPassword">Senha</mat-label>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="accent" (click)="login()" [disabled]="busy">
+      Logar
+    </button>
+  </mat-card-actions>
+</mat-card>

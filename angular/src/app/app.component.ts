@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
-import { AuthService } from './core';
+import { Component } from "@angular/core";
+import { AuthService } from "./core";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   template: `
     <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+      <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
         <a class="navbar-brand" routerLink="">JWT Auth Demo</a>
         <button
           class="navbar-toggler"
@@ -39,11 +39,25 @@ import { AuthService } from './core';
             </button>
           </div>
         </div>
-      </nav>
+      </nav> -->
     </header>
-    <main class="d-flex flex-column flex-grow-1 h-100 w-100">
+    <mat-toolbar class="mat-toolbar">
+      <span id="title">New Hair</span>
+      <span class="example-spacer"></span>
+      <button
+        mat-button
+        color="accent"
+        type="button"
+        *ngIf="authService.user$ | async as user"
+        (click)="logout()"
+      >
+        Logout
+      </button>
+    </mat-toolbar>
+    <!-- <main class="d-flex flex-column flex-grow-1 h-100 w-100"></main> -->
+    <div>
       <router-outlet></router-outlet>
-    </main>
+    </div>
   `,
   styles: [],
 })

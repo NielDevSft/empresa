@@ -5,7 +5,9 @@
 */
 @import "https://fonts.googleapis.com/icon?family=Material+Icons+Round";
 @import url("https://fonts.googleapis.com/css2?family=Alata:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Protest+Revolution&display=swap");
 @import "bootstrap/dist/css/bootstrap.min.css";
+
 .mat-badge-content {
   font-weight: 600;
   font-size: 12px;
@@ -474,9 +476,16 @@ input.mat-input-element {
 .mat-toolbar h4,
 .mat-toolbar h5,
 .mat-toolbar h6 {
-  font: 500 20px/32px Alata;
+  /* font: 500 20px/32px Alata; */
   letter-spacing: 0.0075em;
   margin: 0;
+  span {
+    font-family: Protest Revolution, sans-serif;
+    font-size: 40px;
+  }
+  span#title {
+    color: #e89ef3;
+  }
 }
 
 .mat-tooltip {
@@ -1502,6 +1511,7 @@ body {
   background: white;
   color: rgba(31, 57, 24, 0.87);
 }
+
 .mat-card:not([class*="mat-elevation-z"]) {
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
@@ -3360,10 +3370,13 @@ td.mat-footer-cell {
   font-size: 24px;
   font-family: "Material Icons Round", "Material Icons";
 }
+
 .material-icons .mat-badge-content {
   font-family: "Alata";
 }
-
+.example-spacer {
+  flex: 1 1 auto;
+}
 html,
 body {
   height: 100%;
