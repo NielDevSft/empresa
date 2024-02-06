@@ -2,8 +2,7 @@ import { createAction, props } from "@ngrx/store";
 import { Pedido } from "../../models/Pedido";
 
 export const getAllPedidosByUser = createAction(
-  "[Pedido Component] Get All Pedidos By User",
-  props<{ idUsuario: number }>()
+  "[Pedido Component] Get All Pedidos By User"
 );
 export const getAllPedidosByUserSuccess = createAction(
   "[Pedido Component] Get All Pedidos By User Success",

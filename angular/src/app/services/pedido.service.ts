@@ -20,10 +20,8 @@ export class PedidoService implements OnInit {
     return this.http.put<Pedido>(`${this.apiUrl}`, pedido);
   }
 
-  public getAllByUsuario(idUsuario: number): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(
-      `${this.apiUrl}/get-by-usuario/${idUsuario}`
-    );
+  public getAllByUsuario(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}/get-by-usuario`);
   }
 
   public getById(id: number): Observable<Pedido[]> {

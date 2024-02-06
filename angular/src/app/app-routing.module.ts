@@ -1,26 +1,33 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { authGuard } from './core';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { DemoApisComponent } from './demo-apis/demo-apis.component';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { authGuard } from "./core";
+import { HomeComponent } from "./home/home.component";
+import { LoginComponent } from "./login/login.component";
+import { DemoApisComponent } from "./demo-apis/demo-apis.component";
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
+    path: "",
+    pathMatch: "full",
     component: HomeComponent,
     canMatch: [authGuard],
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'demo-apis', component: DemoApisComponent, canMatch: [authGuard] },
+  { path: "login", component: LoginComponent },
+  { path: "demo-apis", component: DemoApisComponent, canMatch: [authGuard] },
   {
-    path: 'management',
+    path: "management",
     loadChildren: () =>
-      import('./management/management.module').then((m) => m.ManagementModule),
+      import("./management/management.module").then((m) => m.ManagementModule),
     canMatch: [authGuard],
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: "pedido",
+    pathMatch: "full",
+    loadChildren: () =>
+      import("./components/pedido/pedido.module").then((m) => m.PedidoModule),
+    canMatch: [authGuard],
+  },
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({

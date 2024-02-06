@@ -1,0 +1,96 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title> Pedidos </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table #table [dataSource]="pedidoList$" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="desPedido">
+        <mat-header-cell *matHeaderCellDef
+          >Descrição do serviço</mat-header-cell
+        >
+        <mat-cell mat-cell *matCellDef="let element">The symbol for</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="profissionalResponsavel">
+        <mat-header-cell *matHeaderCellDef
+          >Proficional Responsavel</mat-header-cell
+        >
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.profissionalResponsavel }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="valorConsulta">
+        <mat-header-cell *matHeaderCellDef>Valor Orçamento</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.valorConsulta | currency : "BRL" : "symbol" : "4.2-2" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="dataAgendamento">
+        <mat-header-cell *matHeaderCellDef>Data Agendamento</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.dataAgendamento | date : "short" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="createAt">
+        <mat-header-cell *matHeaderCellDef>Data Orçamento</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.createAt | date : "short" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="updateAt">
+        <mat-header-cell *matHeaderCellDef
+          >Data Ultima atualização</mat-header-cell
+        >
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.updateAt | date : "short" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" aria-label="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" aria-label="Deletar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let detail">
+          {{ detail.element.desPedido }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        matRipple
+        class="element-row"
+        [class.expanded]="detalhesExpandidos == row"
+        (click)="
+          detalhesExpandidos === row
+            ? (detalhesExpandidos = null)
+            : (detalhesExpandidos = row)
+        "
+      ></mat-row>
+      <mat-row
+        *matRowDef="
+          let row;
+          columns: ['expandedDetail'];
+          when: isExpansionDetailRow
+        "
+        [@detailExpand]="
+          row.element == detalhesExpandidos ? 'expanded' : 'collapsed'
+        "
+        style="overflow: hidden"
+      >
+      </mat-row>
+    </table>
+  </mat-card-content>
+</mat-card>

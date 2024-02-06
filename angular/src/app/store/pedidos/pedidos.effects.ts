@@ -22,8 +22,8 @@ export class PedidosEffects {
   getAllPedidos$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getAllPedidosByUser),
-      switchMap(({ idUsuario }) =>
-        from(this.pedidoService.getAllByUsuario(idUsuario)).pipe(
+      switchMap(() =>
+        from(this.pedidoService.getAllByUsuario()).pipe(
           map((pedidos) => getAllPedidosByUserSuccess({ pedidos: pedidos })),
           catchError((error) => of(getAllPedidosByUserFailure({ error })))
         )

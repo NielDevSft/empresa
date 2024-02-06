@@ -1,0 +1,21 @@
+import { NgModule, ViewChild } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { MatTableModule } from "@angular/material/table";
+import { PedidoComponent } from "./pedido.component";
+import { SharedModule } from "../../core/commom-modules/shared.module";
+
+import { MatAccordion, MatExpansionModule } from "@angular/material/expansion";
+import { PedidoRoutingModule } from "./pedido-routing.module";
+import { FormPedidoComponent } from './form-pedido/form-pedido.component';
+
+@NgModule({
+  declarations: [PedidoComponent, FormPedidoComponent],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    SharedModule,
+    PedidoRoutingModule,
+    MatExpansionModule,
+  ],
+})
+export class PedidoModule {}

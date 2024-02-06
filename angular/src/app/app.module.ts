@@ -10,15 +10,15 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { HomeComponent } from "./home/home.component";
 import { DemoApisComponent } from "./demo-apis/demo-apis.component";
-import { StoreModule } from "@ngrx/store";
-import { pedidoReducer } from "./store/pedidos/pedidos.reducer";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-
+import { SharedModule } from "./core/commom-modules/shared.module";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatInputModule } from "@angular/material/input";
-import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { StoreModule, provideStore } from "@ngrx/store";
+import { pedidoReducer } from "./store/pedidos/pedidos.reducer";
+import { PedidosEffects } from "./store/pedidos/pedidos.effects";
+import { EffectsModule } from "@ngrx/effects";
+import { appReducers } from "./store/app.reducers";
 
 @NgModule({
   declarations: [
@@ -30,17 +30,16 @@ import { MatFormFieldModule } from "@angular/material/form-field";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule,
-    CoreModule,
     MatToolbarModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
+    HttpClientModule,
+    MatSidenavModule,
+    CoreModule,
+    SharedModule,
     AppRoutingModule,
     StoreModule.forRoot({ pedido: pedidoReducer }),
+    EffectsModule.forRoot([PedidosEffects]),
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(), provideStore(appReducers)],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
