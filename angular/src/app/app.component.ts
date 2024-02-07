@@ -7,6 +7,9 @@ import { AuthService } from "./core";
     <mat-toolbar class="mat-toolbar">
       <span id="title">New Hair</span>
       <span class="example-spacer"></span>
+      <nav *ngIf="authService.user$ | async as user">
+        <button mat-button [routerLink]="['/pedido']">Pedidos</button>
+      </nav>
       <button
         mat-button
         color="accent"

@@ -22,12 +22,12 @@ const routes: Routes = [
   },
   {
     path: "pedido",
-    pathMatch: "full",
     loadChildren: () =>
       import("./components/pedido/pedido.module").then((m) => m.PedidoModule),
     canMatch: [authGuard],
   },
-  { path: "**", redirectTo: "" },
+
+  // { path: "**", redirectTo: "" },
 ];
 
 @NgModule({

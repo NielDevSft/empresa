@@ -6,7 +6,6 @@ export class Pedido {
     public valorConsulta: number,
     public dataAgendamento: Date,
     public createAt: Date,
-    public updateAt: Date,
-    public selected: boolean
+    public updateAt: Date
   ) {}
 }

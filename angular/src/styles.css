@@ -480,11 +480,12 @@ input.mat-input-element {
   letter-spacing: 0.0075em;
   margin: 0;
   span {
-    font-family: Protest Revolution, sans-serif;
-    font-size: 40px;
+    font-size: 30px;
   }
   span#title {
+    font-family: Protest Revolution, sans-serif;
     color: #e89ef3;
+    font-size: 40px;
   }
 }
 
