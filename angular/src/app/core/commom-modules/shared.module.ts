@@ -6,7 +6,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
-
+import { ReactiveFormsModule } from "@angular/forms";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { StoreModule } from "@ngrx/store";
 import { MatIconModule } from "@angular/material/icon";
@@ -24,7 +24,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatInputModule,
     MatSidenavModule,
     MatIconModule,
-
+    ReactiveFormsModule,
     // outros módulos que você deseja agrupar
   ],
   exports: [
@@ -35,6 +35,7 @@ import { MatIconModule } from "@angular/material/icon";
     MatInputModule,
     MatIconModule,
     StoreModule,
+    ReactiveFormsModule,
     // outros módulos que você deseja exportar para uso externo
   ],
 })

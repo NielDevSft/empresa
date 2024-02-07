@@ -3,7 +3,7 @@ FROM node:alpine as builder
 WORKDIR /app
 COPY package.json yarn.lock ./
 ENV CI=1
-RUN yarn
+RUN yarn install --frozen-lockfile
 
 COPY . .
 RUN yarn build -- --output-path=/dist

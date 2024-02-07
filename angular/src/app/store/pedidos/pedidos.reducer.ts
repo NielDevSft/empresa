@@ -1,4 +1,4 @@
-import { createReducer, on } from "@ngrx/store";
+import { createReducer, on, createAction } from "@ngrx/store";
 import { Pedido } from "../../models/Pedido";
 import {
   createPedido,
@@ -53,7 +53,7 @@ export const initialState: PedidoState = {
       new Date()
     ),
   ],
-  currentOperation: OperationEnum.listing,
+  currentOperation: OperationEnum.creating,
   currentPedido: undefined,
   status: StatusEnum.pending,
   error: null,

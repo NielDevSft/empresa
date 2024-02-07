@@ -8,12 +8,36 @@
       }}
     </mat-card-title>
   </mat-card-header>
-  <form>
+  <form [formGroup]="pedidoForm">
     <mat-card-content>
-      <mat-form-field>
-        <mat-label>Input</mat-label>
-        <input matInput />
-      </mat-form-field>
+      <div class="row">
+        <mat-form-field class="col-md-8">
+          <mat-label>Descrição da solicitação</mat-label>
+          <input formControlName="desPedido" matInput />
+        </mat-form-field>
+        <mat-form-field class="col-md-4">
+          <mat-label>Responsavel</mat-label>
+          <input formControlName="profissionalResponsavel" matInput />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-3">
+          <mat-label>Valor Estimado</mat-label>
+          <input formControlName="valorConsulta" matInput />
+        </mat-form-field>
+        <mat-form-field class="col-md-3">
+          <mat-label>Data agendamento</mat-label>
+          <input type="date" formControlName="dataAgendamento" matInput />
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="createAt">
+          <mat-label>Data criação</mat-label>
+          <input type="date" formControlName="createAt" matInput />
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="updateAt">
+          <mat-label>Ultima atualização</mat-label>
+          <input type="date" formControlName="updateAt" matInput />
+        </mat-form-field>
+      </div>
     </mat-card-content>
     <mat-card-actions>
       <span class="example-spacer"></span

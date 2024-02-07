@@ -5,16 +5,16 @@ FROM mcr.microsoft.com/dotnet/sdk:$VERSION AS build
 WORKDIR /app
 
 COPY ./*.sln .
-COPY ./JwtAuthDemo/*.csproj ./JwtAuthDemo/
-COPY ./JwtAuthDemo.IntegrationTests/*.csproj ./JwtAuthDemo.IntegrationTests/
+COPY ./EmpresaAPI/*.csproj ./EmpresaAPI/
+COPY ./EmpresaAPI.IntegrationTests/*.csproj ./EmpresaAPI.IntegrationTests/
 RUN dotnet restore
 
 COPY . .
 
-WORKDIR /app/JwtAuthDemo.IntegrationTests
+WORKDIR /app/EmpresaAPI.IntegrationTests
 # RUN dotnet test --no-restore
 
-WORKDIR /app/JwtAuthDemo
+WORKDIR /app/EmpresaAPI
 RUN dotnet publish -c Release -o /out --no-restore
 
 
@@ -26,4 +26,4 @@ COPY --from=build /out ./
 # Instalação do pacote libicu-dev
 RUN apk add --no-cache icu-libs
 
-ENTRYPOINT ["dotnet", "JwtAuthDemo.dll"]
+ENTRYPOINT ["dotnet", "EmpresaAPI.dll"]
