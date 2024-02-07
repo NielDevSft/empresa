@@ -19,7 +19,7 @@ Obs: A primeiro momento, não é possivel inciar o projeto localmente, devido as
 
 ## Utilização
 
-Rodando o comando, `docker-compose up --build --remove-orphans -d`, teremos o aplicativo já implantado e acessível no [ntt](http://localhost:8080/login). O que pode demorar de acordo com a capacidade da sua máquina de processar todas as imagem de docker e posteriormente publica-las.
+Rodando o comando, `docker-compose up --build --remove-orphans -d`, teremos o aplicativo já implantado e acessível no [localhost](http://localhost:8080/login). O que pode demorar de acordo com a capacidade da sua máquina de processar todas as imagem de docker e posteriormente publica-las.
 
 Fazer login com os usuários padrão do sistema:
 
