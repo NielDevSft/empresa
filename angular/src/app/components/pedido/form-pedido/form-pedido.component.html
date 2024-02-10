@@ -8,12 +8,20 @@
       }}
     </mat-card-title>
   </mat-card-header>
-  <form [formGroup]="pedidoForm">
+  <form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
     <mat-card-content>
+      <input type="hidden" formControlName="id" />
       <div class="row">
         <mat-form-field class="col-md-8">
           <mat-label>Descrição da solicitação</mat-label>
-          <input formControlName="desPedido" matInput />
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            formControlName="desPedido"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
         </mat-form-field>
         <mat-form-field class="col-md-4">
           <mat-label>Responsavel</mat-label>
@@ -27,21 +35,59 @@
         </mat-form-field>
         <mat-form-field class="col-md-3">
           <mat-label>Data agendamento</mat-label>
-          <input type="date" formControlName="dataAgendamento" matInput />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="dataAgendamento"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="col-md-3" *ngIf="createAt">
           <mat-label>Data criação</mat-label>
-          <input type="date" formControlName="createAt" matInput />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="createAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="col-md-3" *ngIf="updateAt">
           <mat-label>Ultima atualização</mat-label>
-          <input type="date" formControlName="updateAt" matInput />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="updateAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
     </mat-card-content>
     <mat-card-actions>
       <span class="example-spacer"></span
-      ><button mat-button color="accent" type="submit">Salvar</button>
+      ><button
+        mat-button
+        color="accent"
+        [disabled]="!pedidoForm.valid"
+        type="submit"
+      >
+        Salvar
+      </button>
     </mat-card-actions>
   </form>
 </mat-card>

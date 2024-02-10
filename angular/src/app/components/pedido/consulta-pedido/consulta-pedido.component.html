@@ -15,7 +15,9 @@
           <mat-header-cell *matHeaderCellDef
             >Descrição do serviço</mat-header-cell
           >
-          <mat-cell mat-cell *matCellDef="let element">The symbol for</mat-cell>
+          <mat-cell mat-cell *matCellDef="let element"
+            >{{ element.desPedido?.substring(0, 14) }}...</mat-cell
+          >
         </ng-container>
         <ng-container matColumnDef="profissionalResponsavel">
           <mat-header-cell *matHeaderCellDef

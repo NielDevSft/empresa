@@ -11,7 +11,10 @@ import {
   trigger,
 } from "@angular/animations";
 import { OperationEnum } from "../../../store/pedidos/pedidos.reducer";
-import { setOperation } from "../../../store/pedidos/pedidos.actions";
+import {
+  getAllPedidosByUser,
+  setOperation,
+} from "../../../store/pedidos/pedidos.actions";
 
 @Component({
   selector: "app-consulta-pedido",
@@ -66,6 +69,6 @@ export class ConsultaPedidoComponent {
   }
 
   ngOnInit(): void {
-    // this.store.dispatch(getAllPedidosByUser());
+    this.store.dispatch(getAllPedidosByUser());
   }
 }

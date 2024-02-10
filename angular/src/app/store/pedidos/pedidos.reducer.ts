@@ -82,7 +82,10 @@ export const pedidoReducer = createReducer(
   })),
   on(createPedido, (state, { pedido }) => ({
     ...state,
-    pedidoList: [...state.pedidoList, pedido],
+    pedidoList: [
+      ...state.pedidoList,
+      { ...pedido, id: state.pedidoList.length + 1 },
+    ],
   })),
   on(setCurrentPedido, (state, { id }) => ({
     ...state,

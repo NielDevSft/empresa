@@ -19,32 +19,32 @@ export class PedidosEffects {
     private pedidoService: PedidoService
   ) {}
 
-  getAllPedidos$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getAllPedidosByUser),
-      switchMap(() =>
-        from(this.pedidoService.getAllByUsuario()).pipe(
-          map((pedidos) => getAllPedidosByUserSuccess({ pedidos: pedidos })),
-          catchError((error) => of(getAllPedidosByUserFailure({ error })))
-        )
-      )
-    )
-  );
+  // getAllPedidos$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(getAllPedidosByUser),
+  //     switchMap(() =>
+  //       from(this.pedidoService.getAllByUsuario()).pipe(
+  //         map((pedidos) => getAllPedidosByUserSuccess({ pedidos: pedidos })),
+  //         catchError((error) => of(getAllPedidosByUserFailure({ error })))
+  //       )
+  //     )
+  //   )
+  // );
 
-  savePedidos$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(createPedido),
-        switchMap(({ pedido }) =>
-          from(
-            this.pedidoService.create(pedido).pipe(
-              map((pedido) => {
-                console.log(pedido + "added successfully");
-              })
-            )
-          )
-        )
-      ),
-    { dispatch: false }
-  );
+  // savePedidos$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(createPedido),
+  //       switchMap(({ pedido }) =>
+  //         from(
+  //           this.pedidoService.create(pedido).pipe(
+  //             map((pedido) => {
+  //               console.log(pedido + "added successfully");
+  //             })
+  //           )
+  //         )
+  //       )
+  //     ),
+  //   { dispatch: false }
+  // );
 }
