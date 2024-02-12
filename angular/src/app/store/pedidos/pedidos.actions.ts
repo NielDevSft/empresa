@@ -22,15 +22,15 @@ export const createPedido = createAction(
   props<{ pedido: Pedido }>()
 );
 export const setCurrentPedido = createAction(
-  "[Pedido Component] UpdatePedido",
+  "[Pedido Component] Set Current Pedido",
   props<{ id: number }>()
 );
 export const updatePedido = createAction(
-  "[Pedido Component] UpdatePedido",
+  "[Pedido Component] Update Pedido",
   props<{ pedido: Pedido }>()
 );
 export const deletePedido = createAction(
-  "[Pedido Component] DeletePedido",
+  "[Pedido Component] Delete Pedido",
   props<{ id: number }>()
 );
 export const setOperation = createAction(

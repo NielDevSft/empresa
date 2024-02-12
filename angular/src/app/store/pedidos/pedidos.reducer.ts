@@ -26,7 +26,7 @@ enum StatusEnum {
 }
 export interface PedidoState {
   pedidoList: Pedido[];
-  currentPedido: Pedido | undefined;
+  currentPedido: Pedido | null;
   currentOperation: OperationEnum;
   status: StatusEnum;
   error: string | null;
@@ -54,7 +54,7 @@ export const initialState: PedidoState = {
     ),
   ],
   currentOperation: OperationEnum.creating,
-  currentPedido: undefined,
+  currentPedido: null,
   status: StatusEnum.pending,
   error: null,
 };
@@ -89,7 +89,10 @@ export const pedidoReducer = createReducer(
   })),
   on(setCurrentPedido, (state, { id }) => ({
     ...state,
-    currentPedido: state.pedidoList.find((p) => p.id == Number(id)),
+    currentPedido:
+      state.pedidoList.find((p) => {
+        return p.id == Number(id);
+      }) || null,
   })),
   on(updatePedido, (state, { pedido }) => ({
     ...state,
@@ -103,6 +106,7 @@ export const pedidoReducer = createReducer(
   on(deletePedido, (state, { id }) => ({
     ...state,
     pedidoList: state.pedidoList.filter((p) => p.id !== id),
+    currentPedido: null,
   })),
   on(setOperation, (state, { op }) => ({
     ...state,

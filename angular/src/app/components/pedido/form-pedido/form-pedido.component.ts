@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit, inject } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Observable, map, switchMap } from "rxjs";
+
 import {
   createPedido,
   setCurrentPedido,
+  setOperation,
   updatePedido,
 } from "../../../store/pedidos/pedidos.actions";
 import {
@@ -14,6 +15,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { provideNativeDateAdapter } from "@angular/material/core";
 import { OperationEnum } from "../../../store/pedidos/pedidos.reducer";
+import { combineLatest, take } from "rxjs";
 
 @Component({
   selector: "app-form-pedido",
@@ -27,7 +29,7 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   fromBuilder = inject(FormBuilder);
 
   pedidoForm: FormGroup = this.fromBuilder.group({
-    id: [, [Validators.required]],
+    id: [],
     desPedido: ["", [Validators.required]],
     profissionalResponsavel: ["", [Validators.required]],
     valorConsulta: ["", [Validators.required]],
@@ -40,9 +42,12 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   public currentOperation? = this.store.select(currentOperation);
 
   ngOnInit(): void {
-    this.router.params.subscribe((params) => {
+    combineLatest([
+      this.pedidoSelected$.pipe(take(1)),
+      this.router.params,
+    ]).subscribe(([selected, params]) => {
       const idPedido = params["id"];
-      if (!!idPedido) {
+      if (!selected && !!idPedido) {
         this.store.dispatch(setCurrentPedido({ id: idPedido }));
       }
     });
@@ -51,12 +56,13 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
       this.pedidoForm.reset(value);
     });
   }
+
   ngOnDestroy(): void {
     this.store.dispatch(setCurrentPedido({ id: 0 }));
   }
 
   onSubmit() {
-    this.currentOperation?.subscribe((op) => {
+    this.currentOperation?.pipe(take(1)).subscribe((op) => {
       switch (op) {
         case OperationEnum.creating:
           this.store.dispatch(createPedido({ pedido: this.pedidoForm.value }));
@@ -69,12 +75,15 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
         default:
           break;
       }
+      this.store.dispatch(setOperation({ op: OperationEnum.listing }));
     });
   }
   public get createAt(): string {
+    this.pedidoForm.get("createAt")?.disable();
     return this.pedidoForm.value.createAt;
   }
   public get updateAt(): string {
+    this.pedidoForm.get("updateAt")?.disable();
     return this.pedidoForm.value.updateAt;
   }
 }

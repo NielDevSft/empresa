@@ -1,13 +1,10 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { Store } from "@ngrx/store";
-import {
-  currentOperation,
-  selectAllPedidos,
-} from "../../store/pedidos/pedidos.selector";
+import { currentOperation } from "../../store/pedidos/pedidos.selector";
 import { ThemePalette, provideNativeDateAdapter } from "@angular/material/core";
 
-import { filter, map, Observable } from "rxjs";
-import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { combineLatest, map, Observable, of, take } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import { OperationEnum } from "../../store/pedidos/pedidos.reducer";
 import { setOperation } from "../../store/pedidos/pedidos.actions";
 
@@ -18,35 +15,40 @@ import { setOperation } from "../../store/pedidos/pedidos.actions";
   providers: [provideNativeDateAdapter()],
 })
 export class PedidoComponent implements OnInit {
-  links = ["Consulta", "Dados"];
-  activeLink = new Observable<string>((sub) => sub.next(this.links[0]));
+  links = ["Consulta", "Dados", "Deleção"];
+  activeLink = this.links[0];
   background: ThemePalette = undefined;
   store = inject(Store);
   router = inject(Router);
   routerAct = inject(ActivatedRoute);
   activeRoute: any;
   currentOperation = this.store.select(currentOperation);
+
   ngOnInit(): void {
-    this.activeLink = this.currentOperation.pipe(
-      map((op) => {
-        switch (op) {
-          case OperationEnum.listing:
-            this.router.navigate(["pedido/"]);
-            return this.links[0];
-          case OperationEnum.updating:
-          case OperationEnum.seeing:
-            return this.links[1];
-          case OperationEnum.creating:
-            this.router.navigate(["pedido/new"]);
-            return this.links[1];
-        }
-        return "";
-      })
-    );
+    this.currentOperation
+      .pipe(
+        map((op) => {
+          switch (op) {
+            case OperationEnum.listing:
+              this.router.navigate(["pedido/"]);
+              return this.links[0];
+            case OperationEnum.updating:
+            case OperationEnum.seeing:
+              return this.links[1];
+            case OperationEnum.creating:
+              this.router.navigate(["pedido/new"]);
+              return this.links[1];
+            case OperationEnum.deleting:
+              return this.links[2];
+          }
+        })
+      )
+      .subscribe((act) => {
+        this.activeLink = act;
+      });
   }
 
   onTabChange(link: string) {
-    // this.activeLink = link;
     switch (link) {
       case "Consulta":
         this.store.dispatch(setOperation({ op: OperationEnum.listing }));
@@ -58,5 +60,16 @@ export class PedidoComponent implements OnInit {
         break;
     }
   }
-  updateLink(link: string) {}
+
+  disabledLink(link: string): Observable<boolean> {
+    return combineLatest([of(link), this.currentOperation]).pipe(
+      take(1),
+      map(([act, op]) => {
+        return act === this.links[2] && op !== OperationEnum.deleting;
+      })
+    );
+  }
+  setlectActiveLink(link: string) {
+    return link === this.activeLink;
+  }
 }

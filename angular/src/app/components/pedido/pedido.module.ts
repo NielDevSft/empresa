@@ -8,9 +8,10 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { PedidoRoutingModule } from "./pedido-routing.module";
 import { FormPedidoComponent } from "./form-pedido/form-pedido.component";
 import { ConsultaPedidoComponent } from "./consulta-pedido/consulta-pedido.component";
+import { DeletePedidoComponent } from './delete-pedido/delete-pedido.component';
 
 @NgModule({
-  declarations: [PedidoComponent, FormPedidoComponent, ConsultaPedidoComponent],
+  declarations: [PedidoComponent, FormPedidoComponent, ConsultaPedidoComponent, DeletePedidoComponent],
   imports: [
     CommonModule,
     MatTableModule,

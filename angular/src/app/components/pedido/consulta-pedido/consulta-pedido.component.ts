@@ -13,6 +13,7 @@ import {
 import { OperationEnum } from "../../../store/pedidos/pedidos.reducer";
 import {
   getAllPedidosByUser,
+  setCurrentPedido,
   setOperation,
 } from "../../../store/pedidos/pedidos.actions";
 
@@ -66,6 +67,11 @@ export class ConsultaPedidoComponent {
   onEditPedido(id: number) {
     this.router.navigate(["pedido/edit/" + id]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
+  }
+  onDeletePedido(id: number) {
+    this.router.navigate(["pedido/delete"]);
+    this.store.dispatch(setCurrentPedido({ id: id }));
+    this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }
 
   ngOnInit(): void {

@@ -4,6 +4,7 @@ import { PedidoComponent } from "./pedido.component";
 import { FormPedidoComponent } from "./form-pedido/form-pedido.component";
 import { authGuard } from "../../core/guards/auth.guard";
 import { ConsultaPedidoComponent } from "./consulta-pedido/consulta-pedido.component";
+import { DeletePedidoComponent } from "./delete-pedido/delete-pedido.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,12 @@ const routes: Routes = [
         path: "edit/:id",
         title: "edit",
         component: FormPedidoComponent,
+        canMatch: [authGuard],
+      },
+      {
+        path: "delete",
+        title: "delete",
+        component: DeletePedidoComponent,
         canMatch: [authGuard],
       },
       {
