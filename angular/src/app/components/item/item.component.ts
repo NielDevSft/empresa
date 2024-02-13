@@ -1,21 +1,21 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { currentOperation } from "../../store/pedidos/pedidos.selector";
+
 import { ThemePalette, provideNativeDateAdapter } from "@angular/material/core";
 
 import { combineLatest, map, Observable, of, take } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
-
-import { setOperation } from "../../store/pedidos/pedidos.actions";
+import { currentOperation } from "../../store/itens/itens.selector";
+import { setOperation } from "../../store/itens/itens.actions";
 import { OperationEnum } from "../../models/enum/OperationEnum";
 
 @Component({
-  selector: "app-pedido",
-  templateUrl: "./pedido.component.html",
-  styleUrl: "./pedido.component.css",
+  selector: "app-item",
+  templateUrl: "./item.component.html",
+  styleUrl: "./item.component.css",
   providers: [provideNativeDateAdapter()],
 })
-export class PedidoComponent implements OnInit {
+export class ItemComponent implements OnInit {
   links = ["Consulta", "Dados", "Deleção"];
   activeLink = this.links[0];
   background: ThemePalette = undefined;
@@ -31,13 +31,13 @@ export class PedidoComponent implements OnInit {
         map((op) => {
           switch (op) {
             case OperationEnum.listing:
-              this.router.navigate(["pedido/"]);
+              this.router.navigate(["item/"]);
               return this.links[0];
             case OperationEnum.updating:
             case OperationEnum.seeing:
               return this.links[1];
             case OperationEnum.creating:
-              this.router.navigate(["pedido/new"]);
+              this.router.navigate(["item/new"]);
               return this.links[1];
             case OperationEnum.deleting:
               return this.links[2];

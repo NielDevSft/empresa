@@ -10,6 +10,9 @@ import { AuthService } from "./core";
       <nav *ngIf="authService.user$ | async as user">
         <button mat-button [routerLink]="['/pedido']">Pedidos</button>
       </nav>
+      <nav *ngIf="authService.user$ | async as user">
+        <button mat-button [routerLink]="['/item']">Itens</button>
+      </nav>
       <button
         mat-button
         color="accent"

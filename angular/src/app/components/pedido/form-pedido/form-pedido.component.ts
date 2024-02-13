@@ -14,8 +14,9 @@ import {
 } from "../../../store/pedidos/pedidos.selector";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { provideNativeDateAdapter } from "@angular/material/core";
-import { OperationEnum } from "../../../store/pedidos/pedidos.reducer";
+
 import { combineLatest, take } from "rxjs";
+import { OperationEnum } from "../../../models/enum/OperationEnum";
 
 @Component({
   selector: "app-form-pedido",

@@ -26,7 +26,13 @@ const routes: Routes = [
       import("./components/pedido/pedido.module").then((m) => m.PedidoModule),
     canMatch: [authGuard],
   },
-  // { path: "**", redirectTo: "" },
+  {
+    path: "item",
+    loadChildren: () =>
+      import("./components/item/item.module").then((m) => m.ItemModule),
+    canMatch: [authGuard],
+  },
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({

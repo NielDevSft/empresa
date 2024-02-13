@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{
+        (itemSelected$ | async)
+          ? "Editar Item #" + (itemSelected$ | async)?.id
+          : "Novo Item"
+      }}
+    </mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <input type="hidden" formControlName="id" />
+      <div class="row">
+        <mat-form-field class="col-md-4">
+          <mat-label>Nome da item</mat-label>
+          <input
+            matInput
+            formControlName="nomItem"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="col-md-8">
+          <mat-label>Descrição da solicitação</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            formControlName="desItem"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-3" *ngIf="createAt">
+          <mat-label>Data criação</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="createAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="updateAt">
+          <mat-label>Ultima atualização</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="updateAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <span class="example-spacer"></span
+      ><button
+        mat-button
+        color="accent"
+        [disabled]="!itemForm.valid"
+        type="submit"
+      >
+        Salvar
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

@@ -1,5 +1,5 @@
 import { Component, inject } from "@angular/core";
-import { selectAllPedidos } from "../../../store/pedidos/pedidos.selector";
+
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs";
@@ -11,16 +11,18 @@ import {
   trigger,
 } from "@angular/animations";
 import {
-  getAllPedidosByUser,
-  setCurrentPedido,
+  getAllItensByUser,
+  setCurrentItem,
   setOperation,
-} from "../../../store/pedidos/pedidos.actions";
+} from "../../../store/itens/itens.actions";
+
+import { selectAllItens } from "../../../store/itens/itens.selector";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
 
 @Component({
-  selector: "app-consulta-pedido",
-  templateUrl: "./consulta-pedido.component.html",
-  styleUrl: "./consulta-pedido.component.css",
+  selector: "app-consulta-item",
+  templateUrl: "./consulta-item.component.html",
+  styleUrl: "./consulta-item.component.css",
   animations: [
     trigger("detailExpand", [
       state(
@@ -35,17 +37,15 @@ import { OperationEnum } from "../../../models/enum/OperationEnum";
     ]),
   ],
 })
-export class ConsultaPedidoComponent {
+export class ConsultaItemComponent {
   store = inject(Store);
   router = inject(Router);
 
   public detalhesExpandidos: any;
   public displayedColumns = [
     "id",
-    "desPedido",
-    "profissionalResponsavel",
-    "valorConsulta",
-    "dataAgendamento",
+    "nomItem",
+    "desItem",
     "createAt",
     "updateAt",
     "actions",
@@ -54,7 +54,7 @@ export class ConsultaPedidoComponent {
   isExpansionDetailRow = (i: number, row: Object) =>
     row.hasOwnProperty("detailRow");
 
-  public pedidoList$ = this.store.select(selectAllPedidos).pipe(
+  public itemList$ = this.store.select(selectAllItens).pipe(
     map((data) => {
       const rows: any[] = [];
       data.forEach((element) =>
@@ -64,17 +64,17 @@ export class ConsultaPedidoComponent {
     })
   );
 
-  onEditPedido(id: number) {
-    this.router.navigate(["pedido/edit/" + id]);
+  onEditItem(id: number) {
+    this.router.navigate(["item/edit/" + id]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
   }
-  onDeletePedido(id: number) {
-    this.router.navigate(["pedido/delete"]);
-    this.store.dispatch(setCurrentPedido({ id: id }));
+  onDeleteItem(id: number) {
+    this.router.navigate(["item/delete"]);
+    this.store.dispatch(setCurrentItem({ id: id }));
     this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }
 
   ngOnInit(): void {
-    this.store.dispatch(getAllPedidosByUser());
+    this.store.dispatch(getAllItensByUser());
   }
 }

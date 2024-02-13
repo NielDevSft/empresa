@@ -5,8 +5,8 @@ import {
   deletePedido,
   setOperation,
 } from "../../../store/pedidos/pedidos.actions";
-import { OperationEnum } from "../../../store/pedidos/pedidos.reducer";
 import { take } from "rxjs";
+import { OperationEnum } from "../../../models/enum/OperationEnum";
 
 @Component({
   selector: "app-delete-pedido",

@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Pedido } from "../../models/Pedido";
-import { OperationEnum } from "./pedidos.reducer";
+import { OperationEnum } from "../../models/enum/OperationEnum";
 
 export const getAllPedidosByUser = createAction(
   "[Pedido Component] Get All Pedidos By User"

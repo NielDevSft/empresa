@@ -10,20 +10,9 @@ import {
   setCurrentPedido,
   setOperation,
 } from "./pedidos.actions";
+import { OperationEnum } from "../../models/enum/OperationEnum";
+import { StatusEnum } from "../../models/enum/StatusEnum";
 
-export enum OperationEnum {
-  "deleting",
-  "creating",
-  "listing",
-  "updating",
-  "seeing",
-}
-enum StatusEnum {
-  "pending",
-  "loading",
-  "error",
-  "success",
-}
 export interface PedidoState {
   pedidoList: Pedido[];
   currentPedido: Pedido | null;
