@@ -1,14 +1,14 @@
 import { createSelector } from "@ngrx/store";
 
 import { AppState } from "../app.state";
-import { ItemEstoqueState } from "./itemEstoque.reducer";
+import { ItemEstoqueState } from "./itens-estoque.reducer";
 
-export const selectItem = (state: AppState) => state.itemEstoques;
-export const selectAllItens = createSelector(
+export const selectItem = (state: AppState) => state.itensEstoque;
+export const selectAllItensEstoque = createSelector(
   selectItem,
   (state: ItemEstoqueState) => state.itemEstoqueList
 );
-export const ItemEstoqueSelected = createSelector(
+export const itensEstoqueelected = createSelector(
   selectItem,
   (state: ItemEstoqueState) => {
     return state.currentItemEstoque;

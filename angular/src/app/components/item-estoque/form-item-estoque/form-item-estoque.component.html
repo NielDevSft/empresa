@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{
+        (itensEstoqueelected$ | async)
+          ? "Editar Item Estoque #" + (itensEstoqueelected$ | async)?.id
+          : "Novo Item Estoque"
+      }}
+    </mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="itemEstoqueForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <input type="hidden" formControlName="id" />
+      <div class="row">
+        <mat-form-field class="col-md-4">
+          <mat-label>Quantidade</mat-label>
+          <input formControlName="qtdItem" matInput />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-3" *ngIf="createAt">
+          <mat-label>Data criação</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="createAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="updateAt">
+          <mat-label>Ultima atualização</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="updateAt"
+            [disabled]="true"
+            matInput
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <span class="example-spacer"></span
+      ><button
+        mat-button
+        color="accent"
+        [disabled]="!itemEstoqueForm.valid"
+        type="submit"
+      >
+        Salvar
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

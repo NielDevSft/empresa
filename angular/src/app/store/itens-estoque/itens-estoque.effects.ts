@@ -1,36 +1,36 @@
 import { Injectable } from "@angular/core";
-// import { ItemEstoqueService } from "../../services/pedido.service";\a
+// import { itensEstoqueervice } from "../../services/pedido.service";\a
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import {
   createItemEstoque,
-  getAllItemEstoquesByUser,
-  getAllItemEstoquesByUserFailure,
-  getAllItemEstoquesByUserSuccess,
-} from "./itemEstoques.actions";
+  getAllitensEstoqueByUser,
+  getAllitensEstoqueByUserFailure,
+  getAllitensEstoqueByUserSuccess,
+} from "./itens-estoque.actions";
 import { catchError, from, map, of, switchMap } from "rxjs";
 
 @Injectable()
-export class ItemEstoquesEffects {
+export class itensEstoqueEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<AppState> // private pedidoService: ItemEstoqueService
+    private store: Store<AppState> // private pedidoService: itensEstoqueervice
   ) {}
 
-  // getAllItemEstoques$ = createEffect(() =>
+  // getAllitensEstoque$ = createEffect(() =>
   //   this.actions$.pipe(
-  //     ofType(getAllItemEstoquesByUser),
+  //     ofType(getAllitensEstoqueByUser),
   //     switchMap(() =>
   //       from(this.pedidoService.getAllByUsuario()).pipe(
-  //         map((pedidos) => getAllItemEstoquesByUserSuccess({ pedidos: pedidos })),
-  //         catchError((error) => of(getAllItemEstoquesByUserFailure({ error })))
+  //         map((pedidos) => getAllitensEstoqueByUserSuccess({ pedidos: pedidos })),
+  //         catchError((error) => of(getAllitensEstoqueByUserFailure({ error })))
   //       )
   //     )
   //   )
   // );
 
-  // saveItemEstoques$ = createEffect(
+  // saveitensEstoque$ = createEffect(
   //   () =>
   //     this.actions$.pipe(
   //       ofType(createItemEstoque),

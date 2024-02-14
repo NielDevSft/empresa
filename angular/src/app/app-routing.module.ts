@@ -32,6 +32,14 @@ const routes: Routes = [
       import("./components/item/item.module").then((m) => m.ItemModule),
     canMatch: [authGuard],
   },
+  {
+    path: "item-estoque",
+    loadChildren: () =>
+      import("./components/item-estoque/item-estoque.module").then(
+        (m) => m.ItemEstoqueModule
+      ),
+    canMatch: [authGuard],
+  },
   { path: "**", redirectTo: "" },
 ];
 

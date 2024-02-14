@@ -1,16 +1,17 @@
 import { createAction, props } from "@ngrx/store";
-import { ItemEstoque } from "../../models/ItemEstoque";
-import { OperationEnum } from "../../models/enum/OperationEnum";
 
-export const getAllItemEstoquesByUser = createAction(
-  "[ItemEstoque Component] Get All ItemEstoques By User"
+import { OperationEnum } from "../../models/enum/OperationEnum";
+import { ItemEstoque } from "../../models/ItemEstoque";
+
+export const getAllitensEstoqueByUser = createAction(
+  "[ItemEstoque Component] Get All itensEstoque By User"
 );
-export const getAllItemEstoquesByUserSuccess = createAction(
-  "[ItemEstoque Component] Get All ItemEstoques By User Success",
-  props<{ ItemEstoques: ItemEstoque[] }>()
+export const getAllitensEstoqueByUserSuccess = createAction(
+  "[ItemEstoque Component] Get All itensEstoque By User Success",
+  props<{ itensEstoque: ItemEstoque[] }>()
 );
-export const getAllItemEstoquesByUserFailure = createAction(
-  "[ItemEstoque Component] Get All ItemEstoques By User Failure",
+export const getAllitensEstoqueByUserFailure = createAction(
+  "[ItemEstoque Component] Get All itensEstoque By User Failure",
   props<{ error: string }>()
 );
 export const getItemEstoqueById = createAction(

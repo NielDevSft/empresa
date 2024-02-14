@@ -1,18 +1,18 @@
 import { createReducer, on, createAction } from "@ngrx/store";
-import { ItemEstoque } from "../../models/ItemEstoque";
-import {
-  createItemEstoque,
-  deleteItemEstoque,
-  getAllItemEstoquesByUser,
-  getAllItemEstoquesByUserFailure,
-  getAllItemEstoquesByUserSuccess,
-  updateItemEstoque,
-  setCurrentItemEstoque,
-  setOperation,
-} from "./itemEstoques.actions";
 
 import { StatusEnum } from "../../models/enum/StatusEnum";
 import { OperationEnum } from "../../models/enum/OperationEnum";
+import {
+  createItemEstoque,
+  deleteItemEstoque,
+  getAllitensEstoqueByUser,
+  getAllitensEstoqueByUserFailure,
+  getAllitensEstoqueByUserSuccess,
+  setCurrentItemEstoque,
+  setOperation,
+  updateItemEstoque,
+} from "./itens-estoque.actions";
+import { ItemEstoque } from "../../models/ItemEstoque";
 
 export interface ItemEstoqueState {
   itemEstoqueList: ItemEstoque[];
@@ -35,22 +35,22 @@ export const initialState: ItemEstoqueState = {
 
 export const itemEstoqueReducer = createReducer(
   initialState,
-  on(getAllItemEstoquesByUser, (state) => ({
+  on(getAllitensEstoqueByUser, (state) => ({
     ...state,
     status: StatusEnum.pending,
   })),
-  on(getAllItemEstoquesByUserSuccess, (state, { ItemEstoques }) => ({
+  on(getAllitensEstoqueByUserSuccess, (state, { itensEstoque }) => ({
     ...state,
-    itemEstoqueList: ItemEstoques,
+    itemEstoqueList: itensEstoque,
     error: null,
     status: StatusEnum.success,
   })),
-  on(getAllItemEstoquesByUserFailure, (state, { error }) => ({
+  on(getAllitensEstoqueByUserFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: StatusEnum.error,
   })),
-  on(getAllItemEstoquesByUser, (state) => ({
+  on(getAllitensEstoqueByUser, (state) => ({
     ...state,
     status: StatusEnum.pending,
   })),
