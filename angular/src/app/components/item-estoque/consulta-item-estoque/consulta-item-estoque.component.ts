@@ -65,11 +65,11 @@ export class ConsultaItemEstoqueComponent {
   );
 
   onEditItemEstoque(id: number) {
-    this.router.navigate(["itemEstoque/edit/" + id]);
+    this.router.navigate(["item-estoque/edit/" + id]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
   }
   onDeleteItemEstoque(id: number) {
-    this.router.navigate(["itemEstoque/delete"]);
+    this.router.navigate(["item-estoque/delete"]);
     this.store.dispatch(setCurrentItemEstoque({ id: id }));
     this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }

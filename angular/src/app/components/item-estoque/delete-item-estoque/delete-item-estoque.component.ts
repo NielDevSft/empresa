@@ -7,7 +7,7 @@ import {
 } from "../../../store/itens-estoque/itens-estoque.actions";
 import { take } from "rxjs";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
-import { itensEstoqueelected } from "../../../store/itens-estoque/itens-estoque.selector";
+import { itensEstoqueSelected } from "../../../store/itens-estoque/itens-estoque.selector";
 
 @Component({
   selector: "app-delete-itemEstoque",
@@ -17,7 +17,7 @@ import { itensEstoqueelected } from "../../../store/itens-estoque/itens-estoque.
 export class DeleteItemEstoqueComponent {
   store = inject(Store);
 
-  public itensEstoqueelected$ = this.store.select(itensEstoqueelected);
+  public itensEstoqueelected$ = this.store.select(itensEstoqueSelected);
 
   onDelete() {
     this.itensEstoqueelected$.pipe(take(1)).subscribe((ped) => {

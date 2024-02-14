@@ -15,11 +15,11 @@ export const getAllitensEstoqueByUserFailure = createAction(
   props<{ error: string }>()
 );
 export const getItemEstoqueById = createAction(
-  "[ItemEstoque Component] GetItemEstoqueById",
+  "[ItemEstoque Component] Get Item Estoque By Id",
   props<{ idUsuario: number }>()
 );
 export const createItemEstoque = createAction(
-  "[ItemEstoque Component] CreateItemEstoque",
+  "[ItemEstoque Component] Create ItemEstoque",
   props<{ itemEstoque: ItemEstoque }>()
 );
 export const setCurrentItemEstoque = createAction(

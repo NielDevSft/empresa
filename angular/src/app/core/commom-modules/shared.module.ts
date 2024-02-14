@@ -11,6 +11,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { StoreModule } from "@ngrx/store";
 import { MatIconModule } from "@angular/material/icon";
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
     MatIconModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatSelectModule,
     // outros módulos que você deseja agrupar
   ],
   exports: [
@@ -39,7 +41,7 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
     StoreModule,
     ReactiveFormsModule,
     MatDatepickerModule,
-
+    MatSelectModule,
     // outros módulos que você deseja exportar para uso externo
   ],
 })

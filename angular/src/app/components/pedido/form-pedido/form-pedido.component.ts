@@ -35,8 +35,8 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
     profissionalResponsavel: ["", [Validators.required]],
     valorConsulta: ["", [Validators.required]],
     dataAgendamento: ["", [Validators.required]],
-    createAt: [],
-    updateAt: [],
+    createAt: [{ value: null, disable: true }],
+    updateAt: [{ value: null, disable: true }],
   });
 
   public pedidoSelected$ = this.store.select(pedidoSelected);
@@ -80,11 +80,9 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
     });
   }
   public get createAt(): string {
-    this.pedidoForm.get("createAt")?.disable();
     return this.pedidoForm.value.createAt;
   }
   public get updateAt(): string {
-    this.pedidoForm.get("updateAt")?.disable();
     return this.pedidoForm.value.updateAt;
   }
 }

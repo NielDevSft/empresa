@@ -13,6 +13,7 @@ import {
   updateItemEstoque,
 } from "./itens-estoque.actions";
 import { ItemEstoque } from "../../models/ItemEstoque";
+import { Item } from "../../models/Item";
 
 export interface ItemEstoqueState {
   itemEstoqueList: ItemEstoque[];
@@ -22,10 +23,24 @@ export interface ItemEstoqueState {
   error: string | null;
 }
 
+const initItem1 = new Item(
+  1,
+  "Garrafa",
+  "Garrafinha de plastico",
+  new Date(),
+  new Date()
+);
+const initItem2 = new Item(
+  2,
+  "Carpete",
+  "Carpete de linho",
+  new Date(),
+  new Date()
+);
 export const initialState: ItemEstoqueState = {
   itemEstoqueList: [
-    new ItemEstoque(1, 1, "Garrafa", 20, new Date(), new Date()),
-    new ItemEstoque(1, 1, "Carpete", 10, new Date(), new Date()),
+    new ItemEstoque(1, initItem1, 20, new Date(), new Date()),
+    new ItemEstoque(2, initItem2, 10, new Date(), new Date()),
   ],
   currentOperation: OperationEnum.creating,
   currentItemEstoque: null,

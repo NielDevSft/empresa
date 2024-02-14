@@ -39,12 +39,13 @@
           <mat-label>Data criação</mat-label>
           <input
             matInput
+            readonly
             [matDatepicker]="picker"
             formControlName="createAt"
-            [disabled]="true"
             matInput
           />
           <mat-datepicker-toggle
+            disabled
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
@@ -54,12 +55,13 @@
           <mat-label>Ultima atualização</mat-label>
           <input
             matInput
+            readonly
             [matDatepicker]="picker"
             formControlName="updateAt"
-            [disabled]="true"
             matInput
           />
           <mat-datepicker-toggle
+            disabled
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>

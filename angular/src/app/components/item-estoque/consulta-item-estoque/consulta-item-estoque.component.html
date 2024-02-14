@@ -13,13 +13,13 @@
       <ng-container matColumnDef="idItem">
         <mat-header-cell *matHeaderCellDef>Cod. Item</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">{{
-          element.idItem
+          element.item.id
         }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="nomItem">
         <mat-header-cell *matHeaderCellDef>Nome item</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">{{
-          element.nomItem
+          element.item.nomItem
         }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="qtdItem">

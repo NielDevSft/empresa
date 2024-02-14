@@ -1,8 +1,9 @@
+import { Item } from "./Item";
+
 export class ItemEstoque {
   constructor(
     public id: number,
-    public idItem: number,
-    public nomItem: string,
+    public item: Item,
     public qtdItem: number,
     public createAt: Date,
     public updateAt: Date

@@ -5,7 +5,7 @@ import { Store } from "@ngrx/store";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { provideNativeDateAdapter } from "@angular/material/core";
 
-import { combineLatest, take } from "rxjs";
+import { combineLatest, map, of, switchMap, take } from "rxjs";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
 import {
   createItemEstoque,
@@ -15,8 +15,13 @@ import {
 } from "../../../store/itens-estoque/itens-estoque.actions";
 import {
   currentOperation,
-  itensEstoqueelected,
+  itensEstoqueSelected,
 } from "../../../store/itens-estoque/itens-estoque.selector";
+import {
+  selectAllItens,
+  itemSelected,
+} from "../../../store/itens/itens.selector";
+import { setCurrentItem } from "../../../store/itens/itens.actions";
 
 @Component({
   selector: "app-form-item-estoque",
@@ -31,19 +36,19 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
 
   itemEstoqueForm: FormGroup = this.fromBuilder.group({
     id: [],
-    idItem: ["", [Validators.required]],
-    profissionalResponsavel: ["", [Validators.required]],
+    idItem: [{}, [Validators.required]],
     qtdItem: ["", [Validators.required]],
-    createAt: [],
-    updateAt: [],
+    createAt: [{ value: null, disable: true }],
+    updateAt: [{ value: null, disable: true }],
   });
 
-  public itensEstoqueelected$ = this.store.select(itensEstoqueelected);
+  public itemList$ = this.store.select(selectAllItens);
+  public itensEstoqueSelected$ = this.store.select(itensEstoqueSelected);
   public currentOperation? = this.store.select(currentOperation);
 
   ngOnInit(): void {
     combineLatest([
-      this.itensEstoqueelected$.pipe(take(1)),
+      this.itensEstoqueSelected$.pipe(take(1)),
       this.router.params,
     ]).subscribe(([selected, params]) => {
       const idItemEstoque = params["id"];
@@ -52,8 +57,8 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.itensEstoqueelected$.subscribe((value) => {
-      this.itemEstoqueForm.reset(value);
+    this.itensEstoqueSelected$.subscribe((value) => {
+      this.itemEstoqueForm.reset({ ...value, idItem: value?.item.id });
     });
   }
 
@@ -62,32 +67,45 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.currentOperation?.pipe(take(1)).subscribe((op) => {
-      switch (op) {
-        case OperationEnum.creating:
+    this.currentOperation
+      ?.pipe(
+        take(1),
+        map((op) => {
           this.store.dispatch(
-            createItemEstoque({ itemEstoque: this.itemEstoqueForm.value })
+            setCurrentItem({ id: this.itemEstoqueForm.value.idItem })
           );
-          break;
-        case OperationEnum.updating:
-          this.store.dispatch(
-            updateItemEstoque({ itemEstoque: this.itemEstoqueForm.value })
-          );
-          break;
-        case OperationEnum.seeing:
-          break;
-        default:
-          break;
-      }
-      this.store.dispatch(setOperation({ op: OperationEnum.listing }));
-    });
+          switch (op) {
+            case OperationEnum.creating:
+              return createItemEstoque({
+                itemEstoque: this.itemEstoqueForm.value,
+              });
+            case OperationEnum.updating:
+              return updateItemEstoque({
+                itemEstoque: this.itemEstoqueForm.value,
+              });
+            default:
+              return;
+          }
+        }),
+
+        switchMap((action) => {
+          return combineLatest([of(action), this.store.select(itemSelected)]);
+        })
+      )
+      .subscribe(([action, itemS]) => {
+        if (itemS && action) {
+          action.itemEstoque = { ...action.itemEstoque, item: itemS };
+          this.store.dispatch(action);
+        }
+
+        this.store.dispatch(setOperation({ op: OperationEnum.listing }));
+      });
   }
+
   public get createAt(): string {
-    this.itemEstoqueForm.get("createAt")?.disable();
     return this.itemEstoqueForm.value.createAt;
   }
   public get updateAt(): string {
-    this.itemEstoqueForm.get("updateAt")?.disable();
     return this.itemEstoqueForm.value.updateAt;
   }
 }

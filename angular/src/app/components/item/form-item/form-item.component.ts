@@ -34,8 +34,8 @@ export class FormItemComponent implements OnInit, OnDestroy {
     id: [],
     nomItem: ["", [Validators.required]],
     desItem: ["", [Validators.required]],
-    createAt: [],
-    updateAt: [],
+    createAt: [{ value: null, disable: true }],
+    updateAt: [{ value: null, disable: true }],
   });
 
   public itemSelected$ = this.store.select(itemSelected);
@@ -79,11 +79,11 @@ export class FormItemComponent implements OnInit, OnDestroy {
     });
   }
   public get createAt(): string {
-    this.itemForm.get("createAt")?.disable();
+    this.itemForm.get("createAt");
     return this.itemForm.value.createAt;
   }
   public get updateAt(): string {
-    this.itemForm.get("updateAt")?.disable();
+    this.itemForm.get("updateAt");
     return this.itemForm.value.updateAt;
   }
 }
