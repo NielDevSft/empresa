@@ -9,8 +9,9 @@
         <mat-header-cell *matHeaderCellDef
           >Descrição do serviço</mat-header-cell
         >
-        <mat-cell mat-cell *matCellDef="let element"
-          >{{ element.desPedido?.substring(0, 14) }}...</mat-cell
+        <mat-cell mat-cell *matCellDef="let element">
+          Número de itens:
+          {{ element.itensPedido | numeroItensPedido }}</mat-cell
         >
       </ng-container>
       <ng-container matColumnDef="profissionalResponsavel">
@@ -21,18 +22,13 @@
           {{ element.profissionalResponsavel }}
         </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="valorConsulta">
+      <ng-container matColumnDef="valorTotal">
         <mat-header-cell *matHeaderCellDef>Valor Orçamento</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.valorConsulta | currency : "BRL" : "symbol" : "4.2-2" }}
+          {{ element.valorTotal | currency : "BRL" : "symbol" : "4.2-2" }}
         </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="dataAgendamento">
-        <mat-header-cell *matHeaderCellDef>Data Agendamento</mat-header-cell>
-        <mat-cell mat-cell *matCellDef="let element">
-          {{ element.dataAgendamento | date : "short" }}
-        </mat-cell>
-      </ng-container>
+
       <ng-container matColumnDef="createAt">
         <mat-header-cell *matHeaderCellDef>Data Orçamento</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
@@ -71,7 +67,41 @@
 
       <ng-container matColumnDef="expandedDetail">
         <mat-cell *matCellDef="let detail">
-          {{ detail.element.desPedido }}
+          <table
+            mat-table
+            #table
+            [dataSource]="detail.element.itensPedido"
+            class="mat-elevation-z8"
+          >
+            <ng-container matColumnDef="id">
+              <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{
+                element.item.id
+              }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="nomItem">
+              <mat-header-cell *matHeaderCellDef>Nome do Item</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{
+                element.item.nomItem
+              }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="qtd">
+              <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{ element.qtd }}</mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="valItem">
+              <mat-header-cell *matHeaderCellDef>Valor do Item</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{
+                element.item.valItem | currency : "BRL" : "symbol" : "4.2-2"
+              }}</mat-cell>
+            </ng-container>
+            <mat-header-row
+              *matHeaderRowDef="['id', 'nomItem', 'qtd', 'valItem']"
+            ></mat-header-row>
+            <mat-row
+              *matRowDef="let row; columns: ['id', 'nomItem', 'qtd', 'valItem']"
+            ></mat-row>
+          </table>
         </mat-cell>
       </ng-container>
 

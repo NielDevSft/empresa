@@ -12,41 +12,18 @@
     <mat-card-content>
       <input type="hidden" formControlName="id" />
       <div class="row">
-        <mat-form-field class="col-md-8">
-          <mat-label>Descrição da solicitação</mat-label>
-          <textarea
-            matInput
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"
-            formControlName="desPedido"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"
-          ></textarea>
-        </mat-form-field>
-        <mat-form-field class="col-md-4">
+        <mat-form-field class="col-md-6">
           <mat-label>Responsavel</mat-label>
           <input formControlName="profissionalResponsavel" matInput />
         </mat-form-field>
+        <mat-form-field class="col-md-6">
+          <mat-label>Valor Total</mat-label>
+          <input formControlName="valorTotal" matInput />
+        </mat-form-field>
       </div>
+
       <div class="row">
-        <mat-form-field class="col-md-3">
-          <mat-label>Valor Estimado</mat-label>
-          <input formControlName="valorConsulta" matInput />
-        </mat-form-field>
-        <mat-form-field class="col-md-3">
-          <mat-label>Data agendamento</mat-label>
-          <input
-            matInput
-            [matDatepicker]="picker"
-            formControlName="dataAgendamento"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field class="col-md-3" *ngIf="createAt">
+        <mat-form-field class="col-md-6" *ngIf="createAt">
           <mat-label>Data criação</mat-label>
           <input
             matInput
@@ -62,7 +39,7 @@
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
-        <mat-form-field class="col-md-3" *ngIf="updateAt">
+        <mat-form-field class="col-md-6" *ngIf="updateAt">
           <mat-label>Ultima atualização</mat-label>
           <input
             matInput
@@ -79,13 +56,72 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
+
+      <form [formGroup]="itensForm" class="row">
+        <mat-form-field class="col-md-5">
+          <mat-label>Item</mat-label>
+          <mat-select formControlName="item">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let item of itemList$ | async" [value]="item">{{
+              item.nomItem
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-md-3">
+          <mat-label>Quantidade</mat-label>
+          <input formControlName="qtd" matInput />
+        </mat-form-field>
+        <div class="col-md-2">
+          <button
+            mat-icon-button
+            color="accent"
+            type="button"
+            [disabled]="itensForm.invalid"
+            (click)="onAddItem()"
+          >
+            <mat-icon fontIcon="add"></mat-icon>
+          </button>
+        </div>
+        <table mat-table [dataSource]="itensPedidoControl?.value">
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let itemPedido">
+              {{ itemPedido.item.id }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="nomItem">
+            <th mat-header-cell *matHeaderCellDef>Nome do item</th>
+            <td mat-cell *matCellDef="let itemPedido">
+              {{ itemPedido.item.nomItem }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="qtd">
+            <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+            <td mat-cell *matCellDef="let itemPedido">
+              {{ itemPedido.qtd }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="valItem">
+            <th mat-header-cell *matHeaderCellDef>Valor do Item</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.item.valItem | currency : "BRL" : "symbol" : "4.2-2" }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="columnsItensToDisplay"></tr>
+          <tr
+            mat-row
+            *matRowDef="let myRowData; columns: columnsItensToDisplay"
+          ></tr>
+        </table>
+      </form>
     </mat-card-content>
     <mat-card-actions>
       <span class="example-spacer"></span
       ><button
         mat-button
         color="accent"
-        [disabled]="!pedidoForm.valid"
+        [disabled]="pedidoForm.invalid"
         type="submit"
       >
         Salvar

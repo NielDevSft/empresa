@@ -23,6 +23,7 @@ import {
   StoreDevtoolsModule,
   provideStoreDevtools,
 } from "@ngrx/store-devtools";
+import { NumeroItensPedidoPipe } from "./custom-pipes/numero-itens-pedido.pipe";
 
 @NgModule({
   declarations: [

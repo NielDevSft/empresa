@@ -3,6 +3,7 @@ import { selectAllPedidos } from "../../../store/pedidos/pedidos.selector";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { map } from "rxjs";
+
 import {
   animate,
   state,
@@ -44,8 +45,7 @@ export class ConsultaPedidoComponent {
     "id",
     "desPedido",
     "profissionalResponsavel",
-    "valorConsulta",
-    "dataAgendamento",
+    "valorTotal",
     "createAt",
     "updateAt",
     "actions",

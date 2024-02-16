@@ -1,9 +1,11 @@
+import { Item } from "./Item";
+
 export class Pedido {
   constructor(
     public id: number,
-    public desPedido: string,
     public profissionalResponsavel: string,
-    public valorConsulta: number,
+    public itensPedido: { item: Item; qtd: number }[],
+    public valorTotal: number,
     public dataAgendamento: Date,
     public createAt: Date,
     public updateAt: Date

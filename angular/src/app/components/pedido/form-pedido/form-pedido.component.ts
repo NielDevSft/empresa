@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 
 import {
@@ -12,11 +12,18 @@ import {
   pedidoSelected,
   currentOperation,
 } from "../../../store/pedidos/pedidos.selector";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { provideNativeDateAdapter } from "@angular/material/core";
 
 import { combineLatest, take } from "rxjs";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
+import { selectAllItens } from "../../../store/itens/itens.selector";
+import { Item } from "../../../models/Item";
 
 @Component({
   selector: "app-form-pedido",
@@ -29,18 +36,23 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   store = inject(Store);
   fromBuilder = inject(FormBuilder);
 
+  columnsItensToDisplay = ["id", "nomItem", "qtd", "valItem"];
   pedidoForm: FormGroup = this.fromBuilder.group({
     id: [],
-    desPedido: ["", [Validators.required]],
     profissionalResponsavel: ["", [Validators.required]],
-    valorConsulta: ["", [Validators.required]],
-    dataAgendamento: ["", [Validators.required]],
-    createAt: [{ value: null, disable: true }],
-    updateAt: [{ value: null, disable: true }],
+    itensPedido: [[], [Validators.required]],
+    valorTotal: [null, [Validators.required]],
+    createAt: [null],
+    updateAt: [null],
+  });
+  itensForm: FormGroup = this.fromBuilder.group({
+    item: [, [Validators.required]],
+    qtd: [, Validators.required],
   });
 
   public pedidoSelected$ = this.store.select(pedidoSelected);
   public currentOperation? = this.store.select(currentOperation);
+  public itemList$ = this.store.select(selectAllItens);
 
   ngOnInit(): void {
     combineLatest([
@@ -52,7 +64,7 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
         this.store.dispatch(setCurrentPedido({ id: idPedido }));
       }
     });
-
+    this.itensPedidoControl?.setValue([]);
     this.pedidoSelected$.subscribe((value) => {
       this.pedidoForm.reset(value);
     });
@@ -60,6 +72,19 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch(setCurrentPedido({ id: 0 }));
+  }
+
+  onAddItem() {
+    const itemPedidoItem = this.itensPedidoControl?.value;
+    const vf = this.itensForm.value;
+    this.itensPedidoControl?.setValue([...(itemPedidoItem || []), vf]);
+    this.itensForm?.reset();
+  }
+  onClonseItem(id: number) {
+    const itemPedidoItem = this.itensPedidoControl?.value as Item[];
+    const vf = this.itensForm.value;
+    this.itensPedidoControl?.setValue(itemPedidoItem.filter((i) => i.id == id));
+    this.itensForm?.reset();
   }
 
   onSubmit() {
@@ -84,5 +109,8 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   }
   public get updateAt(): string {
     return this.pedidoForm.value.updateAt;
+  }
+  public get itensPedidoControl(): AbstractControl | null {
+    return this.pedidoForm.get("itensPedido");
   }
 }

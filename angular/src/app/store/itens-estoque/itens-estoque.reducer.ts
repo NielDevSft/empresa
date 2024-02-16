@@ -26,6 +26,7 @@ export interface ItemEstoqueState {
 const initItem1 = new Item(
   1,
   "Garrafa",
+  13,
   "Garrafinha de plastico",
   new Date(),
   new Date()
@@ -33,6 +34,7 @@ const initItem1 = new Item(
 const initItem2 = new Item(
   2,
   "Carpete",
+  25,
   "Carpete de linho",
   new Date(),
   new Date()
