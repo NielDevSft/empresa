@@ -4,6 +4,7 @@ using EmpresaAPI.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmpresaAPI.Migrations
 {
     [DbContext(typeof(LojaOrganizationContext))]
-    partial class LojaOrganizationContextModelSnapshot : ModelSnapshot
+    [Migration("20240217021609_init-migration")]
+    partial class initmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,122 +25,6 @@ namespace EmpresaAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("EmpresaAPI.Models.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("Active")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DesItem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NomItem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("Removed")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ValItem")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Item", "app");
-                });
-
-            modelBuilder.Entity("EmpresaAPI.Models.ItemEstoque", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("Active")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DesItem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NomItem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("Removed")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ValItem")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ItemEstoque", "app");
-                });
-
-            modelBuilder.Entity("EmpresaAPI.Models.ItemPedido", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("Active")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PedidoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QtdItem")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("Removed")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("PedidoId");
-
-                    b.ToTable("ItemPedido", "app");
-                });
 
             modelBuilder.Entity("EmpresaAPI.Models.JwtClaim", b =>
                 {
@@ -169,40 +56,6 @@ namespace EmpresaAPI.Migrations
                         .HasName("PK__JwtClaim__3214EC071199C69E");
 
                     b.ToTable("JwtClaim", "app");
-                });
-
-            modelBuilder.Entity("EmpresaAPI.Models.Pedido", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool?>("Active")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProfissionalResponsavel")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("Removed")
-                        .IsRequired()
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pedido", "app");
                 });
 
             modelBuilder.Entity("EmpresaAPI.Models.Role", b =>
@@ -320,25 +173,6 @@ namespace EmpresaAPI.Migrations
                     b.ToTable("UserRole", "app");
                 });
 
-            modelBuilder.Entity("EmpresaAPI.Models.ItemPedido", b =>
-                {
-                    b.HasOne("EmpresaAPI.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EmpresaAPI.Models.Pedido", "Pedido")
-                        .WithMany("ItensPedido")
-                        .HasForeignKey("PedidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Pedido");
-                });
-
             modelBuilder.Entity("EmpresaAPI.Models.Role", b =>
                 {
                     b.HasOne("EmpresaAPI.Models.JwtClaim", "JwtClaims")
@@ -369,11 +203,6 @@ namespace EmpresaAPI.Migrations
             modelBuilder.Entity("EmpresaAPI.Models.JwtClaim", b =>
                 {
                     b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("EmpresaAPI.Models.Pedido", b =>
-                {
-                    b.Navigation("ItensPedido");
                 });
 
             modelBuilder.Entity("EmpresaAPI.Models.Role", b =>

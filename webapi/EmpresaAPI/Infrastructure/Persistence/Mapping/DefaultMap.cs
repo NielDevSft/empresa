@@ -1,6 +1,5 @@
 ﻿using EmpresaAPI.Infrastructure.Persistence.Extentions;
 using EmpresaAPI.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EmpresaAPI.Infrastructure.Persistence.Mapping
@@ -21,7 +20,6 @@ namespace EmpresaAPI.Infrastructure.Persistence.Mapping
             builder.Ignore(e => e.ClassLevelCascadeMode);
             builder.Ignore(e => e.CascadeMode);
             builder.Ignore(e => e.RuleLevelCascadeMode);
-
         }
     }
 }

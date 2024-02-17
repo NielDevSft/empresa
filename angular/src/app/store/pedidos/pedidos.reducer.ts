@@ -45,7 +45,6 @@ export const initialState: PedidoState = {
       [{ item: initItem2, qtd: 3 }],
       0,
       new Date(),
-      new Date(),
       new Date()
     ),
     new Pedido(
@@ -56,7 +55,6 @@ export const initialState: PedidoState = {
         { item: initItem2, qtd: 3 },
       ],
       334,
-      new Date(),
       new Date(),
       new Date()
     ),

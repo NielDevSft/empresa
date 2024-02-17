@@ -2,9 +2,11 @@
 {
     public class User : Entity<User>
     {
-        public required string Username { get; set; }
-        public required string PasswordHash { get; set; }
-        public required string Email { get; set; }
+        public string Email { get; set; } = null!;
+        public string PasswordHash { get; set; } = null!;
+        public string Username { get; set; } = null!;
+
+        public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
         public override bool IsValid()
         {
             return true;
