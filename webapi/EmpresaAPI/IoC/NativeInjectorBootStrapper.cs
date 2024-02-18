@@ -4,6 +4,7 @@ using EmpresaAPI.Configurations;
 using EmpresaAPI.Infrastructure.Persistence.Contexts;
 using EmpresaAPI.IoC;
 using Microsoft.Extensions.Options;
+using EmpresaAPI;
 
 
 namespace Authentication.Common.Ioc
@@ -15,6 +16,7 @@ namespace Authentication.Common.Ioc
             JWTConfiguration.AddJWT(services, configuration);
             SwaggerConfiguration.AddSwagger(services);
 
+            services.AddAutoMapper(typeof(Program).Assembly);
             services.AddControllers();
 
             services.AddCors(options =>

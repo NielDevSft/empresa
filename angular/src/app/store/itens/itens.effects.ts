@@ -5,45 +5,47 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import {
   createItem,
-  getAllItemsByUser,
-  getAllItemsByUserFailure,
-  getAllItemsByUserSuccess,
+  getAllItensByUser,
+  getAllItensByUserFailure,
+  getAllItensByUserSuccess,
 } from "./itens.actions";
 import { catchError, from, map, of, switchMap } from "rxjs";
+import { ItemService } from "../../services/item.service";
 
 @Injectable()
 export class ItemsEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<AppState> // private pedidoService: ItemService
+    private store: Store<AppState>,
+    private itemService: ItemService
   ) {}
 
-  // getAllItems$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(getAllItemsByUser),
-  //     switchMap(() =>
-  //       from(this.pedidoService.getAllByUsuario()).pipe(
-  //         map((pedidos) => getAllItemsByUserSuccess({ pedidos: pedidos })),
-  //         catchError((error) => of(getAllItemsByUserFailure({ error })))
-  //       )
-  //     )
-  //   )
-  // );
+  getAllItems$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getAllItensByUser),
+      switchMap(() =>
+        from(this.itemService.getAllByUsuario()).pipe(
+          map((itens) => getAllItensByUserSuccess({ itens: itens })),
+          catchError((error) => of(getAllItensByUserFailure({ error })))
+        )
+      )
+    )
+  );
 
-  // saveItems$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(createItem),
-  //       switchMap(({ pedido }) =>
-  //         from(
-  //           this.pedidoService.create(pedido).pipe(
-  //             map((pedido) => {
-  //               console.log(pedido + "added successfully");
-  //             })
-  //           )
-  //         )
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
+  saveItems$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createItem),
+        switchMap(({ item }) =>
+          from(
+            this.itemService.create(item).pipe(
+              map((pedido) => {
+                console.log(pedido + "added successfully");
+              })
+            )
+          )
+        )
+      ),
+    { dispatch: false }
+  );
 }

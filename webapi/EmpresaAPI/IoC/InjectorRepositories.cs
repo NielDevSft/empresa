@@ -1,7 +1,5 @@
 ﻿using EmpresaAPI.Contracts.Repositories;
-using EmpresaAPI.Contracts.Services;
 using EmpresaAPI.Infrastructure.Persistence.Repository;
-using EmpresaAPI.Services;
 
 namespace EmpresaAPI.IoC
 {
@@ -11,6 +9,10 @@ namespace EmpresaAPI.IoC
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IItemEstoqueRepository, ItemEstoqueRepository>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
+            services.AddScoped<IItemPedidoRepository, ItemPedidoRepository>();
         }
     }
 }

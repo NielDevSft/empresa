@@ -31,9 +31,10 @@ export class FormItemComponent implements OnInit, OnDestroy {
   fromBuilder = inject(FormBuilder);
 
   itemForm: FormGroup = this.fromBuilder.group({
-    id: [],
+    id: [0],
     nomItem: ["", [Validators.required]],
     desItem: ["", [Validators.required]],
+    valItem: [0, [Validators.required]],
     createAt: [{ value: null, disable: true }],
     updateAt: [{ value: null, disable: true }],
   });

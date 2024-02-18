@@ -35,6 +35,17 @@
         </mat-form-field>
       </div>
       <div class="row">
+        <mat-form-field class="col-md-4">
+          <mat-label>Valor da unidade</mat-label>
+          <input
+            matInput
+            formControlName="valItem"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          />
+        </mat-form-field>
+      </div>
+      <div class="row">
         <mat-form-field class="col-md-3" *ngIf="createAt">
           <mat-label>Data criação</mat-label>
           <input

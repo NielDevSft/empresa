@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
@@ -37,7 +37,7 @@ import { OperationEnum } from "../../../models/enum/OperationEnum";
     ]),
   ],
 })
-export class ConsultaItemComponent {
+export class ConsultaItemComponent implements OnInit {
   store = inject(Store);
   router = inject(Router);
 

@@ -24,6 +24,7 @@ import {
   provideStoreDevtools,
 } from "@ngrx/store-devtools";
 import { NumeroItensPedidoPipe } from "./custom-pipes/numero-itens-pedido.pipe";
+import { ItemsEffects } from "./store/itens/itens.effects";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { NumeroItensPedidoPipe } from "./custom-pipes/numero-itens-pedido.pipe";
     DemoApisComponent,
   ],
   imports: [
-    EffectsModule.forRoot([PedidosEffects]),
+    EffectsModule.forRoot([PedidosEffects, ItemsEffects]),
     StoreModule.forRoot({ pedido: pedidoReducer }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     BrowserModule,

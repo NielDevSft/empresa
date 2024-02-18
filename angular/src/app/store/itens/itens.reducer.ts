@@ -19,7 +19,7 @@ export interface ItemState {
   currentItem: Item | null;
   currentOperation: OperationEnum;
   status: StatusEnum;
-  error: string | null;
+  errors: string | null;
 }
 
 export const initialState: ItemState = {
@@ -37,7 +37,7 @@ export const initialState: ItemState = {
   currentOperation: OperationEnum.creating,
   currentItem: null,
   status: StatusEnum.pending,
-  error: null,
+  errors: null,
 };
 
 export const itemReducer = createReducer(
@@ -46,9 +46,9 @@ export const itemReducer = createReducer(
     ...state,
     status: StatusEnum.pending,
   })),
-  on(getAllItensByUserSuccess, (state, { Itens }) => ({
+  on(getAllItensByUserSuccess, (state, { itens }) => ({
     ...state,
-    itemList: Itens,
+    itemList: itens,
     error: null,
     status: StatusEnum.success,
   })),

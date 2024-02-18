@@ -3,11 +3,11 @@ import { Item } from "../../models/Item";
 import { OperationEnum } from "../../models/enum/OperationEnum";
 
 export const getAllItensByUser = createAction(
-  "[Item Component] Get All Itens By User"
+  "[Item Component] Get All itens By User"
 );
 export const getAllItensByUserSuccess = createAction(
   "[Item Component] Get All Itens By User Success",
-  props<{ Itens: Item[] }>()
+  props<{ itens: Item[] }>()
 );
 export const getAllItensByUserFailure = createAction(
   "[Item Component] Get All Itens By User Failure",

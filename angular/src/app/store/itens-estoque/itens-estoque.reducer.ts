@@ -20,7 +20,7 @@ export interface ItemEstoqueState {
   currentItemEstoque: ItemEstoque | null;
   currentOperation: OperationEnum;
   status: StatusEnum;
-  error: string | null;
+  errors: string | null;
 }
 
 const initItem1 = new Item(
@@ -47,7 +47,7 @@ export const initialState: ItemEstoqueState = {
   currentOperation: OperationEnum.creating,
   currentItemEstoque: null,
   status: StatusEnum.pending,
-  error: null,
+  errors: null,
 };
 
 export const itemEstoqueReducer = createReducer(

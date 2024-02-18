@@ -19,7 +19,7 @@ export interface PedidoState {
   currentPedido: Pedido | null;
   currentOperation: OperationEnum;
   status: StatusEnum;
-  error: string | null;
+  errors: string | null;
 }
 const initItem1 = new Item(
   1,
@@ -62,7 +62,7 @@ export const initialState: PedidoState = {
   currentOperation: OperationEnum.creating,
   currentPedido: null,
   status: StatusEnum.pending,
-  error: null,
+  errors: null,
 };
 
 export const pedidoReducer = createReducer(

@@ -8,6 +8,8 @@ namespace EmpresaAPI.IoC
         public static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IItemService, ItemService>();
+
         }
     }
 }
