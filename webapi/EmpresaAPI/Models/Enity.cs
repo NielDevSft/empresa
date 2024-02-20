@@ -14,9 +14,9 @@ namespace EmpresaAPI.Models
 
         public int Id { get; set; }
         [DefaultValue(1)]
-        public bool? Active { get; set; } = true;
+        public bool Active { get; set; } = true;
         [DefaultValue(0)]
-        public bool? Removed { get; set; } = false;
+        public bool Removed { get; set; } = false;
 
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }

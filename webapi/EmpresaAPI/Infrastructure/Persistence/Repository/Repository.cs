@@ -75,7 +75,7 @@ namespace EmpresaAPI.Infrastructure.Persistence.Repository
         public void Remove(int id)
         {
             var obj = GetById(id);
-            if (!obj.IsNullOrEmpty())
+            if (obj!.IsNullOrEmpty())
             {
                 obj!.Removed = true;
                 Update(obj);

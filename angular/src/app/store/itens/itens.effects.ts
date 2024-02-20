@@ -5,6 +5,7 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import {
   createItem,
+  deleteItem,
   getAllItensByUser,
   getAllItensByUserFailure,
   getAllItensByUserSuccess,
@@ -45,6 +46,15 @@ export class ItemsEffects {
             )
           )
         )
+      ),
+    { dispatch: false }
+  );
+
+  deleteItem$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteItem),
+        switchMap(({ id }) => from(this.itemService.delete(id)))
       ),
     { dispatch: false }
   );

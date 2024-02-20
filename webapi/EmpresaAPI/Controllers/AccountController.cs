@@ -93,7 +93,7 @@ public class AccountController(
             }
 
             var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
-            var teste = await HttpContext.GetTokenAsync("Bearer", "userid");
+            
             var jwtResult = jwtAuthManager.Refresh(request.RefreshToken, accessToken??string.Empty, DateTime.Now);
             logger.LogInformation("User [{userName}] has refreshed JWT token.", userName);
             return Ok(new LoginResult

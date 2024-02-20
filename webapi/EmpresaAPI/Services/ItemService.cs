@@ -22,13 +22,13 @@ namespace EmpresaAPI.Services
 
         List<Item> IService<Item>.GetAll()
         {
-            var itemList = itemRepository.FindAll();
+            var itemList = itemRepository.FindAllWhere(i => !i.Removed);
             return itemList.ToList<Item>();
         }
 
         Item IService<Item>.GetById(int id)
         {
-            var itemFound = itemRepository.FirstOrDefault(i => i.Id == id);
+            var itemFound = itemRepository.FirstOrDefault(i => i.Id == id && !i.Removed);
             if (itemFound.IsNullOrEmpty())
             {
                 throw new Exception("Item não encontrado");
