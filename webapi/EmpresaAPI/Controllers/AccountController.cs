@@ -1,4 +1,5 @@
-﻿using EmpresaAPI.Contracts.Services;
+﻿using Azure.Core;
+using EmpresaAPI.Contracts.Services;
 using EmpresaAPI.Infrastructure;
 using EmpresaAPI.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -40,8 +41,8 @@ public class AccountController(
             new Claim(ClaimTypes.Name,request.UserName),
             new Claim(ClaimTypes.Role, role)
         };
-
-        var jwtResult = jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
+        var userId = userService.GetUserId(request.UserName);
+        var jwtResult = jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now, userId);
         logger.LogInformation($"User [{request.UserName}] logged in the system.");
         return Ok(new LoginResult
         {
@@ -92,6 +93,7 @@ public class AccountController(
             }
 
             var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
+            var teste = await HttpContext.GetTokenAsync("Bearer", "userid");
             var jwtResult = jwtAuthManager.Refresh(request.RefreshToken, accessToken??string.Empty, DateTime.Now);
             logger.LogInformation("User [{userName}] has refreshed JWT token.", userName);
             return Ok(new LoginResult
@@ -133,8 +135,8 @@ public class AccountController(
             new Claim(ClaimTypes.Role, impersonatedRole),
             new Claim("OriginalUserName", userName)
         };
-
-        var jwtResult = jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now);
+        var userId = userService.GetUserId(request.UserName);
+        var jwtResult = jwtAuthManager.GenerateTokens(request.UserName, claims, DateTime.Now, userId);
         logger.LogInformation("User [{request.UserName}] is impersonating [{anotherUserName}] in the system.", userName, request.UserName);
         return Ok(new LoginResult
         {
@@ -165,7 +167,8 @@ public class AccountController(
             new Claim(ClaimTypes.Role, role)
         };
 
-        var jwtResult = jwtAuthManager.GenerateTokens(originalUserName, claims, DateTime.Now);
+        var userId = userService.GetUserId(originalUserName);
+        var jwtResult = jwtAuthManager.GenerateTokens(originalUserName, claims, DateTime.Now, userId);
         logger.LogInformation("User [{originalUserName}] has stopped impersonation.", originalUserName);
         return Ok(new LoginResult
         {

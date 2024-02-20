@@ -12,7 +12,7 @@ namespace EmpresaAPI.Infrastructure;
 public interface IJwtAuthManager
 {
     IImmutableDictionary<string, RefreshToken> UsersRefreshTokensReadOnlyDictionary { get; }
-    JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now);
+    JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now, int userId);
     JwtAuthResult Refresh(string refreshToken, string accessToken, DateTime now);
     void RemoveExpiredRefreshTokens(DateTime now);
     void RemoveRefreshTokenByUserName(string userName);
@@ -45,7 +45,7 @@ public class JwtAuthManager(JwtTokenConfig jwtTokenConfig) : IJwtAuthManager
         }
     }
 
-    public JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now)
+    public JwtAuthResult GenerateTokens(string username, Claim[] claims, DateTime now, int UserId)
     {
         var shouldAddAudienceClaim = string.IsNullOrWhiteSpace(claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Aud)?.Value);
         var jwtToken = new JwtSecurityToken(
@@ -60,7 +60,8 @@ public class JwtAuthManager(JwtTokenConfig jwtTokenConfig) : IJwtAuthManager
         {
             UserName = username,
             TokenString = GenerateRefreshTokenString(),
-            ExpireAt = now.AddMinutes(jwtTokenConfig.RefreshTokenExpiration)
+            ExpireAt = now.AddMinutes(jwtTokenConfig.RefreshTokenExpiration),
+            UserId = UserId
         };
         _usersRefreshTokens.AddOrUpdate(refreshToken.TokenString, refreshToken, (_, _) => refreshToken);
 
@@ -89,7 +90,7 @@ public class JwtAuthManager(JwtTokenConfig jwtTokenConfig) : IJwtAuthManager
             throw new SecurityTokenException("Invalid token");
         }
 
-        return GenerateTokens(userName, principal.Claims.ToArray(), now); // need to recover the original claims
+        return GenerateTokens(userName, principal.Claims.ToArray(), now, existingRefreshToken.UserId); // need to recover the original claims
     }
 
     public (ClaimsPrincipal, JwtSecurityToken?) DecodeJwtToken(string token)
@@ -133,7 +134,9 @@ public class JwtAuthResult
 
 public class RefreshToken
 {
-    [JsonPropertyName("username")] public string UserName { get; set; } = string.Empty;    // can be used for usage tracking
+    [JsonPropertyName("username")] public string UserName { get; set; } = string.Empty;
+    [JsonPropertyName("userid")] public int UserId { get; set; } = 0;
+    // can be used for usage tracking
     // can optionally include other metadata, such as user agent, ip address, device name, and so on
 
     [JsonPropertyName("tokenString")] public string TokenString { get; set; } = string.Empty;

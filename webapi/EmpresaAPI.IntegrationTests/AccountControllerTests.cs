@@ -93,13 +93,15 @@ public class AccountControllerTests
     public async Task ShouldCorrectlyRefreshToken()
     {
         const string userName = "admin";
+        const int userId = 0;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         var refreshRequest = new RefreshTokenRequest
@@ -123,6 +125,7 @@ public class AccountControllerTests
     public async Task ShouldNotAllowToRefreshTokenWhenRefreshTokenIsExpired()
     {
         const string userName = "admin";
+        const int userId = 0;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
@@ -130,8 +133,8 @@ public class AccountControllerTests
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
         var jwtTokenConfig = _serviceProvider.GetRequiredService<JwtTokenConfig>();
-        var jwtResult1 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.RefreshTokenExpiration - 1));
-        var jwtResult2 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        var jwtResult1 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.RefreshTokenExpiration - 1), userId);
+        var jwtResult2 = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult2.AccessToken); // valid JWT token
         var refreshRequest = new RefreshTokenRequest
@@ -149,13 +152,14 @@ public class AccountControllerTests
     public async Task ShouldAllowAdminImpersonateOthers()
     {
         const string userName = "admin";
+        const int userId = 1;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         var request = new ImpersonationRequest { UserName = "test1" };
@@ -182,13 +186,14 @@ public class AccountControllerTests
     public async Task ShouldForbidNonAdminToImpersonate()
     {
         const string userName = "test1";
+        const int userId = 1;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
             new Claim(ClaimTypes.Role, UserRoles.BasicUser)
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         var request = new ImpersonationRequest { UserName = "test2" };
@@ -202,6 +207,7 @@ public class AccountControllerTests
     public async Task ShouldAllowAdminToStopImpersonation()
     {
         const string userName = "test1";
+        const int userId = 1;
         const string originalUserName = "admin";
         var claims = new[]
         {
@@ -210,7 +216,7 @@ public class AccountControllerTests
             new Claim("OriginalUserName", originalUserName)
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         var response = await _httpClient.PostAsync("api/account/stop-impersonation", null);
@@ -235,13 +241,14 @@ public class AccountControllerTests
     public async Task ShouldReturnBadRequestIfStopImpersonationWhenNotImpersonating()
     {
         const string userName = "test1";
+        const int userId = 1;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
             new Claim(ClaimTypes.Role, UserRoles.BasicUser)
         };
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1));
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-1), userId);
 
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         var request = new ImpersonationRequest { UserName = "test2" };

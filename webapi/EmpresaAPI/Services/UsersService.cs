@@ -1,5 +1,6 @@
 ﻿using EmpresaAPI.Contracts.Repositories;
 using EmpresaAPI.Contracts.Services;
+using EmpresaAPI.Models;
 
 namespace EmpresaAPI.Services;
 
@@ -29,17 +30,36 @@ public class UserService(ILogger<UserService> logger,
         return _userRepository.TryGetValue(userName);
     }
 
-    public string GetUserRole(string userName)
+    public Role? GetUserRole(string userName)
     {
         if (!IsAnExistingUser(userName))
         {
-            return string.Empty;
+            return null;
         }
 
         var user = _userRepository.FirstOrDefault(u => u.Username == userName);
         var userRole = _userRoleRepository.FirstOrDefault(ur => ur.UserId == user.Id, "Role");
 
-        return userRole.Role.Name;
+        return userRole?.Role;
+    }
+
+    public int GetUserId(string userName)
+    {
+        User user;
+        user = _userRepository.FirstOrDefault(u => u.Username == userName);
+        if (IsAnExistingUser(userName))
+            return user.Id;
+        return 0;
+    }
+
+    string IUserService.GetUserRole(string userName)
+    {
+        
+        var userRole = _userRoleRepository
+            .FirstOrDefault(ur => ur.User.Username == userName, "Role");
+        if (IsAnExistingUser(userName))
+            return userRole.Role.Name;
+        return "";
     }
 }
 
