@@ -11,12 +11,12 @@ export class ItemService {
   private readonly apiUrl = `${environment.apiUrl}api/itens`;
 
   constructor(private http: HttpClient) {}
-  public create(Item: Item): Observable<Item> {
-    return this.http.post<Item>(`${this.apiUrl}`, Item);
+  public create(item: Item): Observable<Item> {
+    return this.http.post<Item>(`${this.apiUrl}`, item);
   }
 
-  public update(Item: Item): Observable<Item> {
-    return this.http.put<Item>(`${this.apiUrl}`, Item);
+  public update(item: Item): Observable<Item> {
+    return this.http.put<Item>(`${this.apiUrl}/${item.id}`, item);
   }
 
   public getAllByUsuario(): Observable<Item[]> {

@@ -85,6 +85,7 @@ namespace EmpresaAPI.Infrastructure.Persistence.Repository
         public int SaveChanges()
         {
             return Db.SaveChanges();
+
         }
 
         public void Update(TEntity obj)

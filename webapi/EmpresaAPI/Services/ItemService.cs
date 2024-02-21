@@ -11,6 +11,7 @@ namespace EmpresaAPI.Services
         {
             itemRepository.Add(item);
             itemRepository.SaveChanges();
+            itemRepository.Dispose();
             return item;
         }
 
@@ -18,11 +19,13 @@ namespace EmpresaAPI.Services
         {
             itemRepository.Remove(id);
             itemRepository.SaveChanges();
+            itemRepository.Dispose();
         }
 
         List<Item> IService<Item>.GetAll()
         {
             var itemList = itemRepository.FindAllWhere(i => !i.Removed);
+            itemRepository.Dispose();
             return itemList.ToList<Item>();
         }
 
@@ -33,17 +36,19 @@ namespace EmpresaAPI.Services
             {
                 throw new Exception("Item não encontrado");
             }
+            itemRepository.Dispose();
             return itemFound;
         }
 
         Item IService<Item>.Update(int id, Item item)
         {
-            var itemFound = itemRepository.FirstOrDefault(i =>  item.Id == id);
+            var itemFound = itemRepository.GetById(id);
             itemFound.NomItem = item.NomItem;
             itemFound.ValItem = item.ValItem;
             itemFound.DesItem = item.DesItem;
-            itemFound.UpdateAt = DateTime.Now;
+            itemRepository.Update(itemFound);
             itemRepository.SaveChanges();
+            itemRepository.Dispose();
             return itemFound;
         }
     }

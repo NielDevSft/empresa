@@ -5,6 +5,7 @@ using EmpresaAPI.Infrastructure.Persistence.Contexts;
 using EmpresaAPI.IoC;
 using Microsoft.Extensions.Options;
 using EmpresaAPI;
+using AutoMapper;
 
 
 namespace Authentication.Common.Ioc

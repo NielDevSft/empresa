@@ -2,9 +2,8 @@
 {
     public class ItemEstoque : Entity<ItemEstoque>
     {
-        public required string NomItem { get; set; }
-        public decimal ValItem { get; set; }
-        public required string DesItem { get; set; }
+        public virtual Item Item { get; set; } = null;
+        public decimal QtdItem { get; set; }
         public override bool IsValid()
         {
             return true;

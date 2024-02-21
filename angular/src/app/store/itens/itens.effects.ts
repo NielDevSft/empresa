@@ -9,12 +9,13 @@ import {
   getAllItensByUser,
   getAllItensByUserFailure,
   getAllItensByUserSuccess,
+  updateItem,
 } from "./itens.actions";
 import { catchError, from, map, of, switchMap } from "rxjs";
 import { ItemService } from "../../services/item.service";
 
 @Injectable()
-export class ItemsEffects {
+export class ItensEffects {
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
@@ -55,6 +56,23 @@ export class ItemsEffects {
       this.actions$.pipe(
         ofType(deleteItem),
         switchMap(({ id }) => from(this.itemService.delete(id)))
+      ),
+    { dispatch: false }
+  );
+
+  updateItem$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateItem),
+        switchMap(({ item }) =>
+          from(
+            this.itemService.update(item).pipe(
+              map((pedido) => {
+                console.log(pedido + "updated successfully");
+              })
+            )
+          )
+        )
       ),
     { dispatch: false }
   );

@@ -23,27 +23,8 @@ export interface ItemEstoqueState {
   errors: string | null;
 }
 
-const initItem1 = new Item(
-  1,
-  "Garrafa",
-  13,
-  "Garrafinha de plastico",
-  new Date(),
-  new Date()
-);
-const initItem2 = new Item(
-  2,
-  "Carpete",
-  25,
-  "Carpete de linho",
-  new Date(),
-  new Date()
-);
 export const initialState: ItemEstoqueState = {
-  itemEstoqueList: [
-    new ItemEstoque(1, initItem1, 20, new Date(), new Date()),
-    new ItemEstoque(2, initItem2, 10, new Date(), new Date()),
-  ],
+  itemEstoqueList: [],
   currentOperation: OperationEnum.creating,
   currentItemEstoque: null,
   status: StatusEnum.pending,

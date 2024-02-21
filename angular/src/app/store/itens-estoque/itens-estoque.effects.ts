@@ -5,45 +5,77 @@ import { Store } from "@ngrx/store";
 import { AppState } from "../app.state";
 import {
   createItemEstoque,
+  deleteItemEstoque,
   getAllitensEstoqueByUser,
   getAllitensEstoqueByUserFailure,
   getAllitensEstoqueByUserSuccess,
+  updateItemEstoque,
 } from "./itens-estoque.actions";
 import { catchError, from, map, of, switchMap } from "rxjs";
+import { ItemEstoqueService } from "../../services/item-estoque.service";
 
 @Injectable()
-export class itensEstoqueEffects {
+export class ItensEstoqueEffects {
   constructor(
     private actions$: Actions,
-    private store: Store<AppState> // private pedidoService: itensEstoqueervice
+    private store: Store<AppState>,
+    private itemEstoqueService: ItemEstoqueService
   ) {}
 
-  // getAllitensEstoque$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(getAllitensEstoqueByUser),
-  //     switchMap(() =>
-  //       from(this.pedidoService.getAllByUsuario()).pipe(
-  //         map((pedidos) => getAllitensEstoqueByUserSuccess({ pedidos: pedidos })),
-  //         catchError((error) => of(getAllitensEstoqueByUserFailure({ error })))
-  //       )
-  //     )
-  //   )
-  // );
+  getAllitensEstoque$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getAllitensEstoqueByUser),
+      switchMap(() =>
+        from(this.itemEstoqueService.getAllByUsuario()).pipe(
+          map((itensEstoque) =>
+            getAllitensEstoqueByUserSuccess({ itensEstoque: itensEstoque })
+          ),
+          catchError((error) => of(getAllitensEstoqueByUserFailure({ error })))
+        )
+      )
+    )
+  );
 
-  // saveitensEstoque$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(createItemEstoque),
-  //       switchMap(({ pedido }) =>
-  //         from(
-  //           this.pedidoService.create(pedido).pipe(
-  //             map((pedido) => {
-  //               console.log(pedido + "added successfully");
-  //             })
-  //           )
-  //         )
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
+  saveItensEstoque$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createItemEstoque),
+        switchMap(({ itemEstoque }) =>
+          from(
+            this.itemEstoqueService.create(itemEstoque).pipe(
+              map((itemEstoque) => {
+                console.log(itemEstoque + "added successfully");
+              })
+            )
+          )
+        )
+      ),
+    { dispatch: false }
+  );
+
+  deleteItemEstoque$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteItemEstoque),
+        switchMap(({ id }) => from(this.itemEstoqueService.delete(id)))
+      ),
+    { dispatch: false }
+  );
+
+  updateItem$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(updateItemEstoque),
+        switchMap(({ itemEstoque }) =>
+          from(
+            this.itemEstoqueService.update(itemEstoque).pipe(
+              map((pedido) => {
+                console.log(pedido + "updated successfully");
+              })
+            )
+          )
+        )
+      ),
+    { dispatch: false }
+  );
 }

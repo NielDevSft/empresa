@@ -23,17 +23,7 @@ export interface ItemState {
 }
 
 export const initialState: ItemState = {
-  itemList: [
-    new Item(
-      1,
-      "Garrafa",
-      13,
-      "Garrafinha de plastico",
-      new Date(),
-      new Date()
-    ),
-    new Item(2, "Carpete", 25, "Carpete de linho", new Date(), new Date()),
-  ],
+  itemList: [],
   currentOperation: OperationEnum.creating,
   currentItem: null,
   status: StatusEnum.pending,

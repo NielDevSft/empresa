@@ -35,13 +35,14 @@ public class JwtAuthManagerTests
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
         var now = DateTime.Now;
         const string userName = "admin";
+        const int userId = 1;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
 
-        var tokens1 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-20));
+        var tokens1 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-20), userId);
         var tokens2 = jwtAuthManager.Refresh(tokens1.RefreshToken.TokenString, tokens1.AccessToken, now);
 
         Assert.AreNotEqual(tokens1.AccessToken, tokens2.AccessToken);
@@ -57,6 +58,7 @@ public class JwtAuthManagerTests
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
         var jwtTokenConfig = _serviceProvider.GetRequiredService<JwtTokenConfig>();
         const string userName = "admin";
+        const int userId = 1;
         var now = DateTime.Now;
         var claims = new[]
         {
@@ -64,10 +66,10 @@ public class JwtAuthManagerTests
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
 
-        var jwtAuthResult1 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1).AddSeconds(1));
+        var jwtAuthResult1 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1).AddSeconds(1), userId);
         jwtAuthManager.Refresh(jwtAuthResult1.RefreshToken.TokenString, jwtAuthResult1.AccessToken, now);
 
-        var jwtAuthResult2 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1));
+        var jwtAuthResult2 = jwtAuthManager.GenerateTokens(userName, claims, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1), userId);
         Assert.ThrowsException<SecurityTokenExpiredException>(() => jwtAuthManager.Refresh(jwtAuthResult2.RefreshToken.TokenString, jwtAuthResult2.AccessToken, now));
     }
 
@@ -77,20 +79,20 @@ public class JwtAuthManagerTests
         var jwtAuthManager = _serviceProvider.GetRequiredService<IJwtAuthManager>();
         var jwtTokenConfig = _serviceProvider.GetRequiredService<JwtTokenConfig>();
         var now = DateTime.Now;
-
+        const int userId = 1;
         var claims1 = new[]
         {
             new Claim(ClaimTypes.Name,"admin"),
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
-        var tokens1 = jwtAuthManager.GenerateTokens("admin", claims1, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration));
+        var tokens1 = jwtAuthManager.GenerateTokens("admin", claims1, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration), userId);
 
         var claims2 = new[]
         {
             new Claim(ClaimTypes.Name,"test1"),
             new Claim(ClaimTypes.Role, UserRoles.Admin)
         };
-        var tokens2 = jwtAuthManager.GenerateTokens("test1", claims2, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration));
+        var tokens2 = jwtAuthManager.GenerateTokens("test1", claims2, now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration), userId);
 
         // forge a token: try to use the refresh token for "test1", but use the access token for "admin"
         var e = Assert.ThrowsException<SecurityTokenException>(() => jwtAuthManager.Refresh(tokens2.RefreshToken.TokenString, tokens1.AccessToken, now));

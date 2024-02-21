@@ -9,6 +9,7 @@ namespace EmpresaAPI.IoC
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IItemEstoqueService, ItemEstoqueService>();
 
         }
     }

@@ -10,6 +10,8 @@ namespace EmpresaAPI.AutoMapper
         {
             CreateMap<Item, ItemDto>();
             CreateMap<ItemDto, Item>();
+            CreateMap<ItemEstoqueDto, ItemEstoque>();
+            CreateMap<ItemEstoque, ItemEstoqueDto>();
         }
     }
 }

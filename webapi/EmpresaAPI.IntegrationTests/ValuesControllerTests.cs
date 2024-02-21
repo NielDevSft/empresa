@@ -76,6 +76,7 @@ public class ValuesControllerTests
     public async Task ShouldReturn401ForExpiredToken()
     {
         const string userName = "admin";
+        const int userId = 1;
         var claims = new[]
         {
             new Claim(ClaimTypes.Name,userName),
@@ -85,7 +86,7 @@ public class ValuesControllerTests
         var jwtTokenConfig = _serviceProvider.GetRequiredService<JwtTokenConfig>();
 
         // expired token
-        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1));
+        var jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1), userId);
         var invalidTokenString = jwtResult.AccessToken;
         Assert.ThrowsException<SecurityTokenExpiredException>(() => jwtAuthManager.DecodeJwtToken(invalidTokenString));
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, invalidTokenString);
@@ -93,13 +94,13 @@ public class ValuesControllerTests
         Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
 
         // not expired
-        jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration));
+        jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration), userId);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         response = await _httpClient.GetAsync("api/values");
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
         // not expired token 2
-        jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1).AddSeconds(1));
+        jwtResult = jwtAuthManager.GenerateTokens(userName, claims, DateTime.Now.AddMinutes(-jwtTokenConfig.AccessTokenExpiration - 1).AddSeconds(1), userId);
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, jwtResult.AccessToken);
         response = await _httpClient.GetAsync("api/values");
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

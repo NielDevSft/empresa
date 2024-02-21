@@ -5,10 +5,10 @@ namespace EmpresaAPI.Dtos
 {
     public class ItemEstoqueDto
     {
-        public int Id { get; set; } = 0;
-        public Item Item { get; set; } = null;
+        public int? Id { get; set; } = 0;
+        public ItemDto Item { get; set; } = null;
         public int QtdItem { get; set; } = 0;
-        public Date UpdateAt { get; set; } = null;
-        public Date CreateAt { get; set; } = null;
+        public DateTime? UpdateAt { get; set; } = null;
+        public DateTime? CreateAt { get; set; } = null;
     }
 }

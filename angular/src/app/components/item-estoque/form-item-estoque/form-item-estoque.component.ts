@@ -21,7 +21,10 @@ import {
   selectAllItens,
   itemSelected,
 } from "../../../store/itens/itens.selector";
-import { setCurrentItem } from "../../../store/itens/itens.actions";
+import {
+  getAllItensByUser,
+  setCurrentItem,
+} from "../../../store/itens/itens.actions";
 
 @Component({
   selector: "app-form-item-estoque",
@@ -59,6 +62,12 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
 
     this.itensEstoqueSelected$.subscribe((value) => {
       this.itemEstoqueForm.reset({ ...value, idItem: value?.item.id });
+    });
+
+    this.itemList$.pipe(take(1)).subscribe((list) => {
+      if (list.length == 0) {
+        this.store.dispatch(getAllItensByUser());
+      }
     });
   }
 
