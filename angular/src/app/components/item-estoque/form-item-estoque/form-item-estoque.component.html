@@ -15,7 +15,7 @@
         <mat-form-field class="col-md-4">
           <mat-label>Item</mat-label>
           <mat-select formControlName="idItem">
-            <mat-option>None</mat-option>
+            <mat-option>Selecione um item</mat-option>
             <mat-option
               *ngFor="let item of itemList$ | async"
               [value]="item.id"

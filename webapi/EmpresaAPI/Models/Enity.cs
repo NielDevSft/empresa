@@ -1,15 +1,14 @@
 ﻿using FluentValidation;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-
+using System.ComponentModel.DataAnnotations.Schema;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 namespace EmpresaAPI.Models
 {
     public abstract class Entity<T> : AbstractValidator<T> where T : Entity<T>
     {
         protected Entity()
         {
-            ValidationResult = new ValidationResult("");
+            ValidationResult = new ValidationResult();
         }
 
         public int Id { get; set; }

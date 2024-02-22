@@ -24,7 +24,7 @@ export interface ItemState {
 
 export const initialState: ItemState = {
   itemList: [],
-  currentOperation: OperationEnum.creating,
+  currentOperation: OperationEnum.listing,
   currentItem: null,
   status: StatusEnum.pending,
   errors: null,

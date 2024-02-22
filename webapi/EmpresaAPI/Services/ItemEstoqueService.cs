@@ -10,21 +10,54 @@ namespace EmpresaAPI.Services
     {
         public ItemEstoque Create(ItemEstoque itemEstoque)
         {
-            var item = itemRepository.FirstOrDefault(item => item.Id == itemEstoque.Item.Id);
-            if(item.IsNullOrEmpty() != null) {
-                item.ItemEstoque.Add(itemEstoque);
+            try
+            {
+                var itemEstoqueExisting = itemEstoqueRepository
+                   .FindAllWhere(ie => !ie.Removed &&
+                   ie.Item.Id == itemEstoque.Item.Id)
+                   .FirstOrDefault();
+
+                if (itemEstoqueExisting != null)
+                {
+                    itemEstoqueExisting.QtdItem = itemEstoque.QtdItem;
+                    itemEstoqueRepository.Update(itemEstoqueExisting);
+                }
+                else
+                {
+                    var item = itemRepository.GetById(itemEstoque.Item.Id);
+                    if (item == null)
+                        throw new ArgumentException("Item não encontrado");
+                    item.ItemEstoque.Add(itemEstoque);
+                    itemEstoque.UpdateAt = DateTime.UtcNow;
+                    itemEstoque.CreateAt = DateTime.UtcNow;
+                    itemRepository.Update(item);
+                }
+                itemRepository.SaveChanges();
             }
-            itemRepository.Update(item);
-            itemRepository.SaveChanges();
-            itemRepository.Dispose();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemRepository.Dispose();
+            }
             return itemEstoque;
         }
 
         public void Delete(int id)
         {
-            itemEstoqueRepository.Remove(id);
-            itemEstoqueRepository.SaveChanges();
-            itemEstoqueRepository.Dispose();
+            try
+            {
+                itemEstoqueRepository.Remove(id);
+                itemEstoqueRepository.SaveChanges();
+            }
+            catch (Exception ex) { 
+                throw ex; 
+            }
+            finally { itemRepository.Dispose(); }
+
+
         }
 
         public List<ItemEstoque> GetAll()

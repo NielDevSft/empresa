@@ -5,21 +5,54 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace EmpresaAPI.Services
 {
-    public class ItemService(IItemRepository itemRepository) : IItemService
+    public class ItemService(IItemRepository itemRepository,
+        IItemEstoqueRepository itemEstoqueRepository) : IItemService
     {
         Item IService<Item>.Create(Item item)
         {
-            itemRepository.Add(item);
-            itemRepository.SaveChanges();
-            itemRepository.Dispose();
+            try
+            {
+                itemRepository.Add(item);
+                itemRepository.SaveChanges();
+
+                item.ItemEstoque.Add(new ItemEstoque
+                {
+                    QtdItem = 0,
+                    UpdateAt = DateTime.UtcNow,
+                    CreateAt = DateTime.UtcNow,
+                });
+                itemRepository.Update(item);
+                itemRepository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return item;
         }
 
         void IService<Item>.Delete(int id)
         {
-            itemRepository.Remove(id);
-            itemRepository.SaveChanges();
-            itemRepository.Dispose();
+            try
+            {
+                var item = itemRepository.GetById(id, "ItemEstoque");
+                if (item != null && item.ItemEstoque != null)
+                    item.ItemEstoque.First().Removed = true;
+                item.Removed = true;
+                itemRepository.Update(item);
+                itemRepository.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemRepository.Dispose();
+            }
+
+
         }
 
         List<Item> IService<Item>.GetAll()

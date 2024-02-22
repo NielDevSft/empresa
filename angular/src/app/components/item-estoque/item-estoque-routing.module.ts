@@ -12,12 +12,6 @@ const routes: Routes = [
     component: ItemEstoqueComponent,
     children: [
       {
-        path: "new",
-        title: "new",
-        component: FormItemEstoqueComponent,
-        canMatch: [authGuard],
-      },
-      {
         path: "edit/:id",
         title: "edit",
         component: FormItemEstoqueComponent,

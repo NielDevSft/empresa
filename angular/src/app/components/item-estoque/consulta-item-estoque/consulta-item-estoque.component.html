@@ -37,13 +37,13 @@
       <ng-container matColumnDef="dataAgendamento">
         <mat-header-cell *matHeaderCellDef>Data Agendamento</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.dataAgendamento | date : "short" }}
+          {{ element.dataAgendamento | date : "dd/MM/yyyy HH:mm" }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="createAt">
         <mat-header-cell *matHeaderCellDef>Data Orçamento</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.createAt | date : "short" }}
+          {{ element.createAt | date : "dd/MM/yyyy HH:mm" }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="updateAt">
@@ -51,7 +51,7 @@
           >Data Ultima atualização</mat-header-cell
         >
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.updateAt | date : "short" }}
+          {{ element.updateAt | date : "dd/MM/yyyy HH:mm" }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">

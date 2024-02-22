@@ -37,7 +37,6 @@ export class ItemEstoqueComponent implements OnInit {
             case OperationEnum.seeing:
               return this.links[1];
             case OperationEnum.creating:
-              this.router.navigate(["item-estoque/new"]);
               return this.links[1];
             case OperationEnum.deleting:
               return this.links[2];
@@ -68,7 +67,10 @@ export class ItemEstoqueComponent implements OnInit {
     return combineLatest([of(link), this.currentOperation]).pipe(
       take(1),
       map(([act, op]) => {
-        return act === this.links[2] && op !== OperationEnum.deleting;
+        return (
+          (act === this.links[2] && op !== OperationEnum.deleting) ||
+          (act === this.links[1] && op !== OperationEnum.updating)
+        );
       })
     );
   }

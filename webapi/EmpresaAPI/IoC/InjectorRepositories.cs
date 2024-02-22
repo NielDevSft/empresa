@@ -1,5 +1,6 @@
 ﻿using EmpresaAPI.Contracts.Repositories;
 using EmpresaAPI.Infrastructure.Persistence.Repository;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmpresaAPI.IoC
 {

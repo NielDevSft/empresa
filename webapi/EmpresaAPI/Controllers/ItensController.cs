@@ -2,6 +2,7 @@
 using EmpresaAPI.Contracts.Services;
 using EmpresaAPI.Dtos;
 using EmpresaAPI.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace EmpresaAPI.Controllers
     public class ItensController(ILogger<ItensController> logger,
         IItemService itemService,
         IMapper mapper) : ControllerBase
+        
         
     {
         // GET: api/<ItensController>
@@ -38,7 +40,12 @@ namespace EmpresaAPI.Controllers
         [Authorize]
         public ActionResult<ItemDto> Post([FromBody] ItemDto value)
         {
-            var itemCreated = itemService.Create(mapper.Map<Item>(value));
+            var item = mapper.Map<Item>(value);
+            
+            if (!item.IsValid())
+                return BadRequest(item.ValidationResult.Errors);
+
+            var itemCreated = itemService.Create(item);
             return Ok(mapper.Map<ItemDto>(itemCreated));
         }
 

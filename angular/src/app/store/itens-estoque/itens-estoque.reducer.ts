@@ -25,7 +25,7 @@ export interface ItemEstoqueState {
 
 export const initialState: ItemEstoqueState = {
   itemEstoqueList: [],
-  currentOperation: OperationEnum.creating,
+  currentOperation: OperationEnum.listing,
   currentItemEstoque: null,
   status: StatusEnum.pending,
   errors: null,

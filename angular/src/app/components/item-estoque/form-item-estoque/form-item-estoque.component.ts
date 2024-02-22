@@ -47,7 +47,7 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
 
   public itemList$ = this.store.select(selectAllItens);
   public itensEstoqueSelected$ = this.store.select(itensEstoqueSelected);
-  public currentOperation? = this.store.select(currentOperation);
+  public currentOperation = this.store.select(currentOperation);
 
   ngOnInit(): void {
     combineLatest([
@@ -69,6 +69,10 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
         this.store.dispatch(getAllItensByUser());
       }
     });
+    this.currentOperation.subscribe((o) => {
+      if (o === OperationEnum.updating)
+        this.itemEstoqueForm.get("idItem")?.disable();
+    });
   }
 
   ngOnDestroy(): void {
@@ -76,6 +80,7 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.itemEstoqueForm.get("idItem")?.enable();
     this.currentOperation
       ?.pipe(
         take(1),
@@ -96,7 +101,6 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
               return;
           }
         }),
-
         switchMap((action) => {
           return combineLatest([of(action), this.store.select(itemSelected)]);
         })
