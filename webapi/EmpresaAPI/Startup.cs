@@ -42,7 +42,7 @@ public class Startup(IConfiguration configuration)
             endpoints.MapControllers();
         });
 
-        var cultureInfo = new CultureInfo("en-US"); // Substitua "en-US" pela cultura desejada
+        var cultureInfo = new CultureInfo("pt-BR"); // Substitua "en-US" pela cultura desejada
         CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
         CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         using (var serviceScope = app.ApplicationServices.CreateScope())
