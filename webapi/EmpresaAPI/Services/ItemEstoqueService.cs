@@ -52,8 +52,9 @@ namespace EmpresaAPI.Services
                 itemEstoqueRepository.Remove(id);
                 itemEstoqueRepository.SaveChanges();
             }
-            catch (Exception ex) { 
-                throw ex; 
+            catch (Exception ex)
+            {
+                throw ex;
             }
             finally { itemRepository.Dispose(); }
 
@@ -62,9 +63,19 @@ namespace EmpresaAPI.Services
 
         public List<ItemEstoque> GetAll()
         {
-            var itemList = itemEstoqueRepository.FindAllWhere(i => !i.Removed, "Item");
-            itemEstoqueRepository.Dispose();
-            return itemList.ToList();
+            var itemEstoque = new List<ItemEstoque>();
+            try
+            {
+                itemEstoque.AddRange(itemEstoqueRepository.FindAllWhere(i => !i.Removed, "Item"));
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+            finally { itemEstoqueRepository.Dispose(); }
+
+            return itemEstoque;
 
         }
 
@@ -81,16 +92,28 @@ namespace EmpresaAPI.Services
 
         public ItemEstoque Update(int id, ItemEstoque item)
         {
-            var itemFound = itemEstoqueRepository.GetById(id);
-            if (itemFound != null)
+            ItemEstoque? itemEstoqueFound = null;
+            try
             {
-                itemFound!.Item = item.Item;
-                itemFound!.QtdItem = item.QtdItem;
-                itemEstoqueRepository.Update(itemFound);
-                itemEstoqueRepository.SaveChanges();
+                itemEstoqueFound = itemEstoqueRepository.GetById(id);
+
+                if (itemEstoqueFound! != null)
+                {
+                    itemEstoqueFound!.Item = item.Item;
+                    itemEstoqueFound!.QtdItem = item.QtdItem;
+                    itemEstoqueRepository.Update(itemEstoqueFound);
+                    itemEstoqueRepository.SaveChanges();
+                }
             }
-            itemEstoqueRepository.Dispose();
-            return itemFound!;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemEstoqueRepository.Dispose();
+            }
+            return itemEstoqueFound!;
         }
     }
 }

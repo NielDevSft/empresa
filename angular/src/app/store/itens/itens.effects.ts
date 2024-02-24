@@ -43,6 +43,7 @@ export class ItensEffects {
             this.itemService.create(item).pipe(
               map((pedido) => {
                 console.log(pedido + "added successfully");
+                return pedido;
               })
             )
           )

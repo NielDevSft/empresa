@@ -32,7 +32,7 @@
       <ng-container matColumnDef="createAt">
         <mat-header-cell *matHeaderCellDef>Data Orçamento</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.createAt | date : "short" }}
+          {{ element.createAt | date : "dd/MM/yyyy HH:mm" }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="updateAt">
@@ -40,7 +40,7 @@
           >Data Ultima atualização</mat-header-cell
         >
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.updateAt | date : "short" }}
+          {{ element.updateAt | date : "dd/MM/yyyy HH:mm" }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
@@ -85,9 +85,11 @@
                 element.item.nomItem
               }}</mat-cell>
             </ng-container>
-            <ng-container matColumnDef="qtd">
+            <ng-container matColumnDef="qtdItem">
               <mat-header-cell *matHeaderCellDef>Quantidade</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{ element.qtd }}</mat-cell>
+              <mat-cell *matCellDef="let element">{{
+                element.qtdItem
+              }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="valItem">
               <mat-header-cell *matHeaderCellDef>Valor do Item</mat-header-cell>
@@ -96,10 +98,13 @@
               }}</mat-cell>
             </ng-container>
             <mat-header-row
-              *matHeaderRowDef="['id', 'nomItem', 'qtd', 'valItem']"
+              *matHeaderRowDef="['id', 'nomItem', 'qtdItem', 'valItem']"
             ></mat-header-row>
             <mat-row
-              *matRowDef="let row; columns: ['id', 'nomItem', 'qtd', 'valItem']"
+              *matRowDef="
+                let row;
+                columns: ['id', 'nomItem', 'qtdItem', 'valItem']
+              "
             ></mat-row>
           </table>
         </mat-cell>

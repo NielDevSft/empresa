@@ -37,8 +37,12 @@ namespace EmpresaAPI.Controllers
         [Authorize]
         public ActionResult<PedidoDto> Post([FromBody] PedidoDto value)
         {
-            var itemCreated = pedidoService.Create(mapper.Map<Pedido>(value));
-            return Ok(mapper.Map<PedidoDto>(itemCreated));
+            var pedido = mapper.Map<Pedido>(value);
+            if (!pedido.IsValid())
+                return BadRequest(pedido.ValidationResult.Errors);
+
+            var pedidoCreated = pedidoService.Create(pedido);
+            return Ok(mapper.Map<PedidoDto>(pedidoCreated));
         }
 
         // PUT api/<PedidoController>/5
@@ -46,8 +50,12 @@ namespace EmpresaAPI.Controllers
         [Authorize]
         public ActionResult<PedidoDto> Put(int id, [FromBody] PedidoDto value)
         {
-            var itemUpdate = pedidoService.Update(id, mapper.Map<Pedido>(value));
-            return Ok(mapper.Map<ItemDto>(itemUpdate));
+            var pedido = mapper.Map<Pedido>(value);
+            if (!pedido.IsValid())
+                return BadRequest(pedido.ValidationResult.Errors);
+
+            var pedidoCreated = pedidoService.Update(id, pedido);
+            return Ok(mapper.Map<PedidoDto>(pedidoCreated));
         }
 
         // DELETE api/<PedidoController>/5

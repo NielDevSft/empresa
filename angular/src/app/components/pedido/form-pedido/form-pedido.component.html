@@ -69,7 +69,7 @@
         </mat-form-field>
         <mat-form-field class="col-md-3">
           <mat-label>Quantidade</mat-label>
-          <input formControlName="qtd" matInput />
+          <input formControlName="qtdItem" matInput />
         </mat-form-field>
         <div class="col-md-2">
           <button
@@ -95,10 +95,10 @@
               {{ itemPedido.item.nomItem }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="qtd">
+          <ng-container matColumnDef="qtdItem">
             <th mat-header-cell *matHeaderCellDef>Quantidade</th>
             <td mat-cell *matCellDef="let itemPedido">
-              {{ itemPedido.qtd }}
+              {{ itemPedido.qtdItem }}
             </td>
           </ng-container>
           <ng-container matColumnDef="valItem">

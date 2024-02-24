@@ -22,7 +22,7 @@ export class ItensEstoqueEffects {
     private itemEstoqueService: ItemEstoqueService
   ) {}
 
-  getAllitensEstoque$ = createEffect(() =>
+  getAllItensEstoque$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getAllitensEstoqueByUser),
       switchMap(() =>

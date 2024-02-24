@@ -15,8 +15,8 @@ namespace EmpresaAPI.Controllers
     public class ItensController(ILogger<ItensController> logger,
         IItemService itemService,
         IMapper mapper) : ControllerBase
-        
-        
+
+
     {
         // GET: api/<ItensController>
         [HttpGet]
@@ -33,7 +33,7 @@ namespace EmpresaAPI.Controllers
         {
             var itemFound = itemService.GetById(id);
             return Ok(mapper.Map<ItemDto>(itemFound));
-        }        
+        }
 
         // POST api/<ItensController>
         [HttpPost]
@@ -41,7 +41,7 @@ namespace EmpresaAPI.Controllers
         public ActionResult<ItemDto> Post([FromBody] ItemDto value)
         {
             var item = mapper.Map<Item>(value);
-            
+
             if (!item.IsValid())
                 return BadRequest(item.ValidationResult.Errors);
 
@@ -54,8 +54,13 @@ namespace EmpresaAPI.Controllers
         [Authorize]
         public ActionResult<ItemDto> Put(int id, [FromBody] ItemDto value)
         {
-            var itemUpdate = itemService.Update(id, mapper.Map<Item>(value));
-            return Ok(mapper.Map<ItemDto>(itemUpdate));
+            var item = mapper.Map<Item>(value);
+
+            if (!item.IsValid())
+                return BadRequest(item.ValidationResult.Errors);
+
+            var itemCreated = itemService.Update(id, item);
+            return Ok(mapper.Map<ItemDto>(itemCreated));
         }
 
         // DELETE api/<ItensController>/5

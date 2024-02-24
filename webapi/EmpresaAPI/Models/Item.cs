@@ -20,6 +20,7 @@ namespace EmpresaAPI.Models
         public decimal ValItem { get; set; }
         public required string DesItem { get; set; }
         public virtual ICollection<ItemEstoque> ItemEstoque { get; set; } = new List<ItemEstoque>();
+        public ICollection<ItemPedido> ItensPedido { get; set; } = new List<ItemPedido>();
         public override bool IsValid()
         {
             var validatorResult = Validate(this);

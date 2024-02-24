@@ -5,10 +5,13 @@ import { Item } from "../models/Item";
   name: "numeroItensPedido",
 })
 export class NumeroItensPedidoPipe implements PipeTransform {
-  transform(value: { item: Item; qtd: number }[], ...args: unknown[]): number {
+  transform(
+    value: { item: Item; qtdItem: number }[],
+    ...args: unknown[]
+  ): number {
     let numTotalItens = 0;
     value.forEach((value) => {
-      numTotalItens += value.qtd;
+      numTotalItens += value.qtdItem;
     });
     return numTotalItens;
   }

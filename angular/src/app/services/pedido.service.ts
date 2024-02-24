@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
   providedIn: "root",
 })
 export class PedidoService implements OnInit {
-  private readonly apiUrl = `${environment.apiUrl}api/pedido`;
+  private readonly apiUrl = `${environment.apiUrl}api/pedidos`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class PedidoService implements OnInit {
   }
 
   public getAllByUsuario(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}/get-by-usuario`);
+    return this.http.get<Pedido[]>(`${this.apiUrl}`);
   }
 
   public getById(id: number): Observable<Pedido[]> {

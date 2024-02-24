@@ -24,6 +24,7 @@ import { combineLatest, take } from "rxjs";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
 import { selectAllItens } from "../../../store/itens/itens.selector";
 import { Item } from "../../../models/Item";
+import { getAllItensByUser } from "../../../store/itens/itens.actions";
 
 @Component({
   selector: "app-form-pedido",
@@ -36,18 +37,18 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   store = inject(Store);
   fromBuilder = inject(FormBuilder);
 
-  columnsItensToDisplay = ["id", "nomItem", "qtd", "valItem"];
+  columnsItensToDisplay = ["id", "nomItem", "qtdItem", "valItem"];
   pedidoForm: FormGroup = this.fromBuilder.group({
     id: [],
     profissionalResponsavel: ["", [Validators.required]],
     itensPedido: [[], [Validators.required]],
-    valorTotal: [null, [Validators.required]],
+    valorTotal: [0, [Validators.required]],
     createAt: [null],
     updateAt: [null],
   });
   itensForm: FormGroup = this.fromBuilder.group({
     item: [, [Validators.required]],
-    qtd: [, Validators.required],
+    qtdItem: [, Validators.required],
   });
 
   public pedidoSelected$ = this.store.select(pedidoSelected);
@@ -65,8 +66,14 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
       }
     });
     this.itensPedidoControl?.setValue([]);
+    this.valorTotalControl?.disable();
     this.pedidoSelected$.subscribe((value) => {
       this.pedidoForm.reset(value);
+    });
+    this.itemList$.pipe(take(1)).subscribe((list) => {
+      if (list.length == 0) {
+        this.store.dispatch(getAllItensByUser());
+      }
     });
   }
 
@@ -75,11 +82,16 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   }
 
   onAddItem() {
-    const itemPedidoItem = this.itensPedidoControl?.value;
-    const vf = this.itensForm.value;
-    this.itensPedidoControl?.setValue([...(itemPedidoItem || []), vf]);
+    const valorTotalPedido = this.valorTotalControl?.value || 0;
+    const itemPedido = this.itensForm.value;
+
+    this.setValorTotalControl =
+      valorTotalPedido + itemPedido.item.valItem * itemPedido.qtdItem;
+
+    this.addItensPedidoControl = itemPedido;
     this.itensForm?.reset();
   }
+
   onClonseItem(id: number) {
     const itemPedidoItem = this.itensPedidoControl?.value as Item[];
     const vf = this.itensForm.value;
@@ -88,6 +100,7 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.valorTotalControl?.enable();
     this.currentOperation?.pipe(take(1)).subscribe((op) => {
       switch (op) {
         case OperationEnum.creating:
@@ -112,5 +125,20 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   }
   public get itensPedidoControl(): AbstractControl | null {
     return this.pedidoForm.get("itensPedido");
+  }
+
+  public get valorTotalControl(): AbstractControl | null {
+    return this.pedidoForm.get("valorTotal");
+  }
+  public set setValorTotalControl(val: number) {
+    this.pedidoForm.get("valorTotal")?.enable();
+    this.pedidoForm.get("valorTotal")?.setValue(val);
+    this.pedidoForm.get("valorTotal")?.disable();
+  }
+
+  public set addItensPedidoControl(item: {}) {
+    this.pedidoForm.get("itensPedido");
+    const itemPedidoItem = this.itensPedidoControl?.value;
+    this.itensPedidoControl?.setValue([...(itemPedidoItem || []), item]);
   }
 }

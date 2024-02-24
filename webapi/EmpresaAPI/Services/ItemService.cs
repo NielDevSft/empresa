@@ -8,7 +8,7 @@ namespace EmpresaAPI.Services
     public class ItemService(IItemRepository itemRepository,
         IItemEstoqueRepository itemEstoqueRepository) : IItemService
     {
-        Item IService<Item>.Create(Item item)
+        public Item Create(Item item)
         {
             try
             {
@@ -27,11 +27,11 @@ namespace EmpresaAPI.Services
             catch (Exception ex)
             {
                 throw ex;
-            }
+            }finally { itemRepository.Dispose(); }
             return item;
         }
 
-        void IService<Item>.Delete(int id)
+        public void Delete(int id)
         {
             try
             {
@@ -55,33 +55,70 @@ namespace EmpresaAPI.Services
 
         }
 
-        List<Item> IService<Item>.GetAll()
+        public List<Item> GetAll()
         {
-            var itemList = itemRepository.FindAllWhere(i => !i.Removed);
-            itemRepository.Dispose();
-            return itemList.ToList<Item>();
+            var itemList = new List<Item>();
+            try
+            {
+                itemList.AddRange(itemRepository.FindAllWhere(i => !i.Removed));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemRepository.Dispose();
+            }
+            return itemList;
         }
 
-        Item IService<Item>.GetById(int id)
+        public Item GetById(int id)
         {
-            var itemFound = itemRepository.FirstOrDefault(i => i.Id == id && !i.Removed);
-            if (itemFound.IsNullOrEmpty())
+            Item? itemFound = null;
+            try
             {
-                throw new Exception("Item não encontrado");
+                itemFound = itemRepository
+                    .FirstOrDefault(i => i.Id == id && !i.Removed);
+
+                if (itemFound! == null)
+                {
+                    throw new Exception("Item não encontrado");
+                }
+                itemRepository.Dispose();
             }
-            itemRepository.Dispose();
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemRepository.Dispose();
+            }
             return itemFound;
         }
 
-        Item IService<Item>.Update(int id, Item item)
+        public Item Update(int id, Item item)
         {
-            var itemFound = itemRepository.GetById(id);
-            itemFound.NomItem = item.NomItem;
-            itemFound.ValItem = item.ValItem;
-            itemFound.DesItem = item.DesItem;
-            itemRepository.Update(itemFound);
-            itemRepository.SaveChanges();
-            itemRepository.Dispose();
+            Item? itemFound = null;
+            try
+            {
+                itemFound = itemRepository.GetById(id);
+                itemFound.NomItem = item.NomItem;
+                itemFound.ValItem = item.ValItem;
+                itemFound.DesItem = item.DesItem;
+                itemRepository.Update(itemFound);
+                itemRepository.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                itemRepository.Dispose();
+            }
+
             return itemFound;
         }
     }
