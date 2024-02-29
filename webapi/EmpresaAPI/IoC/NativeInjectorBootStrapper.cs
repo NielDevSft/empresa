@@ -10,13 +10,12 @@ using AutoMapper;
 
 namespace Authentication.Common.Ioc
 {
-    public class NativeInjectorBootStrapper
+    public class NativeInjectorBootStrapper()
     {
-        public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
+        public static void RegisterServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
             JWTConfiguration.AddJWT(services, configuration);
             SwaggerConfiguration.AddSwagger(services);
-
             services.AddAutoMapper(typeof(Program).Assembly);
             services.AddControllers();
 

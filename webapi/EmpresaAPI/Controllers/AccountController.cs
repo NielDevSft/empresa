@@ -25,6 +25,7 @@ public class AccountController(
     [HttpPost("login")]
     public ActionResult Login([FromBody] LoginRequest request)
     {
+        
         if (!ModelState.IsValid)
         {
             return BadRequest();
@@ -82,6 +83,8 @@ public class AccountController(
     [Authorize]
     public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
+        logger.LogInformation("funfou" + logger.GetType());
+
         try
         {
             var userName = User.Identity?.Name!;

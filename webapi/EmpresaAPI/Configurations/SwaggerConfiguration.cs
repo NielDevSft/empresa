@@ -10,7 +10,6 @@ namespace EmpresaAPI.Configurations
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JWT Auth Demo", Version = "v1" });
-
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "JWT Authentication",

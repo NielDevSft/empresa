@@ -1,11 +1,38 @@
 version: "3.8"
 
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    networks:
+      - elastic
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.7.1
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=elasticsearch:9200
+    networks:
+      - elastic
   sql-server:
     build:
       context: ./data-base
     ports:
       - "1433:1433"
+    networks:
+      - elastic
+    depends_on:
+      - kibana
   mssqltools:
     image: mcr.microsoft.com/mssql-tools
     depends_on:
@@ -16,15 +43,8 @@ services:
       - ./data-base/sql-scripts/insert-user-roles.sql:/tmp/insert-user-roles.sql
       - ./data-base/init-database.sh:/tmp/init-database.sh
     command: /bin/bash ./tmp/init-database.sh
-  angular:
-    build:
-      context: ./angular
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    depends_on:
-      - api
-    restart: always
+    networks:
+      - elastic
   api:
     build:
       context: ./webapi
@@ -34,12 +54,30 @@ services:
     depends_on:
       - mssqltools
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=https://+:5001;http://+:5000
       - ASPNETCORE_HTTPS_PORT=5001
       - ASPNETCORE_Kestrel__Certificates__Default__Password=mypassword123
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - ConnectionStrings__DefaultConnection=Data Source=sql-server;Initial Catalog=DBLoja;User Id=AdmLoja;Password=LojaSenha@247; Trust Server Certificate=True;
     volumes:
       - ./webapi/https/aspnetapp.pfx:/https/aspnetapp.pfx:ro
     restart: always
+    networks:
+      - elastic
+  angular:
+    build:
+      context: ./angular
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    restart: always
+    networks:
+      - elastic
+networks:
+  elastic:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
