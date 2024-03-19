@@ -25,7 +25,7 @@ public class AccountController(
     [HttpPost("login")]
     public ActionResult Login([FromBody] LoginRequest request)
     {
-        
+
         if (!ModelState.IsValid)
         {
             return BadRequest();
@@ -62,7 +62,7 @@ public class AccountController(
         {
             UserName = User.Identity?.Name!,
             Role = User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty,
-            OriginalUserName = User.FindFirst("OriginalUserName")?.Value?? string.Empty
+            OriginalUserName = User.FindFirst("OriginalUserName")?.Value ?? string.Empty
         });
     }
 
@@ -83,8 +83,6 @@ public class AccountController(
     [Authorize]
     public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
-        logger.LogInformation("funfou" + logger.GetType());
-
         try
         {
             var userName = User.Identity?.Name!;
@@ -96,8 +94,8 @@ public class AccountController(
             }
 
             var accessToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
-            
-            var jwtResult = jwtAuthManager.Refresh(request.RefreshToken, accessToken??string.Empty, DateTime.Now);
+
+            var jwtResult = jwtAuthManager.Refresh(request.RefreshToken, accessToken ?? string.Empty, DateTime.Now);
             logger.LogInformation("User [{userName}] has refreshed JWT token.", userName);
             return Ok(new LoginResult
             {
@@ -161,7 +159,7 @@ public class AccountController(
         {
             return BadRequest("You are not impersonating anyone.");
         }
-        logger.LogInformation("User [{originalUserName}] is trying to stop impersonate [{userName}].",originalUserName, userName);
+        logger.LogInformation("User [{originalUserName}] is trying to stop impersonate [{userName}].", originalUserName, userName);
 
         var role = userService.GetUserRole(originalUserName);
         var claims = new[]
