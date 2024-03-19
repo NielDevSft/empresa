@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace EmpresaApi.API.Dtos
+﻿namespace EmpresaApi.API.Dtos
 {
     public class ItemDto
     {

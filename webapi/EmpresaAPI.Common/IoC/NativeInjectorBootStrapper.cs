@@ -16,7 +16,7 @@ namespace EmpresaAPI.Common.IoC
 
             //Services Bussines
             InjectorServices.AddServices(services);
-           
+
             services.AddDbContext<EmpresaOrganizationContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));

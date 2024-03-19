@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace EmpresaAPI.Configurations
+namespace EmpresaApi.API.Configurations
 {
     public static class SwaggerConfiguration
     {
@@ -9,7 +9,7 @@ namespace EmpresaAPI.Configurations
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Empresa API", Version = "v1" });
-                
+
                 //var securityscheme = new openapisecurityscheme
                 //{
                 //    name = "jwt authentication",

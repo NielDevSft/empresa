@@ -2,7 +2,6 @@
 using EmpresaApi.API.Dtos;
 using EmpresaAPI.Domain.Pedidos;
 using EmpresaAPI.Domain.Pedidos.Service;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,16 +16,16 @@ namespace EmpresaApi.API.Controllers
     {
         // GET: api/<PedidoController>
         [HttpGet]
-        
-        public async Task<ActionResult<IEnumerable<PedidoDto>>>  Get()
+
+        public async Task<ActionResult<IEnumerable<PedidoDto>>> Get()
         {
             return Ok((await pedidoService.GetAll()).Select(p => mapper.Map<PedidoDto>(p)));
         }
 
         // GET api/<PedidoController>/5
         [HttpGet("{id}")]
-        
-        public async Task<ActionResult<PedidoDto>>  Get(int id)
+
+        public async Task<ActionResult<PedidoDto>> Get(int id)
         {
             var itemFound = await pedidoService.GetById(id);
             return Ok(mapper.Map<PedidoDto>(itemFound));
@@ -34,8 +33,8 @@ namespace EmpresaApi.API.Controllers
 
         // POST api/<PedidoController>
         [HttpPost]
-        
-        public async Task<ActionResult<PedidoDto>>  Post([FromBody] PedidoDto value)
+
+        public async Task<ActionResult<PedidoDto>> Post([FromBody] PedidoDto value)
         {
             var pedido = mapper.Map<Pedido>(value);
             if (!pedido.IsValid())
@@ -47,8 +46,8 @@ namespace EmpresaApi.API.Controllers
 
         // PUT api/<PedidoController>/5
         [HttpPut("{id}")]
-        
-        public async Task<ActionResult<PedidoDto>>  Put(int id, [FromBody] PedidoDto value)
+
+        public async Task<ActionResult<PedidoDto>> Put(int id, [FromBody] PedidoDto value)
         {
             var pedido = mapper.Map<Pedido>(value);
             if (!pedido.IsValid())
@@ -60,8 +59,8 @@ namespace EmpresaApi.API.Controllers
 
         // DELETE api/<PedidoController>/5
         [HttpDelete("{id}")]
-        
-        public async Task<ActionResult>  Delete(int id)
+
+        public async Task<ActionResult> Delete(int id)
         {
             await pedidoService.Delete(id);
             return Ok();

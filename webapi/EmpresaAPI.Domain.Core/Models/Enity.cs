@@ -22,6 +22,8 @@ namespace EmpresaAPI.Domain.Core.Models
 
         public abstract bool IsValid();
 
+        public new CascadeMode CascadeMode { private get; set; }
+
         [NotMapped]
         public ValidationResult ValidationResult { get; protected set; }
 

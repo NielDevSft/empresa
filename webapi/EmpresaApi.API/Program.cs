@@ -1,6 +1,5 @@
 using EmpresaApi.API.Configurations;
 using EmpresaAPI.Common.IoC;
-using EmpresaAPI.Configurations;
 using EmpresaAPI.Persistence.Contexts;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Data.SqlClient;
