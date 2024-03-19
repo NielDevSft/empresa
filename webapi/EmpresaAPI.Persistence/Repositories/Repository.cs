@@ -20,12 +20,6 @@ namespace EmpresaAPI.Persistence.Repositories
             _logger = logger;
         }
 
-        protected Repository(DbContext context)
-        {
-            Db = context;
-            DbSet = Db.Set<TEntity>();
-        }
-
         public void Add(TEntity obj)
         {
             try
@@ -47,46 +41,46 @@ namespace EmpresaAPI.Persistence.Repositories
 
         public ICollection<TEntity> FindAll(params string[] includes)
         {
-            _logger.LogInformation($"Obtendo lista de {GetType().Name}");
+            _logger!.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking();
             query = Includes(query, includes);
 
             var retorno = query.ToList();
-            _logger.LogInformation($"Lista de {GetType().Name} obtida");
+            _logger!.LogInformation($"Lista de {GetType().Name} obtida");
             return retorno;
         }
 
         public ICollection<TEntity> FindAllWhere(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            _logger.LogInformation($"Obtendo lista de {GetType().Name}");
+            _logger!.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
             query = Includes(query, includes);
-            _logger.LogInformation($"Lista de {GetType().Name} obtida");
+            _logger!.LogInformation($"Lista de {GetType().Name} obtida");
             return query.ToList();
         }
 
         public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            _logger.LogInformation($"Obtendo {GetType().Name}");
+            _logger!.LogInformation($"Obtendo {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
             query = Includes(query, includes);
-            _logger.LogInformation($"{GetType().Name} obtido");
+            _logger!.LogInformation($"{GetType().Name} obtido");
             return query.FirstOrDefault();
         }
 
         public TEntity? GetById(int id, params string[] includes)
         {
-            _logger.LogInformation($"Obtendo {GetType().Name}");
+            _logger!.LogInformation($"Obtendo {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(e => e.Id == id);
             query = Includes(query, includes);
-            _logger.LogInformation($"{GetType().Name}, id {id} obtido");
+            _logger!.LogInformation($"{GetType().Name}, id {id} obtido");
             return query.FirstOrDefault();
         }
 
         public void Remove(int id)
         {
             var obj = GetById(id);
-            if (obj! != null)
+            if (obj! != null!)
             {
                 obj!.Removed = true;
                 Update(obj);
@@ -101,7 +95,7 @@ namespace EmpresaAPI.Persistence.Repositories
 
         public void Update(TEntity obj)
         {
-            _logger.LogInformation($"Atualizando objeto {GetType().Name}, id {obj.Id}");
+            _logger!.LogInformation($"Atualizando objeto {GetType().Name}, id {obj.Id}");
             obj.UpdateAt = DateTime.UtcNow;
             DbSet.Update(obj);
         }
@@ -136,19 +130,22 @@ namespace EmpresaAPI.Persistence.Repositories
 
         public async Task<ICollection<TEntity>> FindAllWhereAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
-            _logger.LogInformation($"Obtendo lista de {GetType().Name}");
+            var list = new List<TEntity>();
+            _logger!.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
             query = Includes(query, includes);
-            _logger.LogInformation($"Lista de {GetType().Name} obtida");
-            return query.ToList();
+            _logger!.LogInformation($"Lista de {GetType().Name} obtida");
+            await Task.Run(() => list = query.ToList());
+            return list;
         }
 
         public async Task<TEntity?> GetByIdAsync(int id, params string[] includes)
         {
-            _logger.LogInformation($"Obtendo {GetType().Name}, id {id}");
-            var query = DbSet.AsNoTracking().Where(e => e.Id == id);
+            _logger!.LogInformation($"Obtendo {GetType().Name}, id {id}");
+            IQueryable<TEntity> query = null!;
+            await Task.Run(() => query = DbSet.AsNoTracking().Where(e => e.Id == id && e.Removed == false));
             query = Includes(query, includes);
-            _logger.LogInformation($"{GetType().BaseType}, id {id} obtido");
+            _logger!.LogInformation($"{GetType().BaseType}, id {id} obtido");
             return query.FirstOrDefault();
         }
 

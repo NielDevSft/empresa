@@ -2,7 +2,7 @@
 {
     public class ItemPedidoDto
     {
-        public ItemDto Item { get; set; } = null;
+        public ItemDto? Item { get; set; }
         public int QtdItem { get; set; } = 0;
     }
 }

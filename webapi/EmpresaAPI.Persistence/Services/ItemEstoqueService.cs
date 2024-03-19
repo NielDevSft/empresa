@@ -9,53 +9,44 @@ namespace EmpresaAPI.Persistence.Services
     {
         public async Task<ItemEstoque> Create(ItemEstoque itemEstoque)
         {
-            try
-            {
-                var itemEstoqueExisting = itemEstoqueRepository
-                   .FindAllWhere(ie => !ie.Removed &&
-                   ie.Item.Id == itemEstoque.Item.Id)
-                   .FirstOrDefault();
 
-                if (itemEstoqueExisting != null)
-                {
-                    itemEstoqueExisting.QtdItem = itemEstoque.QtdItem;
-                    itemEstoqueRepository.Update(itemEstoqueExisting);
-                }
-                else
-                {
-                    var item = itemRepository.GetById(itemEstoque.Item.Id);
-                    if (item == null)
-                        throw new ArgumentException("Item não encontrado");
-                    item.ItemEstoque.Add(itemEstoque);
-                    itemEstoque.UpdateAt = DateTime.UtcNow;
-                    itemEstoque.CreateAt = DateTime.UtcNow;
-                    itemRepository.Update(item);
-                }
-                itemRepository.SaveChanges();
-            }
-            catch (Exception ex)
+            var itemEstoqueExisting = itemEstoqueRepository
+               .FindAllWhere(ie => !ie.Removed &&
+               ie.Item!.Id == itemEstoque.Item!.Id)
+               .FirstOrDefault();
+
+            if (itemEstoqueExisting! != null!)
             {
-                throw ex;
+                itemEstoqueExisting.QtdItem = itemEstoque.QtdItem;
+                itemEstoqueRepository.Update(itemEstoqueExisting);
             }
-            finally
+            else
             {
-                itemRepository.Dispose();
+                var item = itemRepository.GetById(itemEstoque.Item!.Id);
+                if (item! == null!)
+                    throw new ArgumentException("Item não encontrado");
+                item.ItemEstoque.Add(itemEstoque);
+                itemEstoque.UpdateAt = DateTime.UtcNow;
+                itemEstoque.CreateAt = DateTime.UtcNow;
+                itemRepository.Update(item);
             }
+            await Task.Run(() => itemRepository.SaveChanges());
+
+
+            itemRepository.Dispose();
+
             return itemEstoque;
         }
 
         public async Task Delete(int id)
         {
-            try
-            {
-                itemEstoqueRepository.Remove(id);
-                itemEstoqueRepository.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally { itemRepository.Dispose(); }
+
+            itemEstoqueRepository.Remove(id);
+            itemEstoqueRepository.SaveChanges();
+            await Task.Run(() => itemEstoqueRepository.SaveChanges());
+
+
+            itemRepository.Dispose();
 
 
         }
@@ -63,16 +54,11 @@ namespace EmpresaAPI.Persistence.Services
         public async Task<List<ItemEstoque>> GetAll()
         {
             var itemEstoque = new List<ItemEstoque>();
-            try
-            {
-                itemEstoque.AddRange(itemEstoqueRepository.FindAllWhere(i => !i.Removed, "Item"));
 
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally { itemEstoqueRepository.Dispose(); }
+            itemEstoque.AddRange(await itemEstoqueRepository.FindAllWhereAsync(i => !i.Removed, "Item"));
+
+
+            itemEstoqueRepository.Dispose();
 
             return itemEstoque;
 
@@ -80,8 +66,8 @@ namespace EmpresaAPI.Persistence.Services
 
         public async Task<ItemEstoque> GetById(int id)
         {
-            var itemFound = itemEstoqueRepository.FirstOrDefault(i => i.Id == id && !i.Removed);
-            if (itemFound == null)
+            var itemFound = await itemEstoqueRepository.GetByIdAsync(id);
+            if (itemFound! == null!)
             {
                 throw new Exception("Item Estoque não encontrado");
             }
@@ -92,26 +78,18 @@ namespace EmpresaAPI.Persistence.Services
         public async Task<ItemEstoque> Update(int id, ItemEstoque item)
         {
             ItemEstoque? itemEstoqueFound = null;
-            try
-            {
-                itemEstoqueFound = itemEstoqueRepository.GetById(id);
 
-                if (itemEstoqueFound! != null)
-                {
-                    itemEstoqueFound!.Item = item.Item;
-                    itemEstoqueFound!.QtdItem = item.QtdItem;
-                    itemEstoqueRepository.Update(itemEstoqueFound);
-                    itemEstoqueRepository.SaveChanges();
-                }
-            }
-            catch (Exception ex)
+            itemEstoqueFound = await itemEstoqueRepository.GetByIdAsync(id);
+
+            if (itemEstoqueFound! != null!)
             {
-                throw ex;
+                itemEstoqueFound!.Item = item.Item;
+                itemEstoqueFound!.QtdItem = item.QtdItem;
+                itemEstoqueRepository.Update(itemEstoqueFound);
+                itemEstoqueRepository.SaveChanges();
             }
-            finally
-            {
-                itemEstoqueRepository.Dispose();
-            }
+
+            itemEstoqueRepository.Dispose();
             return itemEstoqueFound!;
         }
     }

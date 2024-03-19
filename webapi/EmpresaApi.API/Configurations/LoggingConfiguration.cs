@@ -10,7 +10,7 @@ namespace EmpresaApi.API.Configurations
         public static Serilog.Core.Logger GetConfiguration(IConfigurationBuilder config)
         {
             var settings = config.Build();
-            var enviroment = settings["ENVIRONMENT"];
+            var enviroment = settings["ENVIRONMENT"]!;
 
             return new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -25,7 +25,7 @@ namespace EmpresaApi.API.Configurations
 
         private static ElasticsearchSinkOptions ConfigureElasticSink(this IConfiguration config, string enviroment)
         {
-            var uri = new Uri(config["ElasticConfiguration:Uri"]);
+            var uri = new Uri(config["ElasticConfiguration:Uri"]!);
             var format = $"{Assembly.GetExecutingAssembly()
                 .GetName()
                 .Name!

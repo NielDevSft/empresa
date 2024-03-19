@@ -63,10 +63,7 @@ using (var serviceScope = app.Services.CreateScope())
     }
 }
 
+app.MapControllers();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
 
 app.Run();
