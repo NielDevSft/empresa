@@ -18,7 +18,7 @@ interface LoginResult {
   providedIn: "root",
 })
 export class AuthService implements OnDestroy {
-  private readonly apiUrl = `${environment.authenticationUrl}api/Authentications`;
+  private readonly apiUrl = `${environment.authenticationApiUrl}api/Authentications`;
   private timer?: Subscription;
   private _user = new BehaviorSubject<ApplicationUser | null>(null);
   user$ = this._user.asObservable();
