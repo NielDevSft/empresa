@@ -1,3 +1,4 @@
+import { Cliente } from "./models/Cliente";
 import { Component } from "@angular/core";
 import { AuthService } from "./core";
 
@@ -17,6 +18,9 @@ import { AuthService } from "./core";
       </nav>
       <nav *ngIf="authService.user$ | async as user">
         <button mat-button [routerLink]="['/pedido']">Pedidos</button>
+      </nav>
+      <nav *ngIf="authService.user$ | async as user">
+        <button mat-button [routerLink]="['/cliente']">Cliente</button>
       </nav>
 
       <button

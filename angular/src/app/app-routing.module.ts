@@ -23,19 +23,19 @@ const routes: Routes = [
   {
     path: "pedido",
     loadChildren: () =>
-      import("./components/pedido/pedido.module").then((m) => m.PedidoModule),
+      import("./pages/pedido/pedido.module").then((m) => m.PedidoModule),
     canMatch: [authGuard],
   },
   {
     path: "item",
     loadChildren: () =>
-      import("./components/item/item.module").then((m) => m.ItemModule),
+      import("./pages/item/item.module").then((m) => m.ItemModule),
     canMatch: [authGuard],
   },
   {
     path: "item-estoque",
     loadChildren: () =>
-      import("./components/item-estoque/item-estoque.module").then(
+      import("./pages/item-estoque/item-estoque.module").then(
         (m) => m.ItemEstoqueModule
       ),
     canMatch: [authGuard],
@@ -43,9 +43,7 @@ const routes: Routes = [
   {
     path: "cliente",
     loadChildren: () =>
-      import("./components/cliente/cliente.module").then(
-        (m) => m.ClienteModule
-      ),
+      import("./pages/cliente/cliente.module").then((m) => m.ClienteModule),
     canMatch: [authGuard],
   },
   { path: "**", redirectTo: "" },
