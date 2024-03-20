@@ -3,6 +3,7 @@ using EmpresaApi.API.Dtos;
 using EmpresaAPI.Domain.Pedidos;
 using EmpresaAPI.Domain.Pedidos.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

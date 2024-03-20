@@ -1,10 +1,9 @@
-import { Md5 } from "ts-md5";
+import * as crypto from "crypto-js";
 
 export const Utils = () => {
   const encrypt = (value: string) => {
-    const md5 = new Md5();
-    md5.appendStr(value);
-    return md5.end()?.toString() || "";
+    const valueHashed = crypto.SHA1(value);
+    return valueHashed.toString() || "";
   };
   const formatDateToString = (date: Date): string => {
     const year = date.getFullYear();
