@@ -40,6 +40,14 @@ const routes: Routes = [
       ),
     canMatch: [authGuard],
   },
+  {
+    path: "cliente",
+    loadChildren: () =>
+      import("./components/cliente/cliente.module").then(
+        (m) => m.ClienteModule
+      ),
+    canMatch: [authGuard],
+  },
   { path: "**", redirectTo: "" },
 ];
 
