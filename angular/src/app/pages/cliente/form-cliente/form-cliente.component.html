@@ -1,1 +1,108 @@
-<p>form-cliente works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      {{
+        (clienteSelected$ | async)
+          ? "Editar Item #" + (clienteSelected$ | async)?.uuid
+          : "Novo Item"
+      }}
+    </mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+    <mat-card-content>
+      <input type="hidden" formControlName="uuid" />
+      <div class="row">
+        <mat-form-field class="col-md-4">
+          <mat-label>Nome completo do cliente</mat-label>
+          <input
+            matInput
+            formControlName="nomeComleto"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          />
+        </mat-form-field>
+        <mat-form-field class="col-md-4">
+          <mat-label>CPF</mat-label>
+          <input
+            matInput
+            formControlName="cpf"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-4">
+          <mat-label>Valor mensal</mat-label>
+          <input
+            matInput
+            formControlName="valRenda"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          />
+        </mat-form-field>
+      </div>
+      <div class="row">
+        <mat-form-field class="col-md-3">
+          <mat-label>Data de nascimento</mat-label>
+          <input
+            matInput
+            readonly
+            [matDatepicker]="picker"
+            formControlName="dtaNascimento"
+            matInput
+          />
+          <mat-datepicker-toggle
+            disabled
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="createAt">
+          <mat-label>Data criação</mat-label>
+          <input
+            matInput
+            readonly
+            [matDatepicker]="picker"
+            formControlName="createAt"
+            matInput
+          />
+          <mat-datepicker-toggle
+            disabled
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col-md-3" *ngIf="updateAt">
+          <mat-label>Ultima atualização</mat-label>
+          <input
+            matInput
+            readonly
+            [matDatepicker]="picker"
+            formControlName="updateAt"
+            matInput
+          />
+          <mat-datepicker-toggle
+            disabled
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <span class="example-spacer"></span
+      ><button
+        mat-button
+        color="accent"
+        [disabled]="!clienteForm.valid"
+        type="submit"
+      >
+        Salvar
+      </button>
+    </mat-card-actions>
+  </form>
+</mat-card>

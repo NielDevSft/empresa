@@ -1,1 +1,106 @@
-<p>consulta-cliente works!</p>
+<mat-card>
+  <mat-card-content>
+    <table
+      mat-table
+      #table
+      [dataSource]="clienteList$"
+      class="mat-elevation-z8"
+    >
+      <ng-container matColumnDef="uuid">
+        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{ element.uuid }}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="nomeComleto">
+        <mat-header-cell *matHeaderCellDef>Nome do cliente</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.nomeComleto }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="dtaNascimento">
+        <mat-header-cell *matHeaderCellDef>Data de nascimento</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.dtaNascimento | date : "dd/MM/yyyy" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="valRenda">
+        <mat-header-cell *matHeaderCellDef>Renda mensal</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.valRenda | currency : "BRL" : "symbol" : "4.2-2" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="cpf">
+        <mat-header-cell *matHeaderCellDef>CPF</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.cpf | currency : "BRL" : "symbol" : "4.2-2" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="createAt">
+        <mat-header-cell *matHeaderCellDef>Data cadastro</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.createAt | date : "dd/MM/yyyy HH:mm" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="updateAt">
+        <mat-header-cell *matHeaderCellDef
+          >Data Ultima atualização</mat-header-cell
+        >
+        <mat-cell mat-cell *matCellDef="let element">
+          {{ element.updateAt | date : "dd/MM/yyyy HH:mm" }}
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Ações</mat-header-cell>
+        <mat-cell mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            color="accent"
+            aria-label="Editar"
+            (click)="onEditCliente(element.id)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            aria-label="Deletar"
+            (click)="onDeleteCliente(element.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="expandedDetail">
+        <mat-cell *matCellDef="let detail">
+          {{ detail.element.desCliente }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        matRipple
+        class="element-row"
+        [class.expanded]="detalhesExpandidos == row"
+        (click)="
+          detalhesExpandidos === row
+            ? (detalhesExpandidos = null)
+            : (detalhesExpandidos = row)
+        "
+      ></mat-row>
+      <mat-row
+        *matRowDef="
+          let row;
+          columns: ['expandedDetail'];
+          when: isExpansionDetailRow
+        "
+        [@detailExpand]="
+          row.element == detalhesExpandidos ? 'expanded' : 'collapsed'
+        "
+        style="overflow: hidden"
+      >
+      </mat-row>
+    </table>
+  </mat-card-content>
+</mat-card>

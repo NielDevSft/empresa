@@ -8,7 +8,7 @@ import { Cliente } from "../models/Cliente";
   providedIn: "root",
 })
 export class ClienteService {
-  private readonly apiUrl = `${environment.apiUrl}api/itens`;
+  private readonly apiUrl = `${environment.clienteApiUrl}api/clientes`;
 
   constructor(private http: HttpClient) {}
   public create(cliente: Cliente): Observable<Cliente> {

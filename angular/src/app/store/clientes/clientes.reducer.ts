@@ -3,9 +3,9 @@ import { Cliente } from "../../models/Cliente";
 import {
   createCliente,
   deleteCliente,
-  getAllItensByUser,
-  getAllItensByUserFailure,
-  getAllItensByUserSuccess,
+  getAllClientesByUser,
+  getAllClientesByUserFailure,
+  getAllClientesByUserSuccess,
   updateCliente,
   setCurrentCliente,
   setOperation,
@@ -33,22 +33,22 @@ export const initialState: ClienteState = {
 
 export const clienteReducer = createReducer(
   initialState,
-  on(getAllItensByUser, (state) => ({
+  on(getAllClientesByUser, (state) => ({
     ...state,
     status: StatusEnum.pending,
   })),
-  on(getAllItensByUserSuccess, (state, { clientes }) => ({
+  on(getAllClientesByUserSuccess, (state, { clientes }) => ({
     ...state,
     clienteList: clientes,
     error: null,
     status: StatusEnum.success,
   })),
-  on(getAllItensByUserFailure, (state, { error }) => ({
+  on(getAllClientesByUserFailure, (state, { error }) => ({
     ...state,
     error: error,
     status: StatusEnum.error,
   })),
-  on(getAllItensByUser, (state) => ({
+  on(getAllClientesByUser, (state) => ({
     ...state,
     status: StatusEnum.pending,
   })),

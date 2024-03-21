@@ -1,1 +1,11 @@
-<p>delete-cliente works!</p>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Deseja deletar o registro #{{ (clienteSelected$ | async)?.uuid }}?
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-actions>
+    <button mat-button color="accent" (click)="onDelete()">Sim</button>
+    <button mat-button color="warn">Não</button>
+  </mat-card-actions>
+</mat-card>

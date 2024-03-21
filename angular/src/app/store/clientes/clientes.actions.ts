@@ -2,15 +2,15 @@ import { createAction, props } from "@ngrx/store";
 import { Cliente } from "../../models/Cliente";
 import { OperationEnum } from "../../models/enum/OperationEnum";
 
-export const getAllItensByUser = createAction(
+export const getAllClientesByUser = createAction(
   "[Cliente Component] Get All clientes By User"
 );
-export const getAllItensByUserSuccess = createAction(
-  "[Cliente Component] Get All Itens By User Success",
+export const getAllClientesByUserSuccess = createAction(
+  "[Cliente Component] Get All Clientes By User Success",
   props<{ clientes: Cliente[] }>()
 );
-export const getAllItensByUserFailure = createAction(
-  "[Cliente Component] Get All Itens By User Failure",
+export const getAllClientesByUserFailure = createAction(
+  "[Cliente Component] Get All Clientes By User Failure",
   props<{ error: string }>()
 );
 export const getClienteById = createAction(

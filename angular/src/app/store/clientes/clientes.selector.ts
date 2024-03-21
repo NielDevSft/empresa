@@ -3,7 +3,7 @@ import { ClienteState } from "./clientes.reducer";
 import { AppState } from "../app.state";
 
 export const selectCliente = (state: AppState) => state.clientes;
-export const selectAllItens = createSelector(
+export const selectAllClientes = createSelector(
   selectCliente,
   (state: ClienteState) => state.clienteList
 );
