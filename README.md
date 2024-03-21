@@ -22,7 +22,7 @@ Obs: A primeiro momento, não é possivel inciar o projeto localmente, devido as
 Rodando o comando, `docker-compose up --build --remove-orphans -d`, teremos o aplicativo já implantado e acessível no [Aplicação Angular](http://localhost:8080/login). O que pode demorar de acordo com a capacidade da sua máquina de processar todas as imagem de docker e posteriormente publica-las.
 A documentação da API ficará em [Empresa API](http://localhost:5001/index.html)
 
-Para fazer login é nescessário a baixar [API de authenticação](https://github.com/NielDevSft/JWTAuthentication) e configurar um usuário. A Role da API deste projeto é `CLIENTE_ADM_EMPRESA`.
+Para fazer login é nescessário a baixar [API de authenticação](https://github.com/NielDevSft/authentication) e configurar um usuário. A Role da API deste projeto é `CLIENTE_ADM_EMPRESA`.
 
 O sistema persiste em desenvolvimento, mas a estrutura sólida onde ele é contruida, a fim de demonstrar habilidade de escritura complexa de código do que apenas avaliando o negócio que, provavelemte poderia ser comportado em um contexto mais simples.
 
