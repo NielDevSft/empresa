@@ -26,6 +26,16 @@ Para fazer login é nescessário a baixar [API de authenticação](https://githu
 
 O sistema persiste em desenvolvimento, mas a estrutura sólida onde ele é contruida, a fim de demonstrar habilidade de escritura complexa de código do que apenas avaliando o negócio que, provavelemte poderia ser comportado em um contexto mais simples.
 
+## Autor
+
+[Daniel da silva Figueiredo](https://github.com/NielDevSft) - Desenvolvedor FullCycle.
+
+## Aplicação que faz uso desta API
+
+[Aplicação em anuglar](https://github.com/NielDevSft/empresa)
+
+![Tela de listagem de clientes](print-scream-pagina-principal.png)
+
 ## Projeto Angular
 
 Foi utilizado [Angular Material](https://material.angular.io) e [NgRx](https://ngrx.io) neste projeto, pois essas tecnologias oferecem diversas vantagens que contribuem significativamente para o desenvolvimento e aprimoramento da experiência do usuário.
