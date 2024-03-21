@@ -23,18 +23,16 @@ namespace EmpresaApi.API.Controllers
             return Ok((await pedidoService.GetAll()).Select(p => mapper.Map<PedidoDto>(p)));
         }
 
-        // GET api/<PedidoController>/5
         [HttpGet("{id}")]
-
+        [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
         public async Task<ActionResult<PedidoDto>> Get(int id)
         {
             var itemFound = await pedidoService.GetById(id);
             return Ok(mapper.Map<PedidoDto>(itemFound));
         }
 
-        // POST api/<PedidoController>
         [HttpPost]
-
+        [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
         public async Task<ActionResult<PedidoDto>> Post([FromBody] PedidoDto value)
         {
             var pedido = mapper.Map<Pedido>(value);
@@ -45,9 +43,8 @@ namespace EmpresaApi.API.Controllers
             return Created("success", mapper.Map<PedidoDto>(pedidoCreated));
         }
 
-        // PUT api/<PedidoController>/5
         [HttpPut("{id}")]
-
+        [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
         public async Task<ActionResult<PedidoDto>> Put(int id, [FromBody] PedidoDto value)
         {
             var pedido = mapper.Map<Pedido>(value);
@@ -58,9 +55,8 @@ namespace EmpresaApi.API.Controllers
             return Ok(mapper.Map<PedidoDto>(pedidoCreated));
         }
 
-        // DELETE api/<PedidoController>/5
         [HttpDelete("{id}")]
-
+        [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
         public async Task<ActionResult> Delete(int id)
         {
             await pedidoService.Delete(id);
