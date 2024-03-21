@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class PedidoService implements OnInit {
+export class PedidoService {
   private readonly apiUrl = `${environment.apiUrl}api/pedidos`;
 
   constructor(private http: HttpClient) {}
@@ -30,9 +30,5 @@ export class PedidoService implements OnInit {
 
   public delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  ngOnInit(): void {
-    throw new Error("Method not implemented.");
   }
 }

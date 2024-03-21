@@ -3,8 +3,8 @@
     <mat-card-title>
       {{
         (clienteSelected$ | async)
-          ? "Editar Item #" + (clienteSelected$ | async)?.uuid
-          : "Novo Item"
+          ? "Editar Usuário #" + (clienteSelected$ | async)?.uuid
+          : "Novo Usuário"
       }}
     </mat-card-title>
   </mat-card-header>
@@ -30,8 +30,6 @@
             cdkAutosizeMaxRows="5"
           />
         </mat-form-field>
-      </div>
-      <div class="row">
         <mat-form-field class="col-md-4">
           <mat-label>Valor mensal</mat-label>
           <input
@@ -42,18 +40,30 @@
           />
         </mat-form-field>
       </div>
+
+      <div class="row">
+        <mat-form-field class="col-md-5">
+          <mat-label>Usuário proprietario</mat-label>
+          <mat-select formControlName="usuarioUuid">
+            <mat-option>None</mat-option>
+            <mat-option
+              *ngFor="let usuario of usuarioList$ | async"
+              [value]="usuario"
+              >{{ usuario.username }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="row">
         <mat-form-field class="col-md-3">
           <mat-label>Data de nascimento</mat-label>
           <input
             matInput
-            readonly
             [matDatepicker]="picker"
             formControlName="dtaNascimento"
             matInput
           />
           <mat-datepicker-toggle
-            disabled
             matIconSuffix
             [for]="picker"
           ></mat-datepicker-toggle>

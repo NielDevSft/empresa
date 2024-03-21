@@ -16,6 +16,8 @@ import {
 import { v4 } from "uuid";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
 import { provideNativeDateAdapter } from "@angular/material/core";
+import { selectAllUsuarios } from "../../../store/usuarios/usuarios.selector";
+import { getAllUsuarios } from "../../../store/usuarios/usuarios.actions";
 
 @Component({
   selector: "app-form-cliente",
@@ -34,6 +36,7 @@ export class FormClienteComponent implements OnInit, OnDestroy {
     dtaNascimento: ["", [Validators.required]],
     valRenda: [0, [Validators.required]],
     cpf: ["", [Validators.required]],
+    usuarioUuid: ["", [Validators.required]],
     userUuid: ["", [Validators.required]],
     createAt: [{ value: null, disable: true }],
     updateAt: [{ value: null, disable: true }],
@@ -41,6 +44,7 @@ export class FormClienteComponent implements OnInit, OnDestroy {
 
   public clienteSelected$ = this.store.select(clienteSelected);
   public currentOperation? = this.store.select(currentOperation);
+  public usuarioList$ = this.store.select(selectAllUsuarios);
 
   ngOnInit(): void {
     combineLatest([
@@ -55,6 +59,11 @@ export class FormClienteComponent implements OnInit, OnDestroy {
 
     this.clienteSelected$.subscribe((value) => {
       this.clienteForm.reset(value);
+    });
+    this.usuarioList$.pipe(take(1)).subscribe((list) => {
+      if (list.length == 0) {
+        this.store.dispatch(getAllUsuarios());
+      }
     });
   }
 

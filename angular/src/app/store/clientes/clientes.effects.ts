@@ -6,16 +6,16 @@ import { AppState } from "../app.state";
 import {
   createCliente,
   deleteCliente,
-  getAllItensByUser,
-  getAllItensByUserFailure,
-  getAllItensByUserSuccess,
+  getAllClientesByUser,
+  getAllClientesByUserFailure,
+  getAllClientesByUserSuccess,
   updateCliente,
 } from "./clientes.actions";
 import { catchError, from, map, of, switchMap } from "rxjs";
 import { ClienteService } from "../../services/cliente.service";
 
 @Injectable()
-export class ItensEffects {
+export class ClientesEffects {
   constructor(
     private actions$: Actions,
     private store: Store<AppState>,
@@ -24,11 +24,13 @@ export class ItensEffects {
 
   getAllClientes$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(getAllItensByUser),
+      ofType(getAllClientesByUser),
       switchMap(() =>
         from(this.clienteService.getAllByUsuario()).pipe(
-          map((clientes) => getAllItensByUserSuccess({ clientes: clientes })),
-          catchError((error) => of(getAllItensByUserFailure({ error })))
+          map((clientes) =>
+            getAllClientesByUserSuccess({ clientes: clientes })
+          ),
+          catchError((error) => of(getAllClientesByUserFailure({ error })))
         )
       )
     )

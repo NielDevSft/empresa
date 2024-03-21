@@ -23,9 +23,14 @@ import {
   StoreDevtoolsModule,
   provideStoreDevtools,
 } from "@ngrx/store-devtools";
-import { NumeroItensPedidoPipe } from "./custom-pipes/numero-itens-pedido.pipe";
 import { ItensEffects } from "./store/itens/itens.effects";
 import { ItensEstoqueEffects } from "./store/itens-estoque/itens-estoque.effects";
+import { ClientesEffects } from "./store/clientes/clientes.effects";
+import { UsuariosEffects } from "./store/usuarios/usuarios.effects";
+import { itemReducer } from "./store/itens/itens.reducer";
+import { itemEstoqueReducer } from "./store/itens-estoque/itens-estoque.reducer";
+import { clienteReducer } from "./store/clientes/clientes.reducer";
+import { usuarioReducer } from "./store/usuarios/usuarios.reducer";
 
 @NgModule({
   declarations: [
@@ -35,8 +40,20 @@ import { ItensEstoqueEffects } from "./store/itens-estoque/itens-estoque.effects
     DemoApisComponent,
   ],
   imports: [
-    EffectsModule.forRoot([PedidosEffects, ItensEffects, ItensEstoqueEffects]),
-    StoreModule.forRoot({ pedido: pedidoReducer }),
+    EffectsModule.forRoot([
+      PedidosEffects,
+      ItensEffects,
+      ItensEstoqueEffects,
+      ClientesEffects,
+      UsuariosEffects,
+    ]),
+    StoreModule.forRoot({
+      pedidos: pedidoReducer,
+      items: itemReducer,
+      itensEstoque: itemEstoqueReducer,
+      clientes: clienteReducer,
+      usuarios: usuarioReducer,
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     BrowserModule,
     FormsModule,
