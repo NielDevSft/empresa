@@ -9,11 +9,31 @@ import {
 } from "../../../store/clientes/clientes.actions";
 import { OperationEnum } from "../../../models/enum/OperationEnum";
 import { selectAllClientes } from "../../../store/clientes/clientes.selector";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
 
 @Component({
   selector: "app-consulta-cliente",
   templateUrl: "./consulta-cliente.component.html",
   styleUrl: "./consulta-cliente.component.css",
+  animations: [
+    trigger("detailExpand", [
+      state(
+        "collapsed",
+        style({ height: "0px", minHeight: "0", visibility: "hidden" })
+      ),
+      state("expanded", style({ height: "*", visibility: "visible" })),
+      transition(
+        "expanded <=> collapsed",
+        animate("225ms cubic-bezier(0.4, 0.0, 0.2, 1)")
+      ),
+    ]),
+  ],
 })
 export class ConsultaClienteComponent implements OnInit {
   store = inject(Store);

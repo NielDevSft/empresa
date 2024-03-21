@@ -10,6 +10,7 @@ import { FormPedidoComponent } from "./form-pedido/form-pedido.component";
 import { ConsultaPedidoComponent } from "./consulta-pedido/consulta-pedido.component";
 import { DeletePedidoComponent } from "./delete-pedido/delete-pedido.component";
 import { NumeroItensPedidoPipe } from "../../custom-pipes/numero-itens-pedido.pipe";
+import { CpfPipe } from "../../custom-pipes/cpf.pipe";
 
 @NgModule({
   declarations: [

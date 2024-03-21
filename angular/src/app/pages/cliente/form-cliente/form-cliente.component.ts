@@ -36,7 +36,6 @@ export class FormClienteComponent implements OnInit, OnDestroy {
     dtaNascimento: ["", [Validators.required]],
     valRenda: [0, [Validators.required]],
     cpf: ["", [Validators.required]],
-    usuarioUuid: ["", [Validators.required]],
     userUuid: ["", [Validators.required]],
     createAt: [{ value: null, disable: true }],
     updateAt: [{ value: null, disable: true }],

@@ -1,11 +1,11 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { Observable, combineLatest, map, of, take } from "rxjs";
 import { OperationEnum } from "../../models/enum/OperationEnum";
-import { currentOperation } from "../../store/pedidos/pedidos.selector";
+import { currentOperation } from "../../store/clientes/clientes.selector";
 import { Store } from "@ngrx/store";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ThemePalette } from "@angular/material/core";
-import { setOperation } from "../../store/pedidos/pedidos.actions";
+import { setOperation } from "../../store/clientes/clientes.actions";
 
 @Component({
   selector: "app-cliente",

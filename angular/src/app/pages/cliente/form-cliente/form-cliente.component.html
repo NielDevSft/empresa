@@ -44,11 +44,11 @@
       <div class="row">
         <mat-form-field class="col-md-5">
           <mat-label>Usuário proprietario</mat-label>
-          <mat-select formControlName="usuarioUuid">
+          <mat-select multiple="false" formControlName="userUuid">
             <mat-option>None</mat-option>
             <mat-option
               *ngFor="let usuario of usuarioList$ | async"
-              [value]="usuario"
+              [value]="usuario.uuid"
               >{{ usuario.username }}</mat-option
             >
           </mat-select>

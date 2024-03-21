@@ -31,7 +31,7 @@
       <ng-container matColumnDef="cpf">
         <mat-header-cell *matHeaderCellDef>CPF</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">
-          {{ element.cpf | currency : "BRL" : "symbol" : "4.2-2" }}
+          {{ element.cpf | cpf }}
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="createAt">
@@ -55,7 +55,7 @@
             mat-icon-button
             color="accent"
             aria-label="Editar"
-            (click)="onEditCliente(element.id)"
+            (click)="onEditCliente(element.uuid)"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -63,7 +63,7 @@
             mat-icon-button
             color="warn"
             aria-label="Deletar"
-            (click)="onDeleteCliente(element.id)"
+            (click)="onDeleteCliente(element.uuid)"
           >
             <mat-icon>delete</mat-icon>
           </button>

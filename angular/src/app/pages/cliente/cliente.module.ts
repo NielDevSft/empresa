@@ -9,6 +9,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { SharedModule } from "../../core/commom-modules/shared.module";
 import { MatTableModule } from "@angular/material/table";
+import { CpfPipe } from "../../custom-pipes/cpf.pipe";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { MatTableModule } from "@angular/material/table";
     DeleteClienteComponent,
     FormClienteComponent,
     ConsultaClienteComponent,
+    CpfPipe,
   ],
   imports: [
     CommonModule,
