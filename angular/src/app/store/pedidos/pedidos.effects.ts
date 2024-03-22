@@ -55,7 +55,7 @@ export class PedidosEffects {
     () =>
       this.actions$.pipe(
         ofType(deletePedido),
-        switchMap(({ id }) => from(this.pedidoService.delete(id)))
+        switchMap(({ uuid }) => from(this.pedidoService.delete(uuid)))
       ),
     { dispatch: false }
   );

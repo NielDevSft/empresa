@@ -19,7 +19,7 @@ export class DeleteItemComponent {
   onDelete() {
     this.itemSelected$.pipe(take(1)).subscribe((ped) => {
       if (ped) {
-        this.store.dispatch(deleteItem({ id: ped.id }));
+        this.store.dispatch(deleteItem({ uuid: ped.uuid }));
         this.store.dispatch(setOperation({ op: OperationEnum.listing }));
       }
     });

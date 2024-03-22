@@ -13,9 +13,9 @@ export const getAllItensByUserFailure = createAction(
   "[Item Component] Get All Itens By User Failure",
   props<{ error: string }>()
 );
-export const getItemById = createAction(
-  "[Item Component] GetItemById",
-  props<{ idUsuario: number }>()
+export const getItemByUuid = createAction(
+  "[Item Component] GetItemByUuid",
+  props<{ uuidUsuario: number }>()
 );
 export const createItem = createAction(
   "[Item Component] CreateItem",
@@ -23,7 +23,7 @@ export const createItem = createAction(
 );
 export const setCurrentItem = createAction(
   "[Item Component] Set Current Item",
-  props<{ id: number }>()
+  props<{ uuid: string }>()
 );
 export const updateItem = createAction(
   "[Item Component] Update Item",
@@ -31,7 +31,7 @@ export const updateItem = createAction(
 );
 export const deleteItem = createAction(
   "[Item Component] Delete Item",
-  props<{ id: number }>()
+  props<{ uuid: string }>()
 );
 export const setOperation = createAction(
   "[Item Component] Update Operation",

@@ -24,11 +24,11 @@ export class PedidoService {
     return this.http.get<Pedido[]>(`${this.apiUrl}`);
   }
 
-  public getById(id: number): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.apiUrl}/${id}`);
+  public getByUuid(uuid: string): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.apiUrl}/${uuid}`);
   }
 
-  public delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  public delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
   }
 }

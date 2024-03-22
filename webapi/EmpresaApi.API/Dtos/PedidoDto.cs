@@ -2,7 +2,7 @@
 {
     public class PedidoDto
     {
-        public int? Id { get; set; } = 0;
+        public Guid? Uuid { get; set; } 
         public string ProfissionalResponsavel { get; set; } = string.Empty;
         public List<ItemPedidoDto> ItensPedido { get; set; } = new List<ItemPedidoDto>();
         public decimal ValorTotal { get; set; } = decimal.Zero;

@@ -22,7 +22,7 @@ export class DeleteItemEstoqueComponent {
   onDelete() {
     this.itensEstoqueelected$.pipe(take(1)).subscribe((ped) => {
       if (ped) {
-        this.store.dispatch(deleteItemEstoque({ id: ped.id }));
+        this.store.dispatch(deleteItemEstoque({ uuid: ped.uuid }));
         this.store.dispatch(setOperation({ op: OperationEnum.listing }));
       }
     });

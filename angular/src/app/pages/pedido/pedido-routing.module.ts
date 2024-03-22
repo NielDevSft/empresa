@@ -18,7 +18,7 @@ const routes: Routes = [
         canMatch: [authGuard],
       },
       {
-        path: "edit/:id",
+        path: "edit/:uuid",
         title: "edit",
         component: FormPedidoComponent,
         canMatch: [authGuard],
@@ -30,7 +30,7 @@ const routes: Routes = [
         canMatch: [authGuard],
       },
       {
-        path: ":id",
+        path: ":uuid",
         title: "show",
         component: ConsultaPedidoComponent,
         canMatch: [authGuard],

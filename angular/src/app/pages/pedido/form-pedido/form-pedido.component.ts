@@ -37,9 +37,9 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   store = inject(Store);
   fromBuilder = inject(FormBuilder);
 
-  columnsItensToDisplay = ["id", "nomItem", "qtdItem", "valItem"];
+  columnsItensToDisplay = ["uuid", "nomItem", "qtdItem", "valItem"];
   pedidoForm: FormGroup = this.fromBuilder.group({
-    id: [],
+    uuid: [],
     profissionalResponsavel: ["", [Validators.required]],
     itensPedido: [[], [Validators.required]],
     valorTotal: [0, [Validators.required]],
@@ -60,9 +60,9 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
       this.pedidoSelected$.pipe(take(1)),
       this.router.params,
     ]).subscribe(([selected, params]) => {
-      const idPedido = params["id"];
+      const idPedido = params["uuid"];
       if (!selected && !!idPedido) {
-        this.store.dispatch(setCurrentPedido({ id: idPedido }));
+        this.store.dispatch(setCurrentPedido({ uuid: idPedido }));
       }
     });
     this.itensPedidoControl?.setValue([]);
@@ -78,7 +78,7 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(setCurrentPedido({ id: 0 }));
+    this.store.dispatch(setCurrentPedido({ uuid: "" }));
   }
 
   onAddItem() {
@@ -92,10 +92,12 @@ export class FormPedidoComponent implements OnInit, OnDestroy {
     this.itensForm?.reset();
   }
 
-  onClonseItem(id: number) {
+  onClonseItem(uuid: string) {
     const itemPedidoItem = this.itensPedidoControl?.value as Item[];
     const vf = this.itensForm.value;
-    this.itensPedidoControl?.setValue(itemPedidoItem.filter((i) => i.id == id));
+    this.itensPedidoControl?.setValue(
+      itemPedidoItem.filter((i) => i.uuid == uuid)
+    );
     this.itensForm?.reset();
   }
 

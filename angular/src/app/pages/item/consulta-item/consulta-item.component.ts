@@ -43,7 +43,7 @@ export class ConsultaItemComponent implements OnInit {
 
   public detalhesExpandidos: any;
   public displayedColumns = [
-    "id",
+    "uuid",
     "nomItem",
     "desItem",
     "createAt",
@@ -64,13 +64,13 @@ export class ConsultaItemComponent implements OnInit {
     })
   );
 
-  onEditItem(id: number) {
-    this.router.navigate(["item/edit/" + id]);
+  onEditItem(uuid: string) {
+    this.router.navigate(["item/edit/" + uuid]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
   }
-  onDeleteItem(id: number) {
+  onDeleteItem(uuid: string) {
     this.router.navigate(["item/delete"]);
-    this.store.dispatch(setCurrentItem({ id: id }));
+    this.store.dispatch(setCurrentItem({ uuid: uuid }));
     this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }
 

@@ -31,7 +31,7 @@ export class FormItemComponent implements OnInit, OnDestroy {
   fromBuilder = inject(FormBuilder);
 
   itemForm: FormGroup = this.fromBuilder.group({
-    id: [0],
+    uuid: [0],
     nomItem: ["", [Validators.required]],
     desItem: ["", [Validators.required]],
     valItem: [0, [Validators.required]],
@@ -47,9 +47,9 @@ export class FormItemComponent implements OnInit, OnDestroy {
       this.itemSelected$.pipe(take(1)),
       this.router.params,
     ]).subscribe(([selected, params]) => {
-      const idItem = params["id"];
+      const idItem = params["uuid"];
       if (!selected && !!idItem) {
-        this.store.dispatch(setCurrentItem({ id: idItem }));
+        this.store.dispatch(setCurrentItem({ uuid: idItem }));
       }
     });
 
@@ -59,7 +59,7 @@ export class FormItemComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(setCurrentItem({ id: 0 }));
+    this.store.dispatch(setCurrentItem({ uuid: "" }));
   }
 
   onSubmit() {

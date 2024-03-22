@@ -13,8 +13,8 @@ export const getAllClientesByUserFailure = createAction(
   "[Cliente Component] Get All Clientes By User Failure",
   props<{ error: string }>()
 );
-export const getClienteById = createAction(
-  "[Cliente Component] GetClienteById",
+export const getClienteByUuid = createAction(
+  "[Cliente Component] GetClienteByUuid",
   props<{ uuid: string }>()
 );
 export const createCliente = createAction(

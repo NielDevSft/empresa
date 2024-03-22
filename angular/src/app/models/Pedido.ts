@@ -2,7 +2,7 @@ import { Item } from "./Item";
 
 export class Pedido {
   constructor(
-    public id: number,
+    public uuid: string,
     public profissionalResponsavel: string,
     public itensPedido: { item: Item; qtd: number }[],
     public valorTotal: number,

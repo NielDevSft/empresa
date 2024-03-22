@@ -3,14 +3,14 @@
     <mat-card-title>
       {{
         (itensEstoqueSelected$ | async)
-          ? "Editar Item Estoque #" + (itensEstoqueSelected$ | async)?.id
+          ? "Editar Item Estoque #" + (itensEstoqueSelected$ | async)?.uuid
           : "Novo Item Estoque"
       }}
     </mat-card-title>
   </mat-card-header>
   <form [formGroup]="itemEstoqueForm" (ngSubmit)="onSubmit()">
     <mat-card-content>
-      <input type="hidden" formControlName="id" />
+      <input type="hidden" formControlName="uuid" />
       <div class="row">
         <mat-form-field class="col-md-4">
           <mat-label>Item</mat-label>
@@ -18,7 +18,7 @@
             <mat-option>Selecione um item</mat-option>
             <mat-option
               *ngFor="let item of itemList$ | async"
-              [value]="item.id"
+              [value]="item.uuid"
               >{{ item.nomItem }}</mat-option
             >
           </mat-select>

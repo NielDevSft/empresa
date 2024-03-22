@@ -53,27 +53,30 @@ export const itemReducer = createReducer(
   })),
   on(createItem, (state, { item }) => ({
     ...state,
-    itemList: [...state.itemList, { ...item, id: state.itemList.length + 1 }],
+    itemList: [
+      ...state.itemList,
+      { ...item, uuid: (state.itemList.length + 1).toString() },
+    ],
   })),
-  on(setCurrentItem, (state, { id }) => ({
+  on(setCurrentItem, (state, { uuid }) => ({
     ...state,
     currentItem:
       state.itemList.find((p) => {
-        return p.id == Number(id);
+        return p.uuid == uuid;
       }) || null,
   })),
   on(updateItem, (state, { item }) => ({
     ...state,
     itemList: state.itemList.map((p) => {
-      if (!!item && p.id === item.id) {
+      if (!!item && p.uuid === item.uuid) {
         return item;
       }
       return p;
     }),
   })),
-  on(deleteItem, (state, { id }) => ({
+  on(deleteItem, (state, { uuid }) => ({
     ...state,
-    itemList: state.itemList.filter((p) => p.id !== id),
+    itemList: state.itemList.filter((p) => p.uuid !== uuid),
     currentItem: null,
   })),
   on(setOperation, (state, { op }) => ({

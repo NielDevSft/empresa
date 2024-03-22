@@ -2,7 +2,7 @@
 {
     public class ItemDto
     {
-        public int? Id { get; set; } = 0;
+        public Guid? Uuid { get; set; }
         public string NomItem { get; set; } = string.Empty;
         public decimal ValItem { get; set; } = decimal.Zero;
         public string DesItem { get; set; } = string.Empty;

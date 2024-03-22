@@ -16,18 +16,18 @@ export class ItemService {
   }
 
   public update(item: Item): Observable<Item> {
-    return this.http.put<Item>(`${this.apiUrl}/${item.id}`, item);
+    return this.http.put<Item>(`${this.apiUrl}/${item.uuid}`, item);
   }
 
   public getAllByUsuario(): Observable<Item[]> {
     return this.http.get<Item[]>(`${this.apiUrl}`);
   }
 
-  public getById(id: number): Observable<Item[]> {
-    return this.http.get<Item[]>(`${this.apiUrl}/${id}`);
+  public getByUuid(uuid: string): Observable<Item[]> {
+    return this.http.get<Item[]>(`${this.apiUrl}/${uuid}`);
   }
 
-  public delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  public delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
   }
 }

@@ -15,7 +15,7 @@ export const getAllUsuariosFailure = createAction(
 );
 export const getUsuarioByUuid = createAction(
   "[Usuario Component] GetUsuarioByUuid",
-  props<{ idUsuario: number }>()
+  props<{ uuidUsuario: number }>()
 );
 export const setCurrentUsuario = createAction(
   "[Usuario Component] Set Current Usuario",

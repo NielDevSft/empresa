@@ -50,7 +50,7 @@ export class FormClienteComponent implements OnInit, OnDestroy {
       this.clienteSelected$.pipe(take(1)),
       this.router.params,
     ]).subscribe(([selected, params]) => {
-      const idCliente = params["id"];
+      const idCliente = params["uuid"];
       if (!selected && !!idCliente) {
         this.store.dispatch(setCurrentCliente({ uuid: idCliente }));
       }

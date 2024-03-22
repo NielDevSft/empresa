@@ -12,7 +12,7 @@ const routes: Routes = [
     component: ItemEstoqueComponent,
     children: [
       {
-        path: "edit/:id",
+        path: "edit/:uuid",
         title: "edit",
         component: FormItemEstoqueComponent,
         canMatch: [authGuard],
@@ -24,7 +24,7 @@ const routes: Routes = [
         canMatch: [authGuard],
       },
       {
-        path: ":id",
+        path: ":uuid",
         title: "show",
         component: ConsultaItemEstoqueComponent,
         canMatch: [authGuard],

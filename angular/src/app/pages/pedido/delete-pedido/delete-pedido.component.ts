@@ -21,7 +21,7 @@ export class DeletePedidoComponent {
   onDelete() {
     this.pedidoSelected$.pipe(take(1)).subscribe((ped) => {
       if (ped) {
-        this.store.dispatch(deletePedido({ id: ped.id }));
+        this.store.dispatch(deletePedido({ uuid: ped.uuid }));
         this.store.dispatch(setOperation({ op: OperationEnum.listing }));
       }
     });

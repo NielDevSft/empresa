@@ -57,7 +57,7 @@ export class ItensEstoqueEffects {
     () =>
       this.actions$.pipe(
         ofType(deleteItemEstoque),
-        switchMap(({ id }) => from(this.itemEstoqueService.delete(id)))
+        switchMap(({ uuid }) => from(this.itemEstoqueService.delete(uuid)))
       ),
     { dispatch: false }
   );

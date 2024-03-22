@@ -42,7 +42,7 @@ export class ConsultaItemEstoqueComponent {
 
   public detalhesExpandidos: any;
   public displayedColumns = [
-    "id",
+    "uuid",
     "idItem",
     "nomItem",
     "qtdItem",
@@ -64,13 +64,13 @@ export class ConsultaItemEstoqueComponent {
     })
   );
 
-  onEditItemEstoque(id: number) {
-    this.router.navigate(["item-estoque/edit/" + id]);
+  onEditItemEstoque(uuid: string) {
+    this.router.navigate(["item-estoque/edit/" + uuid]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
   }
-  onDeleteItemEstoque(id: number) {
+  onDeleteItemEstoque(uuid: string) {
     this.router.navigate(["item-estoque/delete"]);
-    this.store.dispatch(setCurrentItemEstoque({ id: id }));
+    this.store.dispatch(setCurrentItemEstoque({ uuid: uuid }));
     this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }
 

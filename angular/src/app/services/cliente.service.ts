@@ -23,7 +23,7 @@ export class ClienteService {
     return this.http.get<Cliente[]>(`${this.apiUrl}`);
   }
 
-  public getById(uuid: string): Observable<Cliente[]> {
+  public getByUuid(uuid: string): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(`${this.apiUrl}/${uuid}`);
   }
 

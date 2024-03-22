@@ -42,7 +42,7 @@ export class ConsultaPedidoComponent {
 
   public detalhesExpandidos: any;
   public displayedColumns = [
-    "id",
+    "uuid",
     "desPedido",
     "profissionalResponsavel",
     "valorTotal",
@@ -64,13 +64,13 @@ export class ConsultaPedidoComponent {
     })
   );
 
-  onEditPedido(id: number) {
-    this.router.navigate(["pedido/edit/" + id]);
+  onEditPedido(uuid: string) {
+    this.router.navigate(["pedido/edit/" + uuid]);
     this.store.dispatch(setOperation({ op: OperationEnum.updating }));
   }
-  onDeletePedido(id: number) {
+  onDeletePedido(uuid: string) {
     this.router.navigate(["pedido/delete"]);
-    this.store.dispatch(setCurrentPedido({ id: id }));
+    this.store.dispatch(setCurrentPedido({ uuid: uuid }));
     this.store.dispatch(setOperation({ op: OperationEnum.deleting }));
   }
 

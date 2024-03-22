@@ -38,7 +38,7 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
   fromBuilder = inject(FormBuilder);
 
   itemEstoqueForm: FormGroup = this.fromBuilder.group({
-    id: [],
+    uuid: [],
     idItem: [{}, [Validators.required]],
     qtdItem: ["", [Validators.required]],
     createAt: [{ value: null, disable: true }],
@@ -54,14 +54,14 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
       this.itensEstoqueSelected$.pipe(take(1)),
       this.router.params,
     ]).subscribe(([selected, params]) => {
-      const idItemEstoque = params["id"];
+      const idItemEstoque = params["uuid"];
       if (!selected && !!idItemEstoque) {
-        this.store.dispatch(setCurrentItemEstoque({ id: idItemEstoque }));
+        this.store.dispatch(setCurrentItemEstoque({ uuid: idItemEstoque }));
       }
     });
 
     this.itensEstoqueSelected$.subscribe((value) => {
-      this.itemEstoqueForm.reset({ ...value, idItem: value?.item.id });
+      this.itemEstoqueForm.reset({ ...value, idItem: value?.item.uuid });
     });
 
     this.itemList$.pipe(take(1)).subscribe((list) => {
@@ -76,7 +76,7 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(setCurrentItemEstoque({ id: 0 }));
+    this.store.dispatch(setCurrentItemEstoque({ uuid: "" }));
   }
 
   onSubmit() {
@@ -86,7 +86,7 @@ export class FormItemEstoqueComponent implements OnInit, OnDestroy {
         take(1),
         map((op) => {
           this.store.dispatch(
-            setCurrentItem({ id: this.itemEstoqueForm.value.idItem })
+            setCurrentItem({ uuid: this.itemEstoqueForm.value.idItem })
           );
           switch (op) {
             case OperationEnum.creating:

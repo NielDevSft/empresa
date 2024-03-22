@@ -3,14 +3,14 @@
     <mat-card-title>
       {{
         (pedidoSelected$ | async)
-          ? "Editar Pedido #" + (pedidoSelected$ | async)?.id
+          ? "Editar Pedido #" + (pedidoSelected$ | async)?.uuid
           : "Novo Pedido"
       }}
     </mat-card-title>
   </mat-card-header>
   <form [formGroup]="pedidoForm" (ngSubmit)="onSubmit()">
     <mat-card-content>
-      <input type="hidden" formControlName="id" />
+      <input type="hidden" formControlName="uuid" />
       <div class="row">
         <mat-form-field class="col-md-6">
           <mat-label>Responsavel</mat-label>
@@ -83,10 +83,10 @@
           </button>
         </div>
         <table mat-table [dataSource]="itensPedidoControl?.value">
-          <ng-container matColumnDef="id">
+          <ng-container matColumnDef="uuid">
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let itemPedido">
-              {{ itemPedido.item.id }}
+              {{ itemPedido.item.uuid }}
             </td>
           </ng-container>
           <ng-container matColumnDef="nomItem">

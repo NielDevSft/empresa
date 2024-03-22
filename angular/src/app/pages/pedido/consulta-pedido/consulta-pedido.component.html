@@ -1,9 +1,9 @@
 <mat-card>
   <mat-card-content>
     <table mat-table #table [dataSource]="pedidoList$" class="mat-elevation-z8">
-      <ng-container matColumnDef="id">
+      <ng-container matColumnDef="uuid">
         <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{ element.uuid }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="desPedido">
         <mat-header-cell *matHeaderCellDef
@@ -50,7 +50,7 @@
             mat-icon-button
             color="accent"
             aria-label="Editar"
-            (click)="onEditPedido(element.id)"
+            (click)="onEditPedido(element.uuid)"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -58,7 +58,7 @@
             mat-icon-button
             color="warn"
             aria-label="Deletar"
-            (click)="onDeletePedido(element.id)"
+            (click)="onDeletePedido(element.uuid)"
           >
             <mat-icon>delete</mat-icon>
           </button>
@@ -73,10 +73,10 @@
             [dataSource]="detail.element.itensPedido"
             class="mat-elevation-z8"
           >
-            <ng-container matColumnDef="id">
+            <ng-container matColumnDef="uuid">
               <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
               <mat-cell *matCellDef="let element">{{
-                element.item.id
+                element.item.uuid
               }}</mat-cell>
             </ng-container>
             <ng-container matColumnDef="nomItem">
@@ -98,12 +98,12 @@
               }}</mat-cell>
             </ng-container>
             <mat-header-row
-              *matHeaderRowDef="['id', 'nomItem', 'qtdItem', 'valItem']"
+              *matHeaderRowDef="['uuid', 'nomItem', 'qtdItem', 'valItem']"
             ></mat-header-row>
             <mat-row
               *matRowDef="
                 let row;
-                columns: ['id', 'nomItem', 'qtdItem', 'valItem']
+                columns: ['uuid', 'nomItem', 'qtdItem', 'valItem']
               "
             ></mat-row>
           </table>

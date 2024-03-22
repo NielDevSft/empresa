@@ -6,14 +6,14 @@
       [dataSource]="itemEstoqueList$"
       class="mat-elevation-z8"
     >
-      <ng-container matColumnDef="id">
+      <ng-container matColumnDef="uuid">
         <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{ element.uuid }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="idItem">
         <mat-header-cell *matHeaderCellDef>Cod. Item</mat-header-cell>
         <mat-cell mat-cell *matCellDef="let element">{{
-          element.item.id
+          element.item.uuid
         }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="nomItem">
@@ -61,7 +61,7 @@
             mat-icon-button
             color="accent"
             aria-label="Editar"
-            (click)="onEditItemEstoque(element.id)"
+            (click)="onEditItemEstoque(element.uuid)"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -69,7 +69,7 @@
             mat-icon-button
             color="warn"
             aria-label="Deletar"
-            (click)="onDeleteItemEstoque(element.id)"
+            (click)="onDeleteItemEstoque(element.uuid)"
           >
             <mat-icon>delete</mat-icon>
           </button>

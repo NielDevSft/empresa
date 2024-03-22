@@ -17,7 +17,7 @@ export class ItemEstoqueService {
 
   public update(itemEstoque: ItemEstoque): Observable<ItemEstoque> {
     return this.http.put<ItemEstoque>(
-      `${this.apiUrl}/${itemEstoque.id}`,
+      `${this.apiUrl}/${itemEstoque.uuid}`,
       itemEstoque
     );
   }
@@ -26,11 +26,11 @@ export class ItemEstoqueService {
     return this.http.get<ItemEstoque[]>(`${this.apiUrl}`);
   }
 
-  public getById(id: number): Observable<ItemEstoque[]> {
-    return this.http.get<ItemEstoque[]>(`${this.apiUrl}/${id}`);
+  public getByUuid(uuid: string): Observable<ItemEstoque[]> {
+    return this.http.get<ItemEstoque[]>(`${this.apiUrl}/${uuid}`);
   }
 
-  public delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  public delete(uuid: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${uuid}`);
   }
 }

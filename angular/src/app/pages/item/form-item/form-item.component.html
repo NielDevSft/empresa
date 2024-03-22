@@ -3,14 +3,14 @@
     <mat-card-title>
       {{
         (itemSelected$ | async)
-          ? "Editar Item #" + (itemSelected$ | async)?.id
+          ? "Editar Item #" + (itemSelected$ | async)?.uuid
           : "Novo Item"
       }}
     </mat-card-title>
   </mat-card-header>
   <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
     <mat-card-content>
-      <input type="hidden" formControlName="id" />
+      <input type="hidden" formControlName="uuid" />
       <div class="row">
         <mat-form-field class="col-md-4">
           <mat-label>Nome da item</mat-label>

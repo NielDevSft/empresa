@@ -56,28 +56,28 @@ export const itemEstoqueReducer = createReducer(
     ...state,
     itemEstoqueList: [
       ...state.itemEstoqueList,
-      { ...itemEstoque, id: state.itemEstoqueList.length + 1 },
+      { ...itemEstoque, uuid: (state.itemEstoqueList.length + 1).toString() },
     ],
   })),
-  on(setCurrentItemEstoque, (state, { id }) => ({
+  on(setCurrentItemEstoque, (state, { uuid }) => ({
     ...state,
     currentItemEstoque:
       state.itemEstoqueList.find((p) => {
-        return p.id == Number(id);
+        return p.uuid == uuid;
       }) || null,
   })),
   on(updateItemEstoque, (state, { itemEstoque }) => ({
     ...state,
     itemEstoqueList: state.itemEstoqueList.map((p) => {
-      if (!!itemEstoque && p.id === itemEstoque.id) {
+      if (!!itemEstoque && p.uuid === itemEstoque.uuid) {
         return itemEstoque;
       }
       return p;
     }),
   })),
-  on(deleteItemEstoque, (state, { id }) => ({
+  on(deleteItemEstoque, (state, { uuid }) => ({
     ...state,
-    itemEstoqueList: state.itemEstoqueList.filter((p) => p.id !== id),
+    itemEstoqueList: state.itemEstoqueList.filter((p) => p.uuid !== uuid),
     currentItemEstoque: null,
   })),
   on(setOperation, (state, { op }) => ({

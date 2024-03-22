@@ -13,9 +13,9 @@ export const getAllPedidosByUserFailure = createAction(
   "[Pedido Component] Get All Pedidos By User Failure",
   props<{ error: string }>()
 );
-export const getPedidoById = createAction(
-  "[Pedido Component] GetPedidoById",
-  props<{ idUsuario: number }>()
+export const getPedidoByUuid = createAction(
+  "[Pedido Component] GetPedidoByUuid",
+  props<{ uuidUsuario: number }>()
 );
 export const createPedido = createAction(
   "[Pedido Component] CreatePedido",
@@ -23,7 +23,7 @@ export const createPedido = createAction(
 );
 export const setCurrentPedido = createAction(
   "[Pedido Component] Set Current Pedido",
-  props<{ id: number }>()
+  props<{ uuid: string }>()
 );
 export const updatePedido = createAction(
   "[Pedido Component] Update Pedido",
@@ -31,7 +31,7 @@ export const updatePedido = createAction(
 );
 export const deletePedido = createAction(
   "[Pedido Component] Delete Pedido",
-  props<{ id: number }>()
+  props<{ uuid: string }>()
 );
 export const setOperation = createAction(
   "[Pedido Component] Update Operation",

@@ -22,7 +22,7 @@ export interface PedidoState {
   errors: string | null;
 }
 const initItem1 = new Item(
-  1,
+  "1",
   "Garrafa",
   13,
   "Garrafinha de plastico",
@@ -30,7 +30,7 @@ const initItem1 = new Item(
   new Date()
 );
 const initItem2 = new Item(
-  2,
+  "2",
   "Carpete",
   25,
   "Carpete de linho",
@@ -40,7 +40,7 @@ const initItem2 = new Item(
 export const initialState: PedidoState = {
   pedidoList: [
     new Pedido(
-      1,
+      "",
       "Rael Ferreira",
       [{ item: initItem2, qtd: 3 }],
       0,
@@ -48,7 +48,7 @@ export const initialState: PedidoState = {
       new Date()
     ),
     new Pedido(
-      2,
+      "",
       "Rael Ferreira",
       [
         { item: initItem1, qtd: 3 },
@@ -90,28 +90,28 @@ export const pedidoReducer = createReducer(
     ...state,
     pedidoList: [
       ...state.pedidoList,
-      { ...pedido, id: state.pedidoList.length + 1 },
+      { ...pedido, uuid: (state.pedidoList.length + 1).toString() },
     ],
   })),
-  on(setCurrentPedido, (state, { id }) => ({
+  on(setCurrentPedido, (state, { uuid }) => ({
     ...state,
     currentPedido:
       state.pedidoList.find((p) => {
-        return p.id == Number(id);
+        return p.uuid == uuid;
       }) || null,
   })),
   on(updatePedido, (state, { pedido }) => ({
     ...state,
     pedidoList: state.pedidoList.map((p) => {
-      if (!!pedido && p.id === pedido.id) {
+      if (!!pedido && p.uuid === pedido.uuid) {
         return pedido;
       }
       return p;
     }),
   })),
-  on(deletePedido, (state, { id }) => ({
+  on(deletePedido, (state, { uuid }) => ({
     ...state,
-    pedidoList: state.pedidoList.filter((p) => p.id !== id),
+    pedidoList: state.pedidoList.filter((p) => p.uuid !== uuid),
     currentPedido: null,
   })),
   on(setOperation, (state, { op }) => ({

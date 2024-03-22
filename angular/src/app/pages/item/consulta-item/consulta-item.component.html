@@ -1,9 +1,9 @@
 <mat-card>
   <mat-card-content>
     <table mat-table #table [dataSource]="itemList$" class="mat-elevation-z8">
-      <ng-container matColumnDef="id">
+      <ng-container matColumnDef="uuid">
         <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{ element.uuid }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="nomItem">
         <mat-header-cell *matHeaderCellDef>Nome item</mat-header-cell>
@@ -39,7 +39,7 @@
             mat-icon-button
             color="accent"
             aria-label="Editar"
-            (click)="onEditItem(element.id)"
+            (click)="onEditItem(element.uuid)"
           >
             <mat-icon>edit</mat-icon>
           </button>
@@ -47,7 +47,7 @@
             mat-icon-button
             color="warn"
             aria-label="Deletar"
-            (click)="onDeleteItem(element.id)"
+            (click)="onDeleteItem(element.uuid)"
           >
             <mat-icon>delete</mat-icon>
           </button>
