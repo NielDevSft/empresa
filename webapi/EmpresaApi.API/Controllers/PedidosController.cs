@@ -23,11 +23,11 @@ namespace EmpresaApi.API.Controllers
             return Ok((await pedidoService.GetAll()).Select(p => mapper.Map<PedidoDto>(p)));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<PedidoDto>> Get(int id)
+        public async Task<ActionResult<PedidoDto>> Get(Guid uuid)
         {
-            var itemFound = await pedidoService.GetById(id);
+            var itemFound = await pedidoService.GetById(uuid);
             return Ok(mapper.Map<PedidoDto>(itemFound));
         }
 
@@ -43,23 +43,23 @@ namespace EmpresaApi.API.Controllers
             return Created("success", mapper.Map<PedidoDto>(pedidoCreated));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<PedidoDto>> Put(int id, [FromBody] PedidoDto value)
+        public async Task<ActionResult<PedidoDto>> Put(Guid uuid, [FromBody] PedidoDto value)
         {
             var pedido = mapper.Map<Pedido>(value);
             if (!pedido.IsValid())
                 return BadRequest(pedido.ValidationResult.Errors);
 
-            var pedidoCreated = await pedidoService.Update(id, pedido);
+            var pedidoCreated = await pedidoService.Update(uuid, pedido);
             return Ok(mapper.Map<PedidoDto>(pedidoCreated));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid uuid)
         {
-            await pedidoService.Delete(id);
+            await pedidoService.Delete(uuid);
             return Ok();
         }
     }

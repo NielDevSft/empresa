@@ -1,6 +1,7 @@
 ﻿
 using EmpresaAPI.Domain.Core.Models;
 using EmpresaAPI.Persistence.Extentions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EmpresaAPI.Persistence.Mapping
@@ -9,7 +10,9 @@ namespace EmpresaAPI.Persistence.Mapping
     {
         public override void Map(EntityTypeBuilder<T> builder)
         {
-            builder.HasKey(e => e.Id);
+            builder.Property(u => u.Uuid)
+                   .HasDefaultValueSql("newsequentialid()");
+            builder.HasKey(u => u.Uuid);
 
             builder.Property(e => e.Active)
                 .IsRequired();

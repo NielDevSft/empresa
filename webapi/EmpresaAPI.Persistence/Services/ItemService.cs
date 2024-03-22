@@ -26,9 +26,9 @@ namespace EmpresaAPI.Persistence.Services
             return item;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid uuid)
         {
-            var item = itemRepository.GetById(id, "ItemEstoque");
+            var item = itemRepository.GetById(uuid, "ItemEstoque");
             if (item! != null! && item.ItemEstoque != null!)
                 item.ItemEstoque.First().Removed = true;
             item!.Removed = true;
@@ -49,12 +49,12 @@ namespace EmpresaAPI.Persistence.Services
             return itemList;
         }
 
-        public async Task<Item> GetById(int id)
+        public async Task<Item> GetById(Guid uuid)
         {
             Item? itemFound = null;
 
             itemFound = (await itemRepository
-                .FindAllWhereAsync(i => i.Id == id && !i.Removed)).FirstOrDefault();
+                .FindAllWhereAsync(i => i.Uuid == uuid && !i.Removed)).FirstOrDefault();
 
             if (itemFound! == null!)
             {
@@ -65,10 +65,10 @@ namespace EmpresaAPI.Persistence.Services
             return itemFound;
         }
 
-        public async Task<Item> Update(int id, Item item)
+        public async Task<Item> Update(Guid uuid, Item item)
         {
             Item? itemFound = null;
-            itemFound = await itemRepository.GetByIdAsync(id)!;
+            itemFound = await itemRepository.GetByIdAsync(uuid)!;
             itemFound!.NomItem = item.NomItem;
             itemFound!.ValItem = item.ValItem;
             itemFound!.DesItem = item.DesItem;

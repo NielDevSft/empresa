@@ -44,13 +44,13 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
-var cultureInfo = new CultureInfo("pt-BR"); // Substitua "en-US" pela cultura desejada
-CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 using (var serviceScope = app.Services.CreateScope())
 {
     try
     {
+        var cultureInfo = new CultureInfo("pt"); // Substitua "en-US" pela cultura desejada
+        CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+        CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         var context = serviceScope.ServiceProvider.GetRequiredService<EmpresaOrganizationContext>();
         context.Database.Migrate();
     }

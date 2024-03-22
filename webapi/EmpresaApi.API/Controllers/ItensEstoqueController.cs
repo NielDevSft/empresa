@@ -22,11 +22,11 @@ namespace EmpresaApi.API.Controllers
             return Ok((await itemEstoqueService.GetAll()).Select(p => mapper.Map<ItemEstoqueDto>(p)));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<ItemEstoqueDto>> Get(int id)
+        public async Task<ActionResult<ItemEstoqueDto>> Get(Guid uuid)
         {
-            var itemFound = await itemEstoqueService.GetById(id);
+            var itemFound = await itemEstoqueService.GetById(uuid);
             return Ok(mapper.Map<ItemEstoqueDto>(itemFound));
         }
 
@@ -38,19 +38,19 @@ namespace EmpresaApi.API.Controllers
             return Created("sucsess", mapper.Map<ItemEstoqueDto>(itemCreated));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<ItemEstoqueDto>> Put(int id, [FromBody] ItemEstoqueDto value)
+        public async Task<ActionResult<ItemEstoqueDto>> Put(Guid uuid, [FromBody] ItemEstoqueDto value)
         {
-            var itemUpdate = await itemEstoqueService.Update(id, mapper.Map<ItemEstoque>(value));
+            var itemUpdate = await itemEstoqueService.Update(uuid, mapper.Map<ItemEstoque>(value));
             return Ok(mapper.Map<ItemEstoqueDto>(itemUpdate));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid uuid)
         {
-            await itemEstoqueService.Delete(id);
+            await itemEstoqueService.Delete(uuid);
             return Ok();
         }
     }

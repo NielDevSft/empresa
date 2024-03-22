@@ -14,8 +14,6 @@ namespace EmpresaApi.API.Controllers
     public class ItensController(ILogger<ItensController> logger,
         IItemService itemService,
         IMapper mapper) : ControllerBase
-
-
     {
         // GET: api/<ItensController>
         [HttpGet]
@@ -27,11 +25,11 @@ namespace EmpresaApi.API.Controllers
         }
 
         // GET api/<ItensController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<ItemDto>> Get(int id)
+        public async Task<ActionResult<ItemDto>> Get(Guid uuid)
         {
-            var itemFound = await itemService.GetById(id);
+            var itemFound = await itemService.GetById(uuid);
             return Ok(mapper.Map<ItemDto>(itemFound));
         }
 
@@ -50,25 +48,25 @@ namespace EmpresaApi.API.Controllers
         }
 
         // PUT api/<ItensController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult<ItemDto>> Put(int id, [FromBody] ItemDto value)
+        public async Task<ActionResult<ItemDto>> Put(Guid uuid, [FromBody] ItemDto value)
         {
             var item = mapper.Map<Item>(value);
 
             if (!item.IsValid())
                 return BadRequest(item.ValidationResult.Errors);
 
-            var itemCreated = await itemService.Update(id, item);
+            var itemCreated = await itemService.Update(uuid, item);
             return mapper.Map<ItemDto>(itemCreated);
         }
 
         // DELETE api/<ItensController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{uuid}")]
         [Authorize(Roles = "CLIENTE_ADM_EMPRESA")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(Guid uuid)
         {
-            await itemService.Delete(id);
+            await itemService.Delete(uuid);
             return Ok();
         }
     }

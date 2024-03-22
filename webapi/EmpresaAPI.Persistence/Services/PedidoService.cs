@@ -18,8 +18,8 @@ namespace EmpresaAPI.Persistence.Services
             foreach (var itemPedido in pedido
             .ItensPedido)
             {
-                var item = await itemRepository.GetByIdAsync(itemPedido.Item!.Id);
-                itemPedido.ItemId = itemPedido.Item!.Id;
+                var item = await itemRepository.GetByIdAsync(itemPedido.Item!.Uuid);
+                itemPedido.ItemUuid = itemPedido.Item!.Uuid;
                 itemPedido.Item = null;
                 itensPedidosTratados.Add(itemPedido);
             }
@@ -32,13 +32,13 @@ namespace EmpresaAPI.Persistence.Services
             return pedido;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid uuid)
         {
 
-            var pedido = pedidoRepository.GetById(id);
+            var pedido = pedidoRepository.GetById(uuid);
             if (pedido! != null!)
             {
-                pedidoRepository.Remove(pedido.Id);
+                pedidoRepository.Remove(pedido.Uuid);
                 await Task.Run(() => pedidoRepository.SaveChanges());
 
             }
@@ -48,18 +48,18 @@ namespace EmpresaAPI.Persistence.Services
 
         public async Task<List<Pedido>> GetAll()
         {
-            var pedidoDict = new Dictionary<int, Pedido>();
+            var pedidoDict = new Dictionary<Guid, Pedido>();
 
 
             var itemPedidoList = await itemPedidoRepository.FindAllWhereAsync(i => !i.Pedido!.Removed, "Pedido", "Item");
 
             foreach (var itemPedido in itemPedidoList)
             {
-                if (!pedidoDict.TryGetValue(itemPedido.Pedido!.Id, out var pedido))
+                if (!pedidoDict.TryGetValue(itemPedido.Pedido!.Uuid, out var pedido))
                 {
                     pedido = itemPedido.Pedido;
                     pedido.ItensPedido = new List<ItemPedido>();
-                    pedidoDict.Add(pedido.Id, pedido);
+                    pedidoDict.Add(pedido.Uuid, pedido);
                 }
 
                 pedido.ItensPedido.Add(itemPedido);
@@ -69,12 +69,12 @@ namespace EmpresaAPI.Persistence.Services
             return pedidoDict.Values.ToList();
         }
 
-        public async Task<Pedido> GetById(int id)
+        public async Task<Pedido> GetById(Guid uuid)
         {
             Pedido? pedidoFound = null;
 
             pedidoFound = await pedidoRepository
-                .GetByIdAsync(id);
+                .GetByIdAsync(uuid);
 
             if (pedidoFound! == null!)
             {
@@ -85,11 +85,11 @@ namespace EmpresaAPI.Persistence.Services
             return pedidoFound;
         }
 
-        public async Task<Pedido> Update(int id, Pedido item)
+        public async Task<Pedido> Update(Guid uuid, Pedido item)
         {
             Pedido? pedidoFound = null;
 
-            pedidoFound = pedidoRepository.GetById(id);
+            pedidoFound = pedidoRepository.GetById(uuid);
             if (pedidoFound! != null!)
             {
                 pedidoFound.ProfissionalResponsavel = item.ProfissionalResponsavel;

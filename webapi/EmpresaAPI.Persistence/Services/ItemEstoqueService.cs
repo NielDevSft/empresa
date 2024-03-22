@@ -12,7 +12,7 @@ namespace EmpresaAPI.Persistence.Services
 
             var itemEstoqueExisting = itemEstoqueRepository
                .FindAllWhere(ie => !ie.Removed &&
-               ie.Item!.Id == itemEstoque.Item!.Id)
+               ie.Item!.Uuid == itemEstoque.Item!.Uuid)
                .FirstOrDefault();
 
             if (itemEstoqueExisting! != null!)
@@ -22,7 +22,7 @@ namespace EmpresaAPI.Persistence.Services
             }
             else
             {
-                var item = itemRepository.GetById(itemEstoque.Item!.Id);
+                var item = itemRepository.GetById(itemEstoque.Item!.Uuid);
                 if (item! == null!)
                     throw new ArgumentException("Item não encontrado");
                 item.ItemEstoque.Add(itemEstoque);
@@ -38,10 +38,10 @@ namespace EmpresaAPI.Persistence.Services
             return itemEstoque;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid uuid)
         {
 
-            itemEstoqueRepository.Remove(id);
+            itemEstoqueRepository.Remove(uuid);
             itemEstoqueRepository.SaveChanges();
             await Task.Run(() => itemEstoqueRepository.SaveChanges());
 
@@ -64,9 +64,9 @@ namespace EmpresaAPI.Persistence.Services
 
         }
 
-        public async Task<ItemEstoque> GetById(int id)
+        public async Task<ItemEstoque> GetById(Guid uuid)
         {
-            var itemFound = await itemEstoqueRepository.GetByIdAsync(id);
+            var itemFound = await itemEstoqueRepository.GetByIdAsync(uuid);
             if (itemFound! == null!)
             {
                 throw new Exception("Item Estoque não encontrado");
@@ -75,11 +75,11 @@ namespace EmpresaAPI.Persistence.Services
             return itemFound!;
         }
 
-        public async Task<ItemEstoque> Update(int id, ItemEstoque item)
+        public async Task<ItemEstoque> Update(Guid uuid, ItemEstoque item)
         {
             ItemEstoque? itemEstoqueFound = null;
 
-            itemEstoqueFound = await itemEstoqueRepository.GetByIdAsync(id);
+            itemEstoqueFound = await itemEstoqueRepository.GetByIdAsync(uuid);
 
             if (itemEstoqueFound! != null!)
             {
