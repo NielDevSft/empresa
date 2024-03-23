@@ -102,6 +102,7 @@ namespace EmpresaAPI.Persistence.Services
                 {
                     itemPedidoRepository.Remove(ip.Uuid);
                 });
+                itensPedidoFound = pedido.ItensPedido.ToList();
             }
             else
             {
