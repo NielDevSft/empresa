@@ -67,7 +67,7 @@ namespace EmpresaAPI.Persistence.Services
 
         public async Task<Pedido> GetById(Guid uuid)
         {
-            Pedido? pedidoFound = null;
+            Pedido pedidoFound;
 
             pedidoFound = await pedidoRepository
                 .GetById(uuid);
@@ -76,7 +76,6 @@ namespace EmpresaAPI.Persistence.Services
             {
                 throw new Exception("Item não encontrado");
             }
-
 
             return pedidoFound;
         }
@@ -92,27 +91,7 @@ namespace EmpresaAPI.Persistence.Services
             pedidoFound = pedidoFoundTk.Result;
             itensPedidoFound = itensPedidoFoundTk.Result;
 
-            if (itensPedidoFound.Count > pedido.ItensPedido.Count)
-            {
-                var itensARemover = itensPedidoFound.ToList();
-                itensARemover.RemoveAll(ip =>
-                   pedido.ItensPedido.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
-                   && ipf.ItemUuid == ip.ItemUuid) is null);
-                itensARemover.ForEach(ip =>
-                {
-                    itemPedidoRepository.Remove(ip.Uuid);
-                });
-                itensPedidoFound = pedido.ItensPedido.ToList();
-            }
-            else
-            {
-                var itensExcedentes = pedido.ItensPedido.ToList();
-                var itens = itensExcedentes.RemoveAll(ip =>
-                    itensPedidoFound.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
-                    && ipf.ItemUuid == ip.ItemUuid) is not null) ;
-
-                itensPedidoFound.AddRange(itensExcedentes);
-            }
+            itensPedidoFound = UpdateItemPedidoList(pedido, itensPedidoFound);
             if (pedidoFound is null)
             {
                 throw new Exception("Pedido não encontrado");
@@ -128,6 +107,35 @@ namespace EmpresaAPI.Persistence.Services
 
             }
             return pedidoFound!;
+        }
+
+        private List<ItemPedido> UpdateItemPedidoList(Pedido pedido, List<ItemPedido> itensPedidoFound)
+        {
+            if (itensPedidoFound.Count > pedido.ItensPedido.Count)
+            {
+                var itensARemover = itensPedidoFound.ToList();
+                itensARemover.RemoveAll(ip =>
+                   pedido.ItensPedido.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
+                   && ipf.ItemUuid == ip.ItemUuid) is null);
+                itensARemover.ForEach(ip =>
+                {
+                    itemPedidoRepository.Remove(ip.Uuid);
+                });
+                itensPedidoFound = itensPedidoFound.FindAll(ipf => pedido
+                    .ItensPedido
+                    .FirstOrDefault(ip => ipf.ItemUuid == ip.ItemUuid && ip.QtdItem == ip.QtdItem) is not null);
+            }
+            else
+            {
+                var itensExcedentes = pedido.ItensPedido.ToList();
+                var itens = itensExcedentes.RemoveAll(ip =>
+                    itensPedidoFound.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
+                    && ipf.ItemUuid == ip.ItemUuid) is not null);
+
+                itensPedidoFound.AddRange(itensExcedentes);
+            }
+
+            return itensPedidoFound;
         }
     }
 }
