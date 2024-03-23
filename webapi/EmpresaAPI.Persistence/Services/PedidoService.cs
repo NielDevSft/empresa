@@ -4,6 +4,7 @@ using EmpresaAPI.Domain.Pedidos.ItensPedidos;
 using EmpresaAPI.Domain.Pedidos.ItensPedidos.Repository;
 using EmpresaAPI.Domain.Pedidos.Repository;
 using EmpresaAPI.Domain.Pedidos.Service;
+using System.Collections.Generic;
 
 namespace EmpresaAPI.Persistence.Services
 {
@@ -18,32 +19,27 @@ namespace EmpresaAPI.Persistence.Services
             foreach (var itemPedido in pedido
             .ItensPedido)
             {
-                var item = await itemRepository.GetByIdAsync(itemPedido.Item!.Uuid);
+                var item = await itemRepository.GetById(itemPedido.Item!.Uuid);
                 itemPedido.ItemUuid = itemPedido.Item!.Uuid;
                 itemPedido.Item = null;
                 itensPedidosTratados.Add(itemPedido);
             }
             pedido.ItensPedido = itensPedidosTratados;
-            pedidoRepository.Add(pedido);
+            await pedidoRepository.Add(pedido);
 
-            itemPedidoRepository.SaveChanges();
-
-            itemPedidoRepository.Dispose();
+            await itemPedidoRepository.SaveChanges();
             return pedido;
         }
 
         public async Task Delete(Guid uuid)
         {
-
-            var pedido = pedidoRepository.GetById(uuid);
+            var pedido = await pedidoRepository.GetById(uuid);
             if (pedido! != null!)
             {
-                pedidoRepository.Remove(pedido.Uuid);
-                await Task.Run(() => pedidoRepository.SaveChanges());
+                await pedidoRepository.Remove(pedido.Uuid);
+                await pedidoRepository.SaveChanges();
 
             }
-
-            pedidoRepository.Dispose();
         }
 
         public async Task<List<Pedido>> GetAll()
@@ -51,7 +47,7 @@ namespace EmpresaAPI.Persistence.Services
             var pedidoDict = new Dictionary<Guid, Pedido>();
 
 
-            var itemPedidoList = await itemPedidoRepository.FindAllWhereAsync(i => !i.Pedido!.Removed, "Pedido", "Item");
+            var itemPedidoList = await itemPedidoRepository.FindAllWhere(i => !i.Pedido!.Removed, "Pedido", "Item");
 
             foreach (var itemPedido in itemPedidoList)
             {
@@ -74,32 +70,62 @@ namespace EmpresaAPI.Persistence.Services
             Pedido? pedidoFound = null;
 
             pedidoFound = await pedidoRepository
-                .GetByIdAsync(uuid);
+                .GetById(uuid);
 
             if (pedidoFound! == null!)
             {
                 throw new Exception("Item não encontrado");
             }
 
-            pedidoRepository.Dispose();
+
             return pedidoFound;
         }
 
-        public async Task<Pedido> Update(Guid uuid, Pedido item)
+        public async Task<Pedido> Update(Guid uuid, Pedido pedido)
         {
-            Pedido? pedidoFound = null;
+            var pedidoFoundTk = pedidoRepository.GetById(uuid, "ItensPedido");
+            var itensPedidoFoundTk = itemPedidoRepository.FindAllWhere(ip => ip.PedidoUuid == pedido.Uuid);
+            Pedido? pedidoFound;
+            List<ItemPedido> itensPedidoFound = new List<ItemPedido>();
+            await Task.WhenAll(itensPedidoFoundTk, pedidoFoundTk);
 
-            pedidoFound = pedidoRepository.GetById(uuid);
-            if (pedidoFound! != null!)
+            pedidoFound = pedidoFoundTk.Result;
+            itensPedidoFound = itensPedidoFoundTk.Result;
+
+            if (itensPedidoFound.Count > pedido.ItensPedido.Count)
             {
-                pedidoFound.ProfissionalResponsavel = item.ProfissionalResponsavel;
-                pedidoFound.ItensPedido = item.ItensPedido;
-                pedidoFound.ValorTotal = item.ValorTotal;
-                pedidoRepository.Update(pedidoFound);
-                await Task.Run(() => pedidoRepository.SaveChanges());
+                var itensARemover = itensPedidoFound.ToList();
+                itensARemover.RemoveAll(ip =>
+                   pedido.ItensPedido.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
+                   && ipf.ItemUuid == ip.ItemUuid) is null);
+                itensARemover.ForEach(ip =>
+                {
+                    itemPedidoRepository.Remove(ip.Uuid);
+                });
             }
+            else
+            {
+                var itensExcedentes = pedido.ItensPedido.ToList();
+                var itens = itensExcedentes.RemoveAll(ip =>
+                    itensPedidoFound.FirstOrDefault(ipf => ipf.QtdItem == ip.QtdItem
+                    && ipf.ItemUuid == ip.ItemUuid) is not null) ;
 
-            pedidoRepository.Dispose();
+                itensPedidoFound.AddRange(itensExcedentes);
+            }
+            if (pedidoFound is null)
+            {
+                throw new Exception("Pedido não encontrado");
+            }
+            else
+            {
+                pedidoFound.ProfissionalResponsavel = pedido.ProfissionalResponsavel;
+                pedidoFound.ValorTotal = pedido.ValorTotal;
+                pedidoFound.ItensPedido = itensPedidoFound;
+                await pedidoRepository.Update(pedidoFound);
+                await pedidoRepository.SaveChanges();
+                await itemPedidoRepository.SaveChanges();
+
+            }
             return pedidoFound!;
         }
     }

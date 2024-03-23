@@ -10,55 +10,48 @@ namespace EmpresaAPI.Persistence.Services
         public async Task<ItemEstoque> Create(ItemEstoque itemEstoque)
         {
 
-            var itemEstoqueExisting = itemEstoqueRepository
-               .FindAllWhere(ie => !ie.Removed &&
-               ie.Item!.Uuid == itemEstoque.Item!.Uuid)
-               .FirstOrDefault();
+            var itemEstoqueExisting = await itemEstoqueRepository
+               .FirstOrDefault(ie => !ie.Removed &&
+               ie.Item!.Uuid == itemEstoque.Item!.Uuid);
+               
 
             if (itemEstoqueExisting! != null!)
             {
                 itemEstoqueExisting.QtdItem = itemEstoque.QtdItem;
-                itemEstoqueRepository.Update(itemEstoqueExisting);
+                await itemEstoqueRepository.Update(itemEstoqueExisting);
             }
             else
             {
-                var item = itemRepository.GetById(itemEstoque.Item!.Uuid);
+                var item = await itemRepository.GetById(itemEstoque.Item!.Uuid);
                 if (item! == null!)
                     throw new ArgumentException("Item não encontrado");
                 item.ItemEstoque.Add(itemEstoque);
                 itemEstoque.UpdateAt = DateTime.UtcNow;
                 itemEstoque.CreateAt = DateTime.UtcNow;
-                itemRepository.Update(item);
+                await itemRepository.Update(item);
             }
             await Task.Run(() => itemRepository.SaveChanges());
 
 
-            itemRepository.Dispose();
+
 
             return itemEstoque;
         }
 
         public async Task Delete(Guid uuid)
         {
-
-            itemEstoqueRepository.Remove(uuid);
-            itemEstoqueRepository.SaveChanges();
-            await Task.Run(() => itemEstoqueRepository.SaveChanges());
-
-
-            itemRepository.Dispose();
-
-
+            await itemEstoqueRepository.Remove(uuid);
+            await itemEstoqueRepository.SaveChanges();
         }
 
         public async Task<List<ItemEstoque>> GetAll()
         {
             var itemEstoque = new List<ItemEstoque>();
 
-            itemEstoque.AddRange(await itemEstoqueRepository.FindAllWhereAsync(i => !i.Removed, "Item"));
+            itemEstoque.AddRange(await itemEstoqueRepository.FindAllWhere(i => !i.Removed, "Item"));
 
 
-            itemEstoqueRepository.Dispose();
+
 
             return itemEstoque;
 
@@ -66,12 +59,12 @@ namespace EmpresaAPI.Persistence.Services
 
         public async Task<ItemEstoque> GetById(Guid uuid)
         {
-            var itemFound = await itemEstoqueRepository.GetByIdAsync(uuid);
+            var itemFound = await itemEstoqueRepository.GetById(uuid);
             if (itemFound! == null!)
             {
                 throw new Exception("Item Estoque não encontrado");
             }
-            itemEstoqueRepository.Dispose();
+
             return itemFound!;
         }
 
@@ -79,17 +72,17 @@ namespace EmpresaAPI.Persistence.Services
         {
             ItemEstoque? itemEstoqueFound = null;
 
-            itemEstoqueFound = await itemEstoqueRepository.GetByIdAsync(uuid);
+            itemEstoqueFound = await itemEstoqueRepository.GetById(uuid);
 
             if (itemEstoqueFound! != null!)
             {
                 itemEstoqueFound!.Item = item.Item;
                 itemEstoqueFound!.QtdItem = item.QtdItem;
-                itemEstoqueRepository.Update(itemEstoqueFound);
-                itemEstoqueRepository.SaveChanges();
+                await itemEstoqueRepository.Update(itemEstoqueFound);
+                await itemEstoqueRepository.SaveChanges();
             }
 
-            itemEstoqueRepository.Dispose();
+
             return itemEstoqueFound!;
         }
     }

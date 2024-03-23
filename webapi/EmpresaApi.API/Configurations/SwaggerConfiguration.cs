@@ -9,7 +9,7 @@ namespace EmpresaApi.API.Configurations
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Empresa API", Version = "v1" });
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Empresa API",

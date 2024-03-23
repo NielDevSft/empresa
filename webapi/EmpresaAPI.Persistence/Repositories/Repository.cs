@@ -2,6 +2,7 @@
 using EmpresaAPI.Domain.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 
@@ -20,13 +21,13 @@ namespace EmpresaAPI.Persistence.Repositories
             _logger = logger;
         }
 
-        public void Add(TEntity obj)
+        public async Task Add(TEntity obj)
         {
             try
             {
                 obj.CreateAt = DateTime.UtcNow;
                 obj.UpdateAt = DateTime.UtcNow;
-                DbSet.Add(obj);
+                await DbSet.AddAsync(obj);
             }
             catch (Exception e)
             {
@@ -39,65 +40,65 @@ namespace EmpresaAPI.Persistence.Repositories
             Db.Dispose();
         }
 
-        public ICollection<TEntity> FindAll(params string[] includes)
+        public Task<List<TEntity>> FindAll(params string[] includes)
         {
             _logger.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking();
             query = Includes(query, includes);
 
-            var retorno = query.ToList();
+            var retorno = query.ToListAsync();
             _logger.LogInformation($"Lista de {GetType().Name} obtida");
             return retorno;
         }
 
-        public ICollection<TEntity> FindAllWhere(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        public Task<List<TEntity>> FindAllWhere(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
             _logger.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
             query = Includes(query, includes);
             _logger.LogInformation($"Lista de {GetType().Name} obtida");
-            return query.ToList();
+            return query.ToListAsync();
         }
 
-        public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        public Task<TEntity> FirstOrDefault(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
             _logger.LogInformation($"Obtendo {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
             query = Includes(query, includes);
             _logger.LogInformation($"{GetType().Name} obtido");
-            return query.FirstOrDefault();
+            return query.FirstOrDefaultAsync()!;
         }
 
-        public TEntity? GetById(Guid uuid, params string[] includes)
+        public Task<TEntity> GetById(Guid uuid, params string[] includes)
         {
             _logger.LogInformation($"Obtendo {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(e => e.Uuid == uuid);
             query = Includes(query, includes);
             _logger.LogInformation($"{GetType().Name}, id {uuid} obtido");
-            return query.FirstOrDefault();
+            return query.FirstOrDefaultAsync()!;
         }
 
-        public void Remove(Guid uuid)
+        public async Task Remove(Guid uuid)
         {
-            var obj = GetById(uuid);
+            var obj = await GetById(uuid);
             if (obj! != null!)
             {
                 obj!.Removed = true;
-                Update(obj);
+                await Update(obj);
             }
         }
 
-        public int SaveChanges()
+        public Task<int> SaveChanges()
         {
-            return Db.SaveChanges();
+            return Db.SaveChangesAsync();
 
         }
 
-        public void Update(TEntity obj)
+        public Task Update(TEntity obj)
         {
             _logger.LogInformation($"Atualizando objeto {GetType().Name}, id {obj.Uuid}");
             obj.UpdateAt = DateTime.UtcNow;
-            DbSet.Update(obj);
+            return Task.Run(() => DbSet.Update(obj));
         }
 
         IQueryable<TEntity> Includes(IQueryable<TEntity> query, params string[] includes)
@@ -105,7 +106,8 @@ namespace EmpresaAPI.Persistence.Repositories
             if (includes != null)
             {
                 foreach (var item in includes)
-                    query = query.Include(item);
+                    query = query.Include(item)
+                        .Where(item => !item.Removed);
             }
 
             return query;
@@ -128,31 +130,23 @@ namespace EmpresaAPI.Persistence.Repositories
             return parentRow;
         }
 
-        public async Task<ICollection<TEntity>> FindAllWhereAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
+        public Task<List<TEntity>> FindAllWhereAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes)
         {
             _logger.LogInformation($"Obtendo lista de {GetType().Name}");
             var query = DbSet.AsNoTracking().Where(predicate);
-            await Task.Run(() => query = Includes(query, includes));
+            query = Includes(query, includes);
             _logger.LogInformation($"Lista de {GetType().Name} obtida");
-            return query.ToList();
+            return query.ToListAsync();
         }
 
-        public async Task<TEntity?> GetByIdAsync(Guid uuid, params string[] includes)
-        {
-            _logger.LogInformation($"Obtendo {GetType().Name}, id {uuid}");
-            var query = DbSet.AsNoTracking().Where(e => e.Uuid == uuid);
-            await Task.Run(() => query = Includes(query, includes));
-            _logger.LogInformation($"{GetType().BaseType}, id {uuid} obtido");
-            return query.FirstOrDefault();
-        }
-
-        public void Remove(TEntity obj)
+        public Task Remove(TEntity obj)
         {
             if (obj! != null!)
             {
                 obj!.Removed = true;
-                Update(obj);
+                return Update(obj);
             }
+            return null!;
         }
     }
 }

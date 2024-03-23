@@ -17,7 +17,7 @@ export class PedidoService {
   }
 
   public update(pedido: Pedido): Observable<Pedido> {
-    return this.http.put<Pedido>(`${this.apiUrl}`, pedido);
+    return this.http.put<Pedido>(`${this.apiUrl}/${pedido.uuid}`, pedido);
   }
 
   public getAllByUsuario(): Observable<Pedido[]> {

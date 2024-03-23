@@ -1,5 +1,4 @@
 ﻿using EmpresaApi.API.Options;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace EmpresaApi.API.SetupOptions

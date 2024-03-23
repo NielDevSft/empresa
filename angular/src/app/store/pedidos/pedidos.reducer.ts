@@ -21,44 +21,9 @@ export interface PedidoState {
   status: StatusEnum;
   errors: string | null;
 }
-const initItem1 = new Item(
-  "1",
-  "Garrafa",
-  13,
-  "Garrafinha de plastico",
-  new Date(),
-  new Date()
-);
-const initItem2 = new Item(
-  "2",
-  "Carpete",
-  25,
-  "Carpete de linho",
-  new Date(),
-  new Date()
-);
+
 export const initialState: PedidoState = {
-  pedidoList: [
-    new Pedido(
-      "",
-      "Rael Ferreira",
-      [{ item: initItem2, qtd: 3 }],
-      0,
-      new Date(),
-      new Date()
-    ),
-    new Pedido(
-      "",
-      "Rael Ferreira",
-      [
-        { item: initItem1, qtd: 3 },
-        { item: initItem2, qtd: 3 },
-      ],
-      334,
-      new Date(),
-      new Date()
-    ),
-  ],
+  pedidoList: [],
   currentOperation: OperationEnum.creating,
   currentPedido: null,
   status: StatusEnum.pending,

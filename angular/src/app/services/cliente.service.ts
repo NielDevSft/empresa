@@ -16,6 +16,7 @@ export class ClienteService {
   }
 
   public update(cliente: Cliente): Observable<Cliente> {
+    console.log(cliente);
     return this.http.put<Cliente>(`${this.apiUrl}/${cliente.uuid}`, cliente);
   }
 

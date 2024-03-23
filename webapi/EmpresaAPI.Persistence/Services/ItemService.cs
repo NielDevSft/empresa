@@ -10,8 +10,8 @@ namespace EmpresaAPI.Persistence.Services
         public async Task<Item> Create(Item item)
         {
 
-            itemRepository.Add(item);
-            itemRepository.SaveChanges();
+            await itemRepository.Add(item);
+            await itemRepository.SaveChanges();
 
             item.ItemEstoque.Add(new ItemEstoque
             {
@@ -19,33 +19,33 @@ namespace EmpresaAPI.Persistence.Services
                 UpdateAt = DateTime.UtcNow,
                 CreateAt = DateTime.UtcNow,
             });
-            itemRepository.Update(item);
+            await itemRepository.Update(item);
             await Task.Run(() => itemRepository.SaveChanges());
 
-            itemRepository.Dispose();
+
             return item;
         }
 
         public async Task Delete(Guid uuid)
         {
-            var item = itemRepository.GetById(uuid, "ItemEstoque");
+            var item = await itemRepository.GetById(uuid, "ItemEstoque");
             if (item! != null! && item.ItemEstoque != null!)
                 item.ItemEstoque.First().Removed = true;
             item!.Removed = true;
-            itemRepository.Update(item);
+            await itemRepository.Update(item);
             await Task.Run(() => itemRepository.SaveChanges());
 
 
-            itemRepository.Dispose();
+
 
         }
 
         public async Task<List<Item>> GetAll()
         {
             var itemList = new List<Item>();
-            itemList.AddRange(await itemRepository.FindAllWhereAsync(i => !i.Removed));
+            itemList.AddRange(await itemRepository.FindAllWhere(i => !i.Removed));
 
-            itemRepository.Dispose();
+
             return itemList;
         }
 
@@ -54,13 +54,13 @@ namespace EmpresaAPI.Persistence.Services
             Item? itemFound = null;
 
             itemFound = (await itemRepository
-                .FindAllWhereAsync(i => i.Uuid == uuid && !i.Removed)).FirstOrDefault();
+                .FindAllWhere(i => i.Uuid == uuid && !i.Removed)).FirstOrDefault();
 
             if (itemFound! == null!)
             {
                 throw new Exception("Item não encontrado");
             }
-            itemRepository.Dispose();
+
 
             return itemFound;
         }
@@ -68,14 +68,12 @@ namespace EmpresaAPI.Persistence.Services
         public async Task<Item> Update(Guid uuid, Item item)
         {
             Item? itemFound = null;
-            itemFound = await itemRepository.GetByIdAsync(uuid)!;
+            itemFound = await itemRepository.GetById(uuid)!;
             itemFound!.NomItem = item.NomItem;
             itemFound!.ValItem = item.ValItem;
             itemFound!.DesItem = item.DesItem;
-            itemRepository.Update(itemFound);
-            itemRepository.SaveChanges();
-
-            itemRepository.Dispose();
+            await itemRepository.Update(itemFound);
+            await itemRepository.SaveChanges();
 
             return itemFound;
         }
