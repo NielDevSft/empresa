@@ -3,7 +3,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { authGuard } from "./core";
 import { HomeComponent } from "./home/home.component";
 import { LoginComponent } from "./login/login.component";
-import { DemoApisComponent } from "./demo-apis/demo-apis.component";
 
 const routes: Routes = [
   {
@@ -13,7 +12,6 @@ const routes: Routes = [
     canMatch: [authGuard],
   },
   { path: "login", component: LoginComponent },
-  { path: "demo-apis", component: DemoApisComponent, canMatch: [authGuard] },
   {
     path: "management",
     loadChildren: () =>
