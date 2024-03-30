@@ -7,7 +7,7 @@ import { CoreModule } from "./core/core.module";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { LoginComponent } from "./login/login.component";
+import { LoginComponent } from "./pages/login/login.component";
 import { HomeComponent } from "./home/home.component";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
 import { SharedModule } from "./core/commom-modules/shared.module";
