@@ -13,12 +13,6 @@ const routes: Routes = [
   },
   { path: "login", component: LoginComponent },
   {
-    path: "management",
-    loadChildren: () =>
-      import("./management/management.module").then((m) => m.ManagementModule),
-    canMatch: [authGuard],
-  },
-  {
     path: "pedido",
     loadChildren: () =>
       import("./pages/pedido/pedido.module").then((m) => m.PedidoModule),
