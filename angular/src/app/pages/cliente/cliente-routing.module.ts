@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ClienteComponent } from "./cliente.component";
 import { FormClienteComponent } from "./form-cliente/form-cliente.component";
-import { authGuard } from "../../core/guards/auth.guard";
+import { authGuard } from "../../guards/auth.guard";
 import { ConsultaClienteComponent } from "./consulta-cliente/consulta-cliente.component";
 import { DeleteClienteComponent } from "./delete-cliente/delete-cliente.component";
 

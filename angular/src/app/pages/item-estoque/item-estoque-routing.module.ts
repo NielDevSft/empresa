@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ItemEstoqueComponent } from "./item-estoque.component";
 import { FormItemEstoqueComponent } from "./form-item-estoque/form-item-estoque.component";
-import { authGuard } from "../../core/guards/auth.guard";
+import { authGuard } from "../../guards/auth.guard";
 import { ConsultaItemEstoqueComponent } from "./consulta-item-estoque/consulta-item-estoque.component";
 import { DeleteItemEstoqueComponent } from "./delete-item-estoque/delete-item-estoque.component";
 

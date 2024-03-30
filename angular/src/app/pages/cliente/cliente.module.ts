@@ -7,9 +7,9 @@ import { ConsultaClienteComponent } from "./consulta-cliente/consulta-cliente.co
 import { ClienteRoutingModule } from "./cliente-routing.module";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatExpansionModule } from "@angular/material/expansion";
-import { SharedModule } from "../../core/commom-modules/shared.module";
+import { SharedModule } from "../../core/common/shared.module";
 import { MatTableModule } from "@angular/material/table";
-import { CpfPipe } from "../../custom-pipes/cpf.pipe";
+import { CpfPipe } from "../../pipes/cpf.pipe";
 
 @NgModule({
   declarations: [

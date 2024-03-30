@@ -2,7 +2,7 @@ import { NgModule, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { MatTableModule } from "@angular/material/table";
 
-import { SharedModule } from "../../core/commom-modules/shared.module";
+import { SharedModule } from "../../core/common/shared.module";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatExpansionModule } from "@angular/material/expansion";
 

@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../core';
+import { Component, OnInit } from "@angular/core";
+import { AuthService } from "../services/auth.service";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.css"],
 })
 export class HomeComponent implements OnInit {
-  accessToken = '';
-  refreshToken = '';
+  accessToken = "";
+  refreshToken = "";
 
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.accessToken = localStorage.getItem('access_token') ?? '';
-    this.refreshToken = localStorage.getItem('refresh_token') ?? '';
+    this.accessToken = localStorage.getItem("access_token") ?? "";
+    this.refreshToken = localStorage.getItem("refresh_token") ?? "";
   }
 }

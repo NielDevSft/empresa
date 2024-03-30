@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { ItemComponent } from "./item.component";
 import { FormItemComponent } from "./form-item/form-item.component";
-import { authGuard } from "../../core/guards/auth.guard";
+import { authGuard } from "../../guards/auth.guard";
 import { ConsultaItemComponent } from "./consulta-item/consulta-item.component";
 import { DeleteItemComponent } from "./delete-item/delete-item.component";
 

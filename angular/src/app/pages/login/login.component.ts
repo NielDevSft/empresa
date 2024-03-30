@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { AuthService } from "../../core";
+
 import { finalize } from "rxjs/operators";
 import { Subscription } from "rxjs";
-import { Utils } from "../../core/utils/utils";
+import { Utils } from "../../utils/utils";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-login",

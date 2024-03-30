@@ -1,6 +1,5 @@
-import { Cliente } from "./models/Cliente";
 import { Component } from "@angular/core";
-import { AuthService } from "./core";
+import { AuthService } from "./services/auth.service";
 
 @Component({
   selector: "app-root",

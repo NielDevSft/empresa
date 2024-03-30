@@ -3,8 +3,8 @@ import { Router } from "@angular/router";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable, of, Subscription } from "rxjs";
 import { map, tap, delay, finalize } from "rxjs/operators";
-import { ApplicationUser } from "../models/application-user";
-import { environment } from "../../../environments/environment";
+import { ApplicationUser } from "../models/ApplicationUser";
+import { environment } from "../../environments/environment";
 
 interface LoginResult {
   username: string;

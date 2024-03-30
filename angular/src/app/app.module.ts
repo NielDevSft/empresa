@@ -3,14 +3,14 @@ import { NgModule, isDevMode } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 
-import { CoreModule } from "./core/core.module";
+import { CoreModule } from "./core/common/core.module";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { HomeComponent } from "./home/home.component";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
-import { SharedModule } from "./core/commom-modules/shared.module";
+import { SharedModule } from "./core/common/shared.module";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { StoreModule, provideStore } from "@ngrx/store";
