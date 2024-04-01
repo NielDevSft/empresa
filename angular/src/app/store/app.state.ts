@@ -1,3 +1,4 @@
+import { AuthenticationState } from "./authentications/authentications.reducer";
 import { ClienteState } from "./clientes/clientes.reducer";
 import { ItemEstoqueState } from "./itens-estoque/itens-estoque.reducer";
 import { ItemState } from "./itens/itens.reducer";
@@ -10,4 +11,5 @@ export interface AppState {
   itensEstoque: ItemEstoqueState;
   clientes: ClienteState;
   usuarios: UsuarioState;
+  authentications: AuthenticationState;
 }

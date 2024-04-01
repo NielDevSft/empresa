@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, inject } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { finalize } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { Utils } from "../../utils/utils";
-import { AuthService } from "../../services/auth.service";
+import { Store } from "@ngrx/store";
+import { logginWithEmailNPassword } from "../../store/authentications/authentications.actions";
+import { userLogged } from "../../store/authentications/authentications.selectors";
 
 @Component({
   selector: "app-login",
@@ -18,14 +19,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginError = false;
   private subscription: Subscription | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
+  store = inject(Store);
+  public userLogged$ = this.store.select(userLogged);
 
   ngOnInit(): void {
-    this.subscription = this.authService.user$.subscribe((x) => {
+    this.subscription = this.userLogged$.subscribe((x) => {
       if (this.route.snapshot.url[0].path === "login") {
         const accessToken = localStorage.getItem("access_token");
         const refreshToken = localStorage.getItem("refresh_token");
@@ -44,17 +43,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.busy = true;
     const returnUrl = this.route.snapshot.queryParams["returnUrl"] || "";
 
-    this.authService
-      .login(this.username, Utils().encrypt(this.password))
-      .pipe(finalize(() => (this.busy = false)))
-      .subscribe({
-        next: () => {
-          this.router.navigate([returnUrl]);
-        },
-        error: () => {
-          this.loginError = true;
-        },
-      });
+    this.store.dispatch(
+      logginWithEmailNPassword({
+        email: this.username,
+        password: Utils().encrypt(this.password),
+      })
+    );
+    this.userLogged$.subscribe({
+      next: () => {
+        this.router.navigate([returnUrl]);
+      },
+      error: () => {
+        this.loginError = true;
+      },
+    });
   }
 
   ngOnDestroy(): void {

@@ -31,6 +31,7 @@ import { itemEstoqueReducer } from "./store/itens-estoque/itens-estoque.reducer"
 import { clienteReducer } from "./store/clientes/clientes.reducer";
 import { usuarioReducer } from "./store/usuarios/usuarios.reducer";
 import { NgToastModule } from "ng-angular-popup";
+import { AuthenticationsEffect } from "./store/authentications/authentications.effects";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent],
@@ -42,6 +43,7 @@ import { NgToastModule } from "ng-angular-popup";
       ItensEstoqueEffects,
       ClientesEffects,
       UsuariosEffects,
+      AuthenticationsEffect,
     ]),
     StoreModule.forRoot({
       pedidos: pedidoReducer,
